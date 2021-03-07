@@ -19,8 +19,8 @@ class CIAOPlotter():
         # We can plot the fitness matrix as-is
         plt.imshow(fitnesses, cmap = 'gray')
         plt.title(file_root + ' CIAO Plot')
-        plt.xlabel('Best of Ghost Generations')
-        plt.ylabel('Best of Pac Generations')
+        plt.xlabel('Best of Defender Generations')
+        plt.ylabel('Best of Attacker Generations')
 
         # Change tick marks to indicate generation numbers
         num_gens = fitnesses.shape[0]

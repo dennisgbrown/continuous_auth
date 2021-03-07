@@ -7,7 +7,7 @@ import sys
 sys.path.append('code')
 from strategy import Strategy
 from gameState import GameState
-from controllers import PacController, RandomGhostController
+from controllers import AttackerController, RandomDefenderController
 from exprTree import Node, ExprTree
 
 
@@ -16,8 +16,8 @@ class GPStrategy(Strategy):
     Genetic Programming search strategy.
     """
     def __init__(self, experiment):
-        self.pac_controllers = [None for _ in range(experiment.num_pacs)]
-        self.ghost_controllers = [RandomGhostController(x) for x in range(experiment.num_ghosts)]
+        self.attacker_controllers = [None for _ in range(experiment.num_attackers)]
+        self.defender_controllers = [RandomDefenderController(x) for x in range(experiment.num_defenders)]
         self.experiment = experiment
 
         self.ea_mu = 10
@@ -168,14 +168,14 @@ class GPStrategy(Strategy):
         if (depth < self.dmax):
             # Grow selects from all functions and terminals at this depth
             if (grow_or_full == 'grow'):
-                expr = (ExprTree.functions + ExprTree.pac_terminals) \
-                    [random.randint(0, (len(ExprTree.functions) + len(ExprTree.pac_terminals) - 1))]
+                expr = (ExprTree.functions + ExprTree.attacker_terminals) \
+                    [random.randint(0, (len(ExprTree.functions) + len(ExprTree.attacker_terminals) - 1))]
             # Full selects only from functions at this depth
             else:
                 expr = ExprTree.functions[random.randint(0, len(ExprTree.functions) - 1)]
         # If depth is at Dmax, choose a terminal.
         else:
-            expr = ExprTree.pac_terminals[random.randint(0, len(ExprTree.pac_terminals) - 1)]
+            expr = ExprTree.attacker_terminals[random.randint(0, len(ExprTree.attacker_terminals) - 1)]
 
         # Make a new tree node with this expression.
         node.expr = expr
@@ -471,42 +471,42 @@ class GPStrategy(Strategy):
             exit(1)
 
 
-    def execute_one_game(self, pac_expr_tree):
+    def execute_one_game(self, attacker_expr_tree):
         """
         Execute one game / eval of a run given experiment data
-        and the root of an expression tree for controlling Pac.
+        and the root of an expression tree for controlling Attacker.
 
         Return score.
         """
-        # Pick a new map and set up a new game state.
-        game_map = self.experiment.pre_loaded_maps[random.randint(0, 99)]
+        # Pick a new scenario and set up a new game state.
+        game_scenario = self.experiment.pre_loaded_scenarios[random.randint(0, 99)]
         self.experiment.world_data = []
-        game_state = GameState(game_map,
+        game_state = GameState(game_scenario,
                                self.experiment.pill_density,
                                self.experiment.time_multiplier,
                                self.experiment.fruit_spawning_probability,
                                self.experiment.fruit_score,
-                               self.experiment.num_pacs,
-                               self.experiment.num_ghosts)
+                               self.experiment.num_attackers,
+                               self.experiment.num_defenders)
         game_state.write_world_config(self.experiment.world_data)
         game_state.write_world_time_score(self.experiment.world_data)
 
-        # Create a new Pac controller
-        self.pac_controllers[0] = PacController(0, pac_expr_tree)
+        # Create a new Attacker controller
+        self.attacker_controllers[0] = AttackerController(0, attacker_expr_tree)
 
         # While the game isn't over, play game turns.
         game_over = False
         while (not game_over):
             game_over = game_state.play_turn(self.experiment.world_data,
-                                             self.pac_controllers,
-                                             self.ghost_controllers)
+                                             self.attacker_controllers,
+                                             self.defender_controllers)
 
         # Implement parsimony pressure
         fitness = 0
         if (self.parsimony_technique == 'size'):
-            fitness = game_state.score - (self.pppc * pac_expr_tree.root.size)
+            fitness = game_state.score - (self.pppc * attacker_expr_tree.root.size)
         else:
-            fitness = game_state.score - (self.pppc * pac_expr_tree.root.height)
+            fitness = game_state.score - (self.pppc * attacker_expr_tree.root.height)
 
         return fitness, game_state.score
 
@@ -516,7 +516,7 @@ class GPStrategy(Strategy):
         Execute one run of an experiment.
 
         Return highest score and its associated world and solution data
-        for Pac and empty placeholder data for Ghost.
+        for Attacker and empty placeholder data for Defender.
         """
         run_high_score = -1
         run_best_world_data = None

@@ -6,7 +6,7 @@ import traceback
 import sys
 
 sys.path.append('code')
-from gameMapInfo import GameMapInfo
+from gameScenarioInfo import GameScenarioInfo
 from randomStrategy import RandomStrategy
 from hillClimbStrategy import HillClimbStrategy
 from gpStrategy import GPStrategy
@@ -32,28 +32,28 @@ class Experiment:
         self.num_fitness_evals_per_run = 100
         self.log_file_path = 'logs/defaultLog.txt'
         self.log_file = None
-        self.pac_solution_file_path = 'solutions/defaultPacSolution.txt'
-        self.ghost_solution_file_path = 'solutions/defaultGhostSolution.txt'
+        self.attacker_solution_file_path = 'solutions/defaultAttackerSolution.txt'
+        self.defender_solution_file_path = 'solutions/defaultDefenderSolution.txt'
         self.high_score_world_file_path = 'worlds/defaultWorld.txt'
-        self.map_file_path = None
+        self.scenario_file_path = None
 
         self.world_data = None  # Array of strings that will be written to world data file
-        self.game_map = None
+        self.game_scenario = None
         self.pill_density = 0.5
         self.fruit_spawning_probability = 0.5
         self.fruit_score = 10
         self.time_multiplier = 1
 
-        self.num_pacs = 1
-        self.num_ghosts = 3
+        self.num_attackers = 1
+        self.num_defenders = 3
 
-        self.pac_exp_high_fitness = float('-inf')
-        self.pac_exp_best_world_data = None
-        self.pac_exp_best_solution = None
-        self.ghost_exp_high_fitness = float('-inf')
-        self.ghost_exp_best_solution = None
+        self.attacker_exp_high_fitness = float('-inf')
+        self.attacker_exp_best_world_data = None
+        self.attacker_exp_best_solution = None
+        self.defender_exp_high_fitness = float('-inf')
+        self.defender_exp_best_solution = None
 
-        self.pre_loaded_maps = []
+        self.pre_loaded_scenarios = []
 
         try:
             self.config_parser = configparser.ConfigParser()
@@ -100,16 +100,16 @@ class Experiment:
                 print('config: high_score_world_file_path not properly specified; using', self.high_score_world_file_path)
 
             try:
-                self.pac_solution_file_path = self.config_parser.get('basic_options', 'pac_solution_file_path')
-                print('config: pac_solution_file_path =', self.pac_solution_file_path)
+                self.attacker_solution_file_path = self.config_parser.get('basic_options', 'attacker_solution_file_path')
+                print('config: attacker_solution_file_path =', self.attacker_solution_file_path)
             except:
-                print('config: pac_solution_file_path not properly specified; using', self.pac_solution_file_path)
+                print('config: attacker_solution_file_path not properly specified; using', self.attacker_solution_file_path)
 
             try:
-                self.ghost_solution_file_path = self.config_parser.get('basic_options', 'ghost_solution_file_path')
-                print('config: ghost_solution_file_path =', self.ghost_solution_file_path)
+                self.defender_solution_file_path = self.config_parser.get('basic_options', 'defender_solution_file_path')
+                print('config: defender_solution_file_path =', self.defender_solution_file_path)
             except:
-                print('config: ghost_solution_file_path not properly specified; using', self.ghost_solution_file_path)
+                print('config: defender_solution_file_path not properly specified; using', self.defender_solution_file_path)
 
             try:
                 self.pill_density = self.config_parser.getfloat('basic_options', 'pill_density')
@@ -148,10 +148,10 @@ class Experiment:
                                     + str(self.num_runs_per_experiment) + '\n')
                 self.log_file.write('number of fitness evals per run: '
                                     + str(self.num_fitness_evals_per_run) + '\n')
-                self.log_file.write('pac solution file path: '
-                                    + self.pac_solution_file_path + '\n')
-                self.log_file.write('ghost solution file path: '
-                                    + self.ghost_solution_file_path + '\n')
+                self.log_file.write('attacker solution file path: '
+                                    + self.attacker_solution_file_path + '\n')
+                self.log_file.write('defender solution file path: '
+                                    + self.defender_solution_file_path + '\n')
                 self.log_file.write('highest-scoring world file path: '
                                     + self.high_score_world_file_path + '\n')
                 self.log_file.write('pill density: '
@@ -173,12 +173,12 @@ class Experiment:
             return None
 
 
-    def pre_load_maps(self):
+    def pre_load_scenarios(self):
         """
-        Pre-load all the possible game maps.
+        Pre-load all the possible game scenarios.
         """
         for i in range(100):
-            self.pre_loaded_maps.append(GameMapInfo('maps/map' + str(i) + '.txt'))
+            self.pre_loaded_scenarios.append(GameScenarioInfo('scenarios/map' + str(i) + '.txt'))
 
 
     def run_experiment(self):
@@ -189,7 +189,7 @@ class Experiment:
 
         start_time = time.time()
 
-        self.pre_load_maps()
+        self.pre_load_scenarios()
 
         strategy_instance = None
         if (self.strategy == 'random'):
@@ -213,42 +213,42 @@ class Experiment:
             self.log_file.write('\nRun ' + str(curr_run) + '\n')
 
             # Execute one run and get best values.
-            pac_run_high_fitness, pac_run_best_world_data, pac_run_best_solution, \
-                ghost_run_high_fitness, ghost_run_best_solution \
+            attacker_run_high_fitness, attacker_run_best_world_data, attacker_run_best_solution, \
+                defender_run_high_fitness, defender_run_best_solution \
                 = strategy_instance.execute_one_run()
 
             # If best of run is best overall, update appropriate values
             if (self.strategy != 'ccegp'):
-                if (pac_run_high_fitness > self.pac_exp_high_fitness):
-                    self.pac_exp_high_fitness = pac_run_high_fitness
-                    print('New exp Pac high fitness: ', self.pac_exp_high_fitness)
-                    self.pac_exp_best_world_data = pac_run_best_world_data
-                    self.pac_exp_best_solution = pac_run_best_solution
-            # If Competitive Co-evolution, add fitnesses (use Pac to store most data)
+                if (attacker_run_high_fitness > self.attacker_exp_high_fitness):
+                    self.attacker_exp_high_fitness = attacker_run_high_fitness
+                    print('New exp Attacker high fitness: ', self.attacker_exp_high_fitness)
+                    self.attacker_exp_best_world_data = attacker_run_best_world_data
+                    self.attacker_exp_best_solution = attacker_run_best_solution
+            # If Competitive Co-evolution, add fitnesses (use Attacker to store most data)
             else:
-                if ((pac_run_high_fitness + ghost_run_high_fitness) > self.pac_exp_high_fitness):
-                    self.pac_exp_high_fitness = (pac_run_high_fitness + ghost_run_high_fitness)
-                    print('New exp Pac+Ghost high fitness: ', self.pac_exp_high_fitness)
-                    self.pac_exp_best_world_data = pac_run_best_world_data
-                    self.pac_exp_best_solution = pac_run_best_solution
-                    self.ghost_exp_best_solution = ghost_run_best_solution
+                if ((attacker_run_high_fitness + defender_run_high_fitness) > self.attacker_exp_high_fitness):
+                    self.attacker_exp_high_fitness = (attacker_run_high_fitness + defender_run_high_fitness)
+                    print('New exp Attacker+Defender high fitness: ', self.attacker_exp_high_fitness)
+                    self.attacker_exp_best_world_data = attacker_run_best_world_data
+                    self.attacker_exp_best_solution = attacker_run_best_solution
+                    self.defender_exp_best_solution = defender_run_best_solution
 
 
         # Dump best world to file
         the_file = open(self.high_score_world_file_path, 'w')
-        for line in self.pac_exp_best_world_data:
+        for line in self.attacker_exp_best_world_data:
             the_file.write(line)
         the_file.close()
 
-        # Dump best Pac solution to file
-        the_file = open(self.pac_solution_file_path, 'w')
-        the_file.write(self.pac_exp_best_solution)
+        # Dump best Attacker solution to file
+        the_file = open(self.attacker_solution_file_path, 'w')
+        the_file.write(self.attacker_exp_best_solution)
         the_file.close()
 
-        # Dump best Ghost solution to file
+        # Dump best Defender solution to file
         if (self.strategy == 'ccegp'):
-            the_file = open(self.ghost_solution_file_path, 'w')
-            the_file.write(self.ghost_exp_best_solution)
+            the_file = open(self.defender_solution_file_path, 'w')
+            the_file.write(self.defender_exp_best_solution)
             the_file.close()
 
         # Close out the log file

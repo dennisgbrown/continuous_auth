@@ -1,0 +1,39 @@
+Result Log
+
+random seed: 1615091143475
+strategy: ccegp
+number of runs per experiment: 1
+number of fitness evals per run: 20
+attacker solution file path: solutions/defaultAttackerSolution.txt
+defender solution file path: solutions/defaultDefenderSolution.txt
+highest-scoring world file path: worlds/defaultHighScoreWorld.txt
+pill density: 0.5
+fruit spawning probability: 0.5
+fruit score: 10
+time multiplier: 1
+attacker_mu: 100
+attacker_lambda: 50
+attacker_dmax_init: 7
+attacker_dmax_overall: 9
+attacker_parent selection method: overselection
+attacker_overselection top for parent selection: 0.32
+attacker_probability of mutation p_m: 0.05
+attacker_survival selection method: truncation
+attacker_parsimony technique: size
+attacker_parsimony pressure penalty coefficient: 0.5
+defender_mu: 100
+defender_lambda: 50
+defender_dmax_init: 7
+defender_dmax_overall: 9
+defender_parent selection method: overselection
+defender_overselection top for parent selection: 0.32
+defender_probability of mutation p_m: 0.05
+defender_survival selection method: truncation
+defender_parsimony technique: size
+defender_parsimony pressure penalty coefficient: 0.5
+termination method: number_of_evals
+CIAO data file path root: default
+parsimony log file path: data/defaultParsimonyLog.txt
+
+Run 1
+100	-50.13	32.5

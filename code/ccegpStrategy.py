@@ -8,7 +8,7 @@ import sys
 sys.path.append('code')
 from strategy import Strategy
 from gameState import GameState
-from controllers import PacController, GhostController
+from controllers import AttackerController, DefenderController
 from exprTree import Node, ExprTree
 from population import Population
 from ciaoPlotter import CIAOPlotter
@@ -21,33 +21,33 @@ class CCEGPStrategy(Strategy):
     def __init__(self, experiment):
         self.experiment = experiment
 
-        # Information for setting up and controlling the Pac population
-        self.pac_controllers = [None for _ in range(experiment.num_pacs)]
-        self.pac_mu = 10
-        self.pac_lambda = 5
-        self.pac_dmax_init = 5
-        self.pac_dmax_overall = 5
-        self.pac_parent_selection = 'fitness_proportional_selection'
-        self.pac_overselection_top = 0.32
-        self.pac_p_m = 0.05
-        self.pac_survival_selection = 'truncation'
-        self.pac_tournament_size_for_survival_selection = 4
-        self.pac_parsimony_technique = 'size'
-        self.pac_pppc = 0.05  # parsimony pressure penalty coefficient
+        # Information for setting up and controlling the Attacker population
+        self.attacker_controllers = [None for _ in range(experiment.num_attackers)]
+        self.attacker_mu = 10
+        self.attacker_lambda = 5
+        self.attacker_dmax_init = 5
+        self.attacker_dmax_overall = 5
+        self.attacker_parent_selection = 'fitness_proportional_selection'
+        self.attacker_overselection_top = 0.32
+        self.attacker_p_m = 0.05
+        self.attacker_survival_selection = 'truncation'
+        self.attacker_tournament_size_for_survival_selection = 4
+        self.attacker_parsimony_technique = 'size'
+        self.attacker_pppc = 0.05  # parsimony pressure penalty coefficient
 
-        # Information for csetting up and ontrolling the Ghost population
-        self.ghost_controllers = [None for _ in range(experiment.num_ghosts)]
-        self.ghost_mu = 10
-        self.ghost_lambda = 5
-        self.ghost_dmax_init = 5
-        self.ghost_dmax_overall = 5
-        self.ghost_parent_selection = 'fitness_proportional_selection'
-        self.ghost_overselection_top = 0.32
-        self.ghost_p_m = 0.05
-        self.ghost_survival_selection = 'truncation'
-        self.ghost_tournament_size_for_survival_selection = 4
-        self.ghost_parsimony_technique = 'size'
-        self.ghost_pppc = 0.05  # parsimony pressure penalty coefficient
+        # Information for csetting up and ontrolling the Defender population
+        self.defender_controllers = [None for _ in range(experiment.num_defenders)]
+        self.defender_mu = 10
+        self.defender_lambda = 5
+        self.defender_dmax_init = 5
+        self.defender_dmax_overall = 5
+        self.defender_parent_selection = 'fitness_proportional_selection'
+        self.defender_overselection_top = 0.32
+        self.defender_p_m = 0.05
+        self.defender_survival_selection = 'truncation'
+        self.defender_tournament_size_for_survival_selection = 4
+        self.defender_parsimony_technique = 'size'
+        self.defender_pppc = 0.05  # parsimony pressure penalty coefficient
 
         # Logging and termination information
         self.ciao_file_path_root = 'data/defaultCIAOData'
@@ -58,158 +58,158 @@ class CCEGPStrategy(Strategy):
 
         # Parse config properties
         try:
-            self.pac_mu = experiment.config_parser.getint('ccegp_options', 'pac_mu')
-            print('config: pac_mu =', self.pac_mu)
+            self.attacker_mu = experiment.config_parser.getint('ccegp_options', 'attacker_mu')
+            print('config: attacker_mu =', self.attacker_mu)
         except:
-            print('config: pac_mu not specified; using', self.pac_mu)
+            print('config: attacker_mu not specified; using', self.attacker_mu)
 
         try:
-            self.pac_lambda = experiment.config_parser.getint('ccegp_options', 'pac_lambda')
-            print('config: pac_lambda =', self.pac_lambda)
+            self.attacker_lambda = experiment.config_parser.getint('ccegp_options', 'attacker_lambda')
+            print('config: attacker_lambda =', self.attacker_lambda)
         except:
-            print('config: pac_lambda not specified; using', self.pac_lambda)
+            print('config: attacker_lambda not specified; using', self.attacker_lambda)
 
         try:
-            self.pac_dmax_init = experiment.config_parser.getint('ccegp_options', 'pac_dmax_init')
-            print('config: pac_dmax_init =', self.pac_dmax_init)
+            self.attacker_dmax_init = experiment.config_parser.getint('ccegp_options', 'attacker_dmax_init')
+            print('config: attacker_dmax_init =', self.attacker_dmax_init)
         except:
-            print('config: pac_dmax_init not specified; using', self.pac_dmax_init)
+            print('config: attacker_dmax_init not specified; using', self.attacker_dmax_init)
 
         try:
-            self.pac_dmax_overall = experiment.config_parser.getint('ccegp_options', 'pac_dmax_overall')
-            print('config: pac_dmax_overall =', self.pac_dmax_overall)
+            self.attacker_dmax_overall = experiment.config_parser.getint('ccegp_options', 'attacker_dmax_overall')
+            print('config: attacker_dmax_overall =', self.attacker_dmax_overall)
         except:
-            print('config: pac_dmax_overall not specified; using', self.pac_dmax_overall)
+            print('config: attacker_dmax_overall not specified; using', self.attacker_dmax_overall)
 
         try:
-            self.pac_parent_selection = experiment.config_parser.get('ccegp_options',
-                                                                     'pac_parent_selection').lower()
-            print('config: pac_parent_selection =', self.pac_parent_selection)
+            self.attacker_parent_selection = experiment.config_parser.get('ccegp_options',
+                                                                     'attacker_parent_selection').lower()
+            print('config: attacker_parent_selection =', self.attacker_parent_selection)
         except:
-            print('config: pac_parent_selection not specified; using', self.pac_parent_selection)
+            print('config: attacker_parent_selection not specified; using', self.attacker_parent_selection)
 
-        if (self.pac_parent_selection == 'overselection'):
+        if (self.attacker_parent_selection == 'overselection'):
             try:
-                self.pac_overselection_top = experiment.config_parser.getfloat('ccegp_options',
-                                                                               'pac_overselection_top')
-                print('config: pac_overselection_top =',
-                      self.pac_overselection_top)
+                self.attacker_overselection_top = experiment.config_parser.getfloat('ccegp_options',
+                                                                               'attacker_overselection_top')
+                print('config: attacker_overselection_top =',
+                      self.attacker_overselection_top)
             except:
-                print('config: pac_overselection_top not specified; using',
-                      self.pac_overselection_top)
+                print('config: attacker_overselection_top not specified; using',
+                      self.attacker_overselection_top)
 
         try:
-            self.pac_p_m = experiment.config_parser.getfloat('ccegp_options', 'pac_p_m')
-            print('config: pac_p_m =', self.pac_p_m)
+            self.attacker_p_m = experiment.config_parser.getfloat('ccegp_options', 'attacker_p_m')
+            print('config: attacker_p_m =', self.attacker_p_m)
         except:
-            print('config: pac_p_m not specified; using', self.pac_p_m)
+            print('config: attacker_p_m not specified; using', self.attacker_p_m)
 
         try:
-            self.pac_survival_selection = experiment.config_parser.get('ccegp_options',
-                                                                       'pac_survival_selection').lower()
-            print('config: pac_survival_selection =', self.pac_survival_selection)
+            self.attacker_survival_selection = experiment.config_parser.get('ccegp_options',
+                                                                       'attacker_survival_selection').lower()
+            print('config: attacker_survival_selection =', self.attacker_survival_selection)
         except:
-            print('config: pac_survival_selection not specified; using', self.pac_survival_selection)
+            print('config: attacker_survival_selection not specified; using', self.attacker_survival_selection)
 
-        if (self.pac_survival_selection == 'k_tournament_without_replacement'):
+        if (self.attacker_survival_selection == 'k_tournament_without_replacement'):
             try:
-                self.pac_tournament_size_for_survival_selection = experiment.config_parser.getint(
-                    'ccegp_options', 'pac_tournament_size_for_survival_selection')
-                print('config: pac_tournament_size_for_survival_selection =',
-                      self.pac_tournament_size_for_survival_selection)
+                self.attacker_tournament_size_for_survival_selection = experiment.config_parser.getint(
+                    'ccegp_options', 'attacker_tournament_size_for_survival_selection')
+                print('config: attacker_tournament_size_for_survival_selection =',
+                      self.attacker_tournament_size_for_survival_selection)
             except:
-                print('config: pac_tournament_size_for_survival_selection not specified; using',
-                      self.pac_tournament_size_for_survival_selection)
+                print('config: attacker_tournament_size_for_survival_selection not specified; using',
+                      self.attacker_tournament_size_for_survival_selection)
 
         try:
-            self.pac_parsimony_technique = experiment.config_parser.get('ccegp_options',
-                                                                        'pac_parsimony_technique').lower()
-            print('config: pac_parsimony_technique =', self.pac_parsimony_technique)
+            self.attacker_parsimony_technique = experiment.config_parser.get('ccegp_options',
+                                                                        'attacker_parsimony_technique').lower()
+            print('config: attacker_parsimony_technique =', self.attacker_parsimony_technique)
         except:
-            print('config: pac_parsimony_technique not specified; using', self.pac_parsimony_technique)
+            print('config: attacker_parsimony_technique not specified; using', self.attacker_parsimony_technique)
 
         try:
-            self.pac_pppc = experiment.config_parser.getfloat('ccegp_options', 'pac_pppc')
-            print('config: pac_pppc =', self.pac_pppc)
+            self.attacker_pppc = experiment.config_parser.getfloat('ccegp_options', 'attacker_pppc')
+            print('config: attacker_pppc =', self.attacker_pppc)
         except:
-            print('config: pac_pppc not specified; using', self.pac_pppc)
+            print('config: attacker_pppc not specified; using', self.attacker_pppc)
 
         try:
-            self.ghost_mu = experiment.config_parser.getint('ccegp_options', 'ghost_mu')
-            print('config: ghost_mu =', self.ghost_mu)
+            self.defender_mu = experiment.config_parser.getint('ccegp_options', 'defender_mu')
+            print('config: defender_mu =', self.defender_mu)
         except:
-            print('config: ghost_mu not specified; using', self.ghost_mu)
+            print('config: defender_mu not specified; using', self.defender_mu)
 
         try:
-            self.ghost_lambda = experiment.config_parser.getint('ccegp_options', 'ghost_lambda')
-            print('config: ghost_lambda =', self.ghost_lambda)
+            self.defender_lambda = experiment.config_parser.getint('ccegp_options', 'defender_lambda')
+            print('config: defender_lambda =', self.defender_lambda)
         except:
-            print('config: ghost_lambda not specified; using', self.ghost_lambda)
+            print('config: defender_lambda not specified; using', self.defender_lambda)
 
         try:
-            self.ghost_dmax_init = experiment.config_parser.getint('ccegp_options', 'ghost_dmax_init')
-            print('config: ghost_dmax_init =', self.ghost_dmax_init)
+            self.defender_dmax_init = experiment.config_parser.getint('ccegp_options', 'defender_dmax_init')
+            print('config: defender_dmax_init =', self.defender_dmax_init)
         except:
-            print('config: ghost_dmax_init not specified; using', self.ghost_dmax_init)
+            print('config: defender_dmax_init not specified; using', self.defender_dmax_init)
 
         try:
-            self.ghost_dmax_overall = experiment.config_parser.getint('ccegp_options', 'ghost_dmax_overall')
-            print('config: ghost_dmax_overall =', self.ghost_dmax_overall)
+            self.defender_dmax_overall = experiment.config_parser.getint('ccegp_options', 'defender_dmax_overall')
+            print('config: defender_dmax_overall =', self.defender_dmax_overall)
         except:
-            print('config: ghost_dmax_overall not specified; using', self.ghost_dmax_overall)
+            print('config: defender_dmax_overall not specified; using', self.defender_dmax_overall)
 
         try:
-            self.ghost_parent_selection = experiment.config_parser.get('ccegp_options',
-                                                                       'ghost_parent_selection').lower()
-            print('config: ghost_parent_selection =', self.ghost_parent_selection)
+            self.defender_parent_selection = experiment.config_parser.get('ccegp_options',
+                                                                       'defender_parent_selection').lower()
+            print('config: defender_parent_selection =', self.defender_parent_selection)
         except:
-            print('config: ghost_parent_selection not specified; using', self.ghost_parent_selection)
+            print('config: defender_parent_selection not specified; using', self.defender_parent_selection)
 
-        if (self.ghost_parent_selection == 'overselection'):
+        if (self.defender_parent_selection == 'overselection'):
             try:
-                self.ghost_overselection_top = experiment.config_parser.getfloat('ccegp_options',
-                                                                               'ghost_overselection_top')
-                print('config: ghost_overselection_top =',
-                      self.ghost_overselection_top)
+                self.defender_overselection_top = experiment.config_parser.getfloat('ccegp_options',
+                                                                               'defender_overselection_top')
+                print('config: defender_overselection_top =',
+                      self.defender_overselection_top)
             except:
-                print('config: ghost_overselection_top not specified; using',
-                      self.ghost_overselection_top)
+                print('config: defender_overselection_top not specified; using',
+                      self.defender_overselection_top)
 
         try:
-            self.ghost_p_m = experiment.config_parser.getfloat('ccegp_options', 'ghost_p_m')
-            print('config: ghost_p_m =', self.ghost_p_m)
+            self.defender_p_m = experiment.config_parser.getfloat('ccegp_options', 'defender_p_m')
+            print('config: defender_p_m =', self.defender_p_m)
         except:
-            print('config: ghost_p_m not specified; using', self.ghost_p_m)
+            print('config: defender_p_m not specified; using', self.defender_p_m)
 
         try:
-            self.ghost_survival_selection = experiment.config_parser.get('ccegp_options',
-                                                                       'ghost_survival_selection').lower()
-            print('config: ghost_survival_selection =', self.ghost_survival_selection)
+            self.defender_survival_selection = experiment.config_parser.get('ccegp_options',
+                                                                       'defender_survival_selection').lower()
+            print('config: defender_survival_selection =', self.defender_survival_selection)
         except:
-            print('config: ghost_survival_selection not specified; using', self.ghost_survival_selection)
+            print('config: defender_survival_selection not specified; using', self.defender_survival_selection)
 
-        if (self.ghost_survival_selection == 'k_tournament_without_replacement'):
+        if (self.defender_survival_selection == 'k_tournament_without_replacement'):
             try:
-                self.ghost_tournament_size_for_survival_selection = experiment.config_parser.getint(
-                    'ccegp_options', 'ghost_tournament_size_for_survival_selection')
-                print('config: ghost_tournament_size_for_survival_selection =',
-                      self.ghost_tournament_size_for_survival_selection)
+                self.defender_tournament_size_for_survival_selection = experiment.config_parser.getint(
+                    'ccegp_options', 'defender_tournament_size_for_survival_selection')
+                print('config: defender_tournament_size_for_survival_selection =',
+                      self.defender_tournament_size_for_survival_selection)
             except:
-                print('config: ghost_tournament_size_for_survival_selection not specified; using',
-                      self.ghost_tournament_size_for_survival_selection)
+                print('config: defender_tournament_size_for_survival_selection not specified; using',
+                      self.defender_tournament_size_for_survival_selection)
 
         try:
-            self.ghost_parsimony_technique = experiment.config_parser.get('ccegp_options',
-                                                                          'ghost_parsimony_technique').lower()
-            print('config: ghost_parsimony_technique =', self.ghost_parsimony_technique)
+            self.defender_parsimony_technique = experiment.config_parser.get('ccegp_options',
+                                                                          'defender_parsimony_technique').lower()
+            print('config: defender_parsimony_technique =', self.defender_parsimony_technique)
         except:
-            print('config: ghost_parsimony_technique not specified; using', self.ghost_parsimony_technique)
+            print('config: defender_parsimony_technique not specified; using', self.defender_parsimony_technique)
 
         try:
-            self.ghost_pppc = experiment.config_parser.getfloat('ccegp_options', 'ghost_pppc')
-            print('config: ghost_pppc =', self.ghost_pppc)
+            self.defender_pppc = experiment.config_parser.getfloat('ccegp_options', 'defender_pppc')
+            print('config: defender_pppc =', self.defender_pppc)
         except:
-            print('config: ghost_pppc not specified; using', self.ghost_pppc)
+            print('config: defender_pppc not specified; using', self.defender_pppc)
 
         try:
             self.termination = experiment.config_parser.get('ccegp_options',
@@ -241,52 +241,52 @@ class CCEGPStrategy(Strategy):
             print('config: parsimony_log_file_path not properly specified; using', self.parsimony_log_file_path)
 
         # Set up populations
-        self.pac_pop = Population('Pac', self.pac_mu, self.pac_lambda,
-                                  self.pac_dmax_init, self.pac_dmax_overall,
-                                  self.pac_parent_selection, self.pac_overselection_top,
-                                  self.pac_p_m, self.pac_survival_selection,
-                                  self.pac_tournament_size_for_survival_selection,
-                                  self.pac_parsimony_technique, self.pac_pppc,
-                                  ExprTree.functions, ExprTree.pac_terminals)
-        self.ghost_pop = Population('Ghost', self.ghost_mu, self.ghost_lambda,
-                                    self.ghost_dmax_init, self.ghost_dmax_overall,
-                                    self.ghost_parent_selection, self.ghost_overselection_top,
-                                    self.ghost_p_m, self.ghost_survival_selection,
-                                    self.ghost_tournament_size_for_survival_selection,
-                                    self.ghost_parsimony_technique, self.ghost_pppc,
-                                    ExprTree.functions, ExprTree.ghost_terminals)
+        self.attacker_pop = Population('Attacker', self.attacker_mu, self.attacker_lambda,
+                                  self.attacker_dmax_init, self.attacker_dmax_overall,
+                                  self.attacker_parent_selection, self.attacker_overselection_top,
+                                  self.attacker_p_m, self.attacker_survival_selection,
+                                  self.attacker_tournament_size_for_survival_selection,
+                                  self.attacker_parsimony_technique, self.attacker_pppc,
+                                  ExprTree.functions, ExprTree.attacker_terminals)
+        self.defender_pop = Population('Defender', self.defender_mu, self.defender_lambda,
+                                    self.defender_dmax_init, self.defender_dmax_overall,
+                                    self.defender_parent_selection, self.defender_overselection_top,
+                                    self.defender_p_m, self.defender_survival_selection,
+                                    self.defender_tournament_size_for_survival_selection,
+                                    self.defender_parsimony_technique, self.defender_pppc,
+                                    ExprTree.functions, ExprTree.defender_terminals)
 
         # Write configuration items to log file
-        experiment.log_file.write('pac_mu: ' + str(self.pac_mu) + '\n')
-        experiment.log_file.write('pac_lambda: ' + str(self.pac_lambda) + '\n')
-        experiment.log_file.write('pac_dmax_init: ' + str(self.pac_dmax_init) + '\n')
-        experiment.log_file.write('pac_dmax_overall: ' + str(self.pac_dmax_overall) + '\n')
-        experiment.log_file.write('pac_parent selection method: ' + self.pac_parent_selection + '\n')
-        if (self.pac_parent_selection == 'overselection'):
-            experiment.log_file.write('pac_overselection top for parent selection: '
-                                      + str(self.pac_overselection_top) + '\n')
-        experiment.log_file.write('pac_probability of mutation p_m: ' + str(self.pac_p_m) + '\n')
-        experiment.log_file.write('pac_survival selection method: ' + self.pac_survival_selection + '\n')
-        if (self.pac_survival_selection == 'k_tournament_without_replacement'):
-            experiment.log_file.write('pac_tournament size for survival selection: '
-                                      + str(self.pac_tournament_size_for_survival_selection) + '\n')
-        experiment.log_file.write('pac_parsimony technique: ' + self.pac_parsimony_technique + '\n')
-        experiment.log_file.write('pac_parsimony pressure penalty coefficient: ' + str(self.pac_pppc) + '\n')
-        experiment.log_file.write('ghost_mu: ' + str(self.ghost_mu) + '\n')
-        experiment.log_file.write('ghost_lambda: ' + str(self.ghost_lambda) + '\n')
-        experiment.log_file.write('ghost_dmax_init: ' + str(self.ghost_dmax_init) + '\n')
-        experiment.log_file.write('ghost_dmax_overall: ' + str(self.ghost_dmax_overall) + '\n')
-        experiment.log_file.write('ghost_parent selection method: ' + self.ghost_parent_selection + '\n')
-        if (self.ghost_parent_selection == 'overselection'):
-            experiment.log_file.write('ghost_overselection top for parent selection: '
-                                      + str(self.ghost_overselection_top) + '\n')
-        experiment.log_file.write('ghost_probability of mutation p_m: ' + str(self.ghost_p_m) + '\n')
-        experiment.log_file.write('ghost_survival selection method: ' + self.ghost_survival_selection + '\n')
-        if (self.ghost_survival_selection == 'k_tournament_without_replacement'):
-            experiment.log_file.write('ghost_tournament size for survival selection: '
-                                      + str(self.ghost_tournament_size_for_survival_selection) + '\n')
-        experiment.log_file.write('ghost_parsimony technique: ' + self.ghost_parsimony_technique + '\n')
-        experiment.log_file.write('ghost_parsimony pressure penalty coefficient: ' + str(self.ghost_pppc) + '\n')
+        experiment.log_file.write('attacker_mu: ' + str(self.attacker_mu) + '\n')
+        experiment.log_file.write('attacker_lambda: ' + str(self.attacker_lambda) + '\n')
+        experiment.log_file.write('attacker_dmax_init: ' + str(self.attacker_dmax_init) + '\n')
+        experiment.log_file.write('attacker_dmax_overall: ' + str(self.attacker_dmax_overall) + '\n')
+        experiment.log_file.write('attacker_parent selection method: ' + self.attacker_parent_selection + '\n')
+        if (self.attacker_parent_selection == 'overselection'):
+            experiment.log_file.write('attacker_overselection top for parent selection: '
+                                      + str(self.attacker_overselection_top) + '\n')
+        experiment.log_file.write('attacker_probability of mutation p_m: ' + str(self.attacker_p_m) + '\n')
+        experiment.log_file.write('attacker_survival selection method: ' + self.attacker_survival_selection + '\n')
+        if (self.attacker_survival_selection == 'k_tournament_without_replacement'):
+            experiment.log_file.write('attacker_tournament size for survival selection: '
+                                      + str(self.attacker_tournament_size_for_survival_selection) + '\n')
+        experiment.log_file.write('attacker_parsimony technique: ' + self.attacker_parsimony_technique + '\n')
+        experiment.log_file.write('attacker_parsimony pressure penalty coefficient: ' + str(self.attacker_pppc) + '\n')
+        experiment.log_file.write('defender_mu: ' + str(self.defender_mu) + '\n')
+        experiment.log_file.write('defender_lambda: ' + str(self.defender_lambda) + '\n')
+        experiment.log_file.write('defender_dmax_init: ' + str(self.defender_dmax_init) + '\n')
+        experiment.log_file.write('defender_dmax_overall: ' + str(self.defender_dmax_overall) + '\n')
+        experiment.log_file.write('defender_parent selection method: ' + self.defender_parent_selection + '\n')
+        if (self.defender_parent_selection == 'overselection'):
+            experiment.log_file.write('defender_overselection top for parent selection: '
+                                      + str(self.defender_overselection_top) + '\n')
+        experiment.log_file.write('defender_probability of mutation p_m: ' + str(self.defender_p_m) + '\n')
+        experiment.log_file.write('defender_survival selection method: ' + self.defender_survival_selection + '\n')
+        if (self.defender_survival_selection == 'k_tournament_without_replacement'):
+            experiment.log_file.write('defender_tournament size for survival selection: '
+                                      + str(self.defender_tournament_size_for_survival_selection) + '\n')
+        experiment.log_file.write('defender_parsimony technique: ' + self.defender_parsimony_technique + '\n')
+        experiment.log_file.write('defender_parsimony pressure penalty coefficient: ' + str(self.defender_pppc) + '\n')
         experiment.log_file.write('termination method: ' + self.termination + '\n')
         if (self.termination == 'convergence'):
             experiment.log_file.write('n evals for convergence: '
@@ -616,92 +616,92 @@ class CCEGPStrategy(Strategy):
             exit(1)
 
 
-    def execute_one_game(self, pac_individual, ghost_individual):
+    def execute_one_game(self, attacker_individual, defender_individual):
         """
-        Execute one game / eval of a run given a Pac individual and
-        Ghost individual selected from their respective populations.
+        Execute one game / eval of a run given a Attacker individual and
+        Defender individual selected from their respective populations.
         """
-        # Pick a new map and set up a new game state.
-        game_map = self.experiment.pre_loaded_maps[random.randint(0, 99)]
+        # Pick a new scenario and set up a new game state.
+        game_scenario = self.experiment.pre_loaded_scenarios[random.randint(0, 99)]
         self.experiment.world_data = []
-        game_state = GameState(game_map,
+        game_state = GameState(game_scenario,
                                self.experiment.pill_density,
                                self.experiment.time_multiplier,
                                self.experiment.fruit_spawning_probability,
                                self.experiment.fruit_score,
-                               self.experiment.num_pacs,
-                               self.experiment.num_ghosts)
+                               self.experiment.num_attackers,
+                               self.experiment.num_defenders)
         game_state.write_world_config(self.experiment.world_data)
         game_state.write_world_time_score(self.experiment.world_data)
 
-        # Create new Pac and Ghost controllers
-        for curr_pac_id in range(self.experiment.num_pacs):
-            self.pac_controllers[curr_pac_id] = PacController(curr_pac_id, pac_individual)
-        for curr_ghost_id in range(self.experiment.num_ghosts):
-            self.ghost_controllers[curr_ghost_id] = GhostController(curr_ghost_id,
-                                                                    ghost_individual)
+        # Create new Attacker and Defender controllers
+        for curr_attacker_id in range(self.experiment.num_attackers):
+            self.attacker_controllers[curr_attacker_id] = AttackerController(curr_attacker_id, attacker_individual)
+        for curr_defender_id in range(self.experiment.num_defenders):
+            self.defender_controllers[curr_defender_id] = DefenderController(curr_defender_id,
+                                                                    defender_individual)
 
         # While the game isn't over, play game turns.
         game_over = False
         while (not game_over):
             game_over = game_state.play_turn(self.experiment.world_data,
-                                             self.pac_controllers,
-                                             self.ghost_controllers)
+                                             self.attacker_controllers,
+                                             self.defender_controllers)
 
-        # Set Pac fitness and implement parsimony pressure
-        pac_individual.fitness = game_state.score
-        if (self.pac_pop.parsimony_technique == 'size'):
-            pac_individual.fitness -= (self.pac_pop.pppc * pac_individual.root.size)
+        # Set Attacker fitness and implement parsimony pressure
+        attacker_individual.fitness = game_state.score
+        if (self.attacker_pop.parsimony_technique == 'size'):
+            attacker_individual.fitness -= (self.attacker_pop.pppc * attacker_individual.root.size)
         else:
-            pac_individual.fitness -= (self.pac_pop.pppc * pac_individual.root.height)
+            attacker_individual.fitness -= (self.attacker_pop.pppc * attacker_individual.root.height)
 
-        # Set Ghost fitness and implement parsimony pressure
-        ghost_individual.fitness = -(game_state.score)
-        if (game_state.ghost_won):
-            ghost_individual.fitness += int((game_state.time * 100.0) / game_state.orig_time)
-        if (self.ghost_pop.parsimony_technique == 'size'):
-            ghost_individual.fitness -= (self.ghost_pop.pppc * ghost_individual.root.size)
+        # Set Defender fitness and implement parsimony pressure
+        defender_individual.fitness = -(game_state.score)
+        if (game_state.defender_won):
+            defender_individual.fitness += int((game_state.time * 100.0) / game_state.orig_time)
+        if (self.defender_pop.parsimony_technique == 'size'):
+            defender_individual.fitness -= (self.defender_pop.pppc * defender_individual.root.size)
         else:
-            ghost_individual.fitness -= (self.ghost_pop.pppc * ghost_individual.root.height)
+            defender_individual.fitness -= (self.defender_pop.pppc * defender_individual.root.height)
 
-        # Set Pac and Ghost scores
-        pac_individual.score = game_state.score # Score is raw game score without parsimony pressure for Pac
-        ghost_individual.score = ghost_individual.fitness # Score and fitness interchangeable for Ghost
+        # Set Attacker and Defender scores
+        attacker_individual.score = game_state.score # Score is raw game score without parsimony pressure for Attacker
+        defender_individual.score = defender_individual.fitness # Score and fitness interchangeable for Defender
 
 
-    def generation_evals(self, pacs, ghosts, eval_count, evals_with_no_change, pac_gen_high_fitness):
+    def generation_evals(self, attackers, defenders, eval_count, evals_with_no_change, attacker_gen_high_fitness):
         """
-        Run evaluations of the Pac vs Ghost populations given Pac and Ghost
+        Run evaluations of the Attacker vs Defender populations given Attacker and Defender
         populations. Also takes current eval count, evals with no change, and
-        pac generation high fitness in order to do bookkeeping related to
+        attacker generation high fitness in order to do bookkeeping related to
         termination conditions. Returns updated eval count and evals with no change.
 
-        Run games with Pac vs Ghost from the provided populations.
+        Run games with Attacker vs Defender from the provided populations.
         Average fitnesses of multiple evaluations of the same individual.
         """
-        # Set up matrices to hold per-game fitness values for Pac and Ghost
-        pac_fitnesses = [[] for _ in range(len(pacs))]
-        ghost_fitnesses = [[] for _ in range(len(ghosts))]
+        # Set up matrices to hold per-game fitness values for Attacker and Defender
+        attacker_fitnesses = [[] for _ in range(len(attackers))]
+        defender_fitnesses = [[] for _ in range(len(defenders))]
 
-        # Shuffle the pacs and ghosts, then play each Pac against one Ghost
-        random.shuffle(pacs)
-        random.shuffle(ghosts)
-        num_games = max(len(pacs), len(ghosts))
+        # Shuffle the attackers and defenders, then play each Attacker against one Defender
+        random.shuffle(attackers)
+        random.shuffle(defenders)
+        num_games = max(len(attackers), len(defenders))
         for curr_game in range(num_games):
-            # If num pacs < num ghosts, some pacs will go multiple times
-            pac_index = curr_game % len(pacs)
-            # If num ghosts < num pacs, some ghosts will go multiple times
-            ghost_index = curr_game % len(ghosts)
-            pac_individual = pacs[pac_index]
-            ghost_individual = ghosts[ghost_index]
-            self.execute_one_game(pac_individual, ghost_individual)
+            # If num attackers < num defenders, some attackers will go multiple times
+            attacker_index = curr_game % len(attackers)
+            # If num defenders < num attackers, some defenders will go multiple times
+            defender_index = curr_game % len(defenders)
+            attacker_individual = attackers[attacker_index]
+            defender_individual = defenders[defender_index]
+            self.execute_one_game(attacker_individual, defender_individual)
             # Save the fitness in a list so we can average the results later
-            pac_fitnesses[pac_index].append(pac_individual.fitness)
-            ghost_fitnesses[ghost_index].append(ghost_individual.fitness)
+            attacker_fitnesses[attacker_index].append(attacker_individual.fitness)
+            defender_fitnesses[defender_index].append(defender_individual.fitness)
 
             # Bookkeeping
             eval_count += 1
-            if (pac_individual.fitness <= pac_gen_high_fitness):
+            if (attacker_individual.fitness <= attacker_gen_high_fitness):
                 evals_with_no_change += 1
             else:
                 evals_with_no_change = 0
@@ -710,68 +710,68 @@ class CCEGPStrategy(Strategy):
             if ((eval_count % 10) == 0):
                 print('\r', eval_count, 'evals', end =" ")
 
-        # Set the fitness of each Pac and Ghost to the average of its list of fitnesses
-        for pac_index in range(len(pacs)):
-            pacs[pac_index].fitness = numpy.mean(pac_fitnesses[pac_index])
-        for ghost_index in range(len(ghosts)):
-            ghosts[ghost_index].fitness = numpy.mean(ghost_fitnesses[ghost_index])
+        # Set the fitness of each Attacker and Defender to the average of its list of fitnesses
+        for attacker_index in range(len(attackers)):
+            attackers[attacker_index].fitness = numpy.mean(attacker_fitnesses[attacker_index])
+        for defender_index in range(len(defenders)):
+            defenders[defender_index].fitness = numpy.mean(defender_fitnesses[defender_index])
 
-        # ALTERNATE METHOD: Play every Pac against every Ghost and average fitnesses
+        # ALTERNATE METHOD: Play every Attacker against every Defender and average fitnesses
         # [Takes WAY too many evaluations]
-        # # Set up matrices to hold per-game fitness values for Pac and Ghost
-        # pac_fitnesses = numpy.zeros((len(self.pac_pop.individuals),
-        #                              len(self.ghost_pop.individuals)))
-        # ghost_fitnesses = numpy.zeros((len(self.ghost_pop.individuals),
-        #                                len(self.pac_pop.individuals)))
-        # # Play every Pac against every Ghost and perform bookkeeping
-        # for pac_index in range(len(self.pac_pop.individuals)):
-        #     pac_individual = self.pac_pop.individuals[pac_index]
-        #     for ghost_index in range(len(self.ghost_pop.individuals)):
-        #         ghost_individual = self.ghost_pop.individuals[ghost_index]
-        #         self.execute_one_game(pac_individual, ghost_individual)
-        #         pac_fitnesses[pac_index][ghost_index] = pac_individual.fitness
-        #         ghost_fitnesses[ghost_index][pac_index] = ghost_individual.fitness
+        # # Set up matrices to hold per-game fitness values for Attacker and Defender
+        # attacker_fitnesses = numpy.zeros((len(self.attacker_pop.individuals),
+        #                              len(self.defender_pop.individuals)))
+        # defender_fitnesses = numpy.zeros((len(self.defender_pop.individuals),
+        #                                len(self.attacker_pop.individuals)))
+        # # Play every Attacker against every Defender and perform bookkeeping
+        # for attacker_index in range(len(self.attacker_pop.individuals)):
+        #     attacker_individual = self.attacker_pop.individuals[attacker_index]
+        #     for defender_index in range(len(self.defender_pop.individuals)):
+        #         defender_individual = self.defender_pop.individuals[defender_index]
+        #         self.execute_one_game(attacker_individual, defender_individual)
+        #         attacker_fitnesses[attacker_index][defender_index] = attacker_individual.fitness
+        #         defender_fitnesses[defender_index][attacker_index] = defender_individual.fitness
         #         # Bookkeeping
         #         eval_count += 1
-        #         if (pac_individual.fitness <= pac_gen_high_fitness):
+        #         if (attacker_individual.fitness <= attacker_gen_high_fitness):
         #             evals_with_no_change += 1
         #         else:
         #             evals_with_no_change = 0
         #         # Provide status message every nth evaluation.
         #         if ((eval_count % 10) == 0):
         #             print('\r', eval_count, 'evals', end =" ")
-        # # Set the fitness of each Pac to the mean of its fitnesses against every Ghost
-        # # and vice-versa for the Ghosts.
-        # for pac_index in range(len(self.pac_pop.individuals)):
-        #     pac_individual = self.pac_pop.individuals[pac_index]
-        #     pac_individual.fitness = numpy.mean(pac_fitnesses[pac_index])
-        # for ghost_index in range(len(self.ghost_pop.individuals)):
-        #     ghost_individual = self.ghost_pop.individuals[ghost_index]
-        #     ghost_individual.fitness = numpy.mean(ghost_fitnesses[ghost_index])
+        # # Set the fitness of each Attacker to the mean of its fitnesses against every Defender
+        # # and vice-versa for the Defenders.
+        # for attacker_index in range(len(self.attacker_pop.individuals)):
+        #     attacker_individual = self.attacker_pop.individuals[attacker_index]
+        #     attacker_individual.fitness = numpy.mean(attacker_fitnesses[attacker_index])
+        # for defender_index in range(len(self.defender_pop.individuals)):
+        #     defender_individual = self.defender_pop.individuals[defender_index]
+        #     defender_individual.fitness = numpy.mean(defender_fitnesses[defender_index])
 
         return eval_count, evals_with_no_change
 
 
     def ciao_plot(self):
         """
-        Play the best Pac and Ghost of every generation against each other
+        Play the best Attacker and Defender of every generation against each other
         to create CIAO plot.
 
-        Pac = Attacker = Y axis (rows)
-        Ghost = Defender = X axis (columns)
+        Attacker = Attacker = Y axis (rows)
+        Defender = Defender = X axis (columns)
         """
-        num_gens = len(self.pac_pop.best_individuals)
+        num_gens = len(self.attacker_pop.best_individuals)
 
         fitnesses = numpy.zeros((num_gens, num_gens))
         eval_count = 0
         print('CIAO: play', num_gens, 'generations of bests')
-        for ghost in range(num_gens):
-            for pac in range(ghost, num_gens):
-                self.execute_one_game(self.pac_pop.best_individuals[pac],
-                                      self.ghost_pop.best_individuals[ghost])
+        for defender in range(num_gens):
+            for attacker in range(defender, num_gens):
+                self.execute_one_game(self.attacker_pop.best_individuals[attacker],
+                                      self.defender_pop.best_individuals[defender])
                 eval_count += 1
                 # 0,0 is lower left, so adjust the row index
-                fitnesses[num_gens - pac - 1][ghost] = self.pac_pop.best_individuals[pac].fitness
+                fitnesses[num_gens - attacker - 1][defender] = self.attacker_pop.best_individuals[attacker].fitness
 
                 # Provide status message every nth evaluation.
                 if ((eval_count % 10) == 0):
@@ -810,8 +810,8 @@ class CCEGPStrategy(Strategy):
         Return highest score and its associated world and solution data.
         """
         # Initialize run values of populations
-        self.pac_pop.reset_run_values()
-        self.ghost_pop.reset_run_values()
+        self.attacker_pop.reset_run_values()
+        self.defender_pop.reset_run_values()
 
         self.parsimony_log.write('\nRun ' + str(self.experiment.curr_run) + '\n')
 
@@ -819,11 +819,11 @@ class CCEGPStrategy(Strategy):
         print('\rGeneration', generation, end = ' ')
 
         # Initialize the populations and starting fitnesses
-        self.initialize_population(self.pac_pop)
-        self.initialize_population(self.ghost_pop)
-        eval_count, self.pac_pop.evals_with_no_change = \
-            self.generation_evals(self.pac_pop.individuals,
-                                  self.ghost_pop.individuals,
+        self.initialize_population(self.attacker_pop)
+        self.initialize_population(self.defender_pop)
+        eval_count, self.attacker_pop.evals_with_no_change = \
+            self.generation_evals(self.attacker_pop.individuals,
+                                  self.defender_pop.individuals,
                                   0, 0, float('-inf'))
 
         # Run generation after generation until we hit termination condition
@@ -831,20 +831,20 @@ class CCEGPStrategy(Strategy):
         while (True):
 
             # Update generation bookkeeping
-            self.pac_pop.generation_bookkeeping()
-            self.pac_pop.update_logs(eval_count, self.experiment.log_file, self.parsimony_log)
-            self.ghost_pop.generation_bookkeeping()
+            self.attacker_pop.generation_bookkeeping()
+            self.attacker_pop.update_logs(eval_count, self.experiment.log_file, self.parsimony_log)
+            self.defender_pop.generation_bookkeeping()
 
             # Update run bookkeeping
-            self.pac_pop.calc_run_stats()
-            self.ghost_pop.calc_run_stats()
+            self.attacker_pop.calc_run_stats()
+            self.defender_pop.calc_run_stats()
 
             # Check for termination
             if (self.termination == 'number_of_evals'):
                 if (eval_count >= self.experiment.num_fitness_evals_per_run):
                     break
             elif (self.termination == 'convergence'):
-                if (self.pac_pop.evals_with_no_change >= self.n_for_convergence):
+                if (self.attacker_pop.evals_with_no_change >= self.n_for_convergence):
                     print('CONVERGED at', eval_count, 'evals')
                     break
             else:
@@ -857,24 +857,24 @@ class CCEGPStrategy(Strategy):
             print('\rGeneration', generation, end = ' ')
 
             # Select parents
-            pac_parents = self.select_parents(self.pac_pop)
-            ghost_parents = self.select_parents(self.ghost_pop)
+            attacker_parents = self.select_parents(self.attacker_pop)
+            defender_parents = self.select_parents(self.defender_pop)
 
             # Recombine and/or mutate
-            pac_offspring = self.recombine_mutate(self.pac_pop, pac_parents)
-            self.pac_pop.individuals += pac_offspring
-            ghost_offspring = self.recombine_mutate(self.ghost_pop, ghost_parents)
-            self.ghost_pop.individuals += ghost_offspring
+            attacker_offspring = self.recombine_mutate(self.attacker_pop, attacker_parents)
+            self.attacker_pop.individuals += attacker_offspring
+            defender_offspring = self.recombine_mutate(self.defender_pop, defender_parents)
+            self.defender_pop.individuals += defender_offspring
 
             # Evaluate offspring
-            eval_count, self.pac_pop.evals_with_no_change = \
-                self.generation_evals(pac_offspring, ghost_offspring,
-                                      eval_count, self.pac_pop.evals_with_no_change,
-                                      self.pac_pop.gen_high_fitness)
+            eval_count, self.attacker_pop.evals_with_no_change = \
+                self.generation_evals(attacker_offspring, defender_offspring,
+                                      eval_count, self.attacker_pop.evals_with_no_change,
+                                      self.attacker_pop.gen_high_fitness)
 
             # Survival selection
-            self.pac_pop.individuals = self.select_survivors(self.pac_pop)
-            self.ghost_pop.individuals = self.select_survivors(self.ghost_pop)
+            self.attacker_pop.individuals = self.select_survivors(self.attacker_pop)
+            self.defender_pop.individuals = self.select_survivors(self.defender_pop)
 
 
         # Do CIAO plot here
@@ -882,12 +882,12 @@ class CCEGPStrategy(Strategy):
 
         # Play "exhibition game" to get best world data (does not count against Eval total).
         # This has a side effect of setting self.experiment.world_data
-        print('Exhibition game: Pac', self.pac_pop.run_best_individual.fitness,
-              'vs Ghost', self.ghost_pop.run_best_individual.fitness)
-        self.execute_one_game(self.pac_pop.run_best_individual,
-                              self.ghost_pop.run_best_individual)
+        print('Exhibition game: Attacker', self.attacker_pop.run_best_individual.fitness,
+              'vs Defender', self.defender_pop.run_best_individual.fitness)
+        self.execute_one_game(self.attacker_pop.run_best_individual,
+                              self.defender_pop.run_best_individual)
 
-        return self.pac_pop.run_high_fitness, self.experiment.world_data, \
-            str(self.pac_pop.run_best_individual.root), \
-            self.ghost_pop.run_high_fitness, str(self.ghost_pop.run_best_individual.root)
+        return self.attacker_pop.run_high_fitness, self.experiment.world_data, \
+            str(self.attacker_pop.run_best_individual.root), \
+            self.defender_pop.run_high_fitness, str(self.defender_pop.run_best_individual.root)
 

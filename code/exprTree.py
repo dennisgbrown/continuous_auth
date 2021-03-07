@@ -15,11 +15,11 @@ class ExprTree():
         self.score = -1
         self.world_data = []  # the world data that produced the fitness
 
-    # Canonical list of terminals for Pac supported by the Expression Tree class
-    pac_terminals = ['G', 'P', 'W', 'F', 'constant']
+    # Canonical list of terminals for Attacker supported by the Expression Tree class
+    attacker_terminals = ['G', 'P', 'W', 'F', 'constant']
 
-    # Canonical list of terminals for Ghost supported by the Expression Tree class
-    ghost_terminals = ['G', 'P', 'W', 'F', 'M', 'constant']
+    # Canonical list of terminals for Defender supported by the Expression Tree class
+    defender_terminals = ['G', 'P', 'W', 'F', 'M', 'constant']
 
     # Canonical list of functions supported by the Expression Tree class
     functions = ['+', '-', '*', '/', 'RAND']
