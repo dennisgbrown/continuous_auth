@@ -146,6 +146,9 @@ class Experiment:
                 defender_run_high_fitness, defender_run_best_solution \
                 = strategy_instance.execute_one_run()
 
+            print('Best attacker tree of run:\n' + attacker_run_best_solution)
+            print('Best defender tree of run:\n' + defender_run_best_solution)
+
             # If best of run is best overall, update appropriate values
             if (self.strategy != 'ccegp'):
                 if (attacker_run_high_fitness > self.attacker_exp_high_fitness):

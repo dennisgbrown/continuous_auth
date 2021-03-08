@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import random
 import sys
 
 sys.path.append('code')
@@ -22,6 +21,9 @@ class AttackerController():
         """
         To device next move... TBD
         """
+
+        # print(self.tree.root)
+
         # Set the next move
         treeval = self.tree.root.calc([game_state.G(),
                                        game_state.P(),
