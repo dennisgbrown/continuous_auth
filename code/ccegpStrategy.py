@@ -624,13 +624,7 @@ class CCEGPStrategy(Strategy):
         # Pick a new scenario and set up a new game state.
         game_scenario = self.experiment.pre_loaded_scenarios[random.randint(0, 99)]
         self.experiment.world_data = []
-        game_state = GameState(game_scenario,
-                               self.experiment.pill_density,
-                               self.experiment.time_multiplier,
-                               self.experiment.fruit_spawning_probability,
-                               self.experiment.fruit_score,
-                               self.experiment.num_attackers,
-                               self.experiment.num_defenders)
+        game_state = GameState(game_scenario)
         game_state.write_world_config(self.experiment.world_data)
         game_state.write_world_time_score(self.experiment.world_data)
 

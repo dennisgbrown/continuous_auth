@@ -6,10 +6,6 @@ import traceback
 import sys
 
 sys.path.append('code')
-from gameScenarioInfo import GameScenarioInfo
-from randomStrategy import RandomStrategy
-from hillClimbStrategy import HillClimbStrategy
-from gpStrategy import GPStrategy
 from ccegpStrategy import CCEGPStrategy
 
 
@@ -27,7 +23,7 @@ class Experiment:
         self.config_parser = None
 
         self.random_seed = None
-        self.strategy = 'random'
+        self.strategy = 'ccegp'
         self.num_runs_per_experiment = 1
         self.num_fitness_evals_per_run = 100
         self.log_file_path = 'logs/defaultLog.txt'
@@ -37,23 +33,13 @@ class Experiment:
         self.high_score_world_file_path = 'worlds/defaultWorld.txt'
         self.scenario_file_path = None
 
-        self.world_data = None  # Array of strings that will be written to world data file
-        self.game_scenario = None
-        self.pill_density = 0.5
-        self.fruit_spawning_probability = 0.5
-        self.fruit_score = 10
-        self.time_multiplier = 1
-
         self.num_attackers = 1
-        self.num_defenders = 3
+        self.num_defenders = 1
 
         self.attacker_exp_high_fitness = float('-inf')
-        self.attacker_exp_best_world_data = None
         self.attacker_exp_best_solution = None
         self.defender_exp_high_fitness = float('-inf')
         self.defender_exp_best_solution = None
-
-        self.pre_loaded_scenarios = []
 
         try:
             self.config_parser = configparser.ConfigParser()
@@ -94,12 +80,6 @@ class Experiment:
                 print('config: log_file_path not properly specified; using', self.log_file_path)
 
             try:
-                self.high_score_world_file_path = self.config_parser.get('basic_options', 'high_score_world_file_path')
-                print('config: high_score_world_file_path =', self.high_score_world_file_path)
-            except:
-                print('config: high_score_world_file_path not properly specified; using', self.high_score_world_file_path)
-
-            try:
                 self.attacker_solution_file_path = self.config_parser.get('basic_options', 'attacker_solution_file_path')
                 print('config: attacker_solution_file_path =', self.attacker_solution_file_path)
             except:
@@ -110,30 +90,6 @@ class Experiment:
                 print('config: defender_solution_file_path =', self.defender_solution_file_path)
             except:
                 print('config: defender_solution_file_path not properly specified; using', self.defender_solution_file_path)
-
-            try:
-                self.pill_density = self.config_parser.getfloat('basic_options', 'pill_density')
-                print('config: pill_density =', self.pill_density)
-            except:
-                print('config: pill_density not properly specified; using', self.pill_density)
-
-            try:
-                self.fruit_spawning_probability = self.config_parser.getfloat('basic_options', 'fruit_spawning_probability')
-                print('config: fruit_spawning_probability =', self.fruit_spawning_probability)
-            except:
-                print('config: fruit_spawning_probability not properly specified; using', self.fruit_spawning_probability)
-
-            try:
-                self.fruit_score = self.config_parser.getfloat('basic_options', 'fruit_score')
-                print('config: fruit_score =', self.fruit_score)
-            except:
-                print('config: fruit_score not properly specified; using', self.fruit_score)
-
-            try:
-                self.time_multiplier = self.config_parser.getfloat('basic_options', 'time_multiplier')
-                print('config: time_multiplier =', self.time_multiplier)
-            except:
-                print('config: time_multiplier not properly specified; using', self.time_multiplier)
 
             # Dump parms to log file
             try:
@@ -152,17 +108,6 @@ class Experiment:
                                     + self.attacker_solution_file_path + '\n')
                 self.log_file.write('defender solution file path: '
                                     + self.defender_solution_file_path + '\n')
-                self.log_file.write('highest-scoring world file path: '
-                                    + self.high_score_world_file_path + '\n')
-                self.log_file.write('pill density: '
-                                    + str(self.pill_density) + '\n')
-                self.log_file.write('fruit spawning probability: '
-                                    + str(self.fruit_spawning_probability) + '\n')
-                self.log_file.write('fruit score: '
-                                    + str(self.fruit_score) + '\n')
-                self.log_file.write('time multiplier: '
-                                    + str(self.time_multiplier) + '\n')
-
             except:
                 print('config: problem with log file', self.log_file_path)
                 traceback.print_exc()
@@ -171,14 +116,6 @@ class Experiment:
         except:
             traceback.print_exc()
             return None
-
-
-    def pre_load_scenarios(self):
-        """
-        Pre-load all the possible game scenarios.
-        """
-        for i in range(100):
-            self.pre_loaded_scenarios.append(GameScenarioInfo('scenarios/map' + str(i) + '.txt'))
 
 
     def run_experiment(self):
@@ -192,13 +129,7 @@ class Experiment:
         self.pre_load_scenarios()
 
         strategy_instance = None
-        if (self.strategy == 'random'):
-            strategy_instance = RandomStrategy(self)
-        elif (self.strategy == 'hillclimb'):
-            strategy_instance = HillClimbStrategy(self)
-        elif (self.strategy == 'gp'):
-            strategy_instance = GPStrategy(self)
-        elif (self.strategy == 'ccegp'):
+        if (self.strategy == 'ccegp'):
             strategy_instance = CCEGPStrategy(self)
         else:
             print('strategy unknown:', self.strategy)
