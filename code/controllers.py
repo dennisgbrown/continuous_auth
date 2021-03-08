@@ -7,7 +7,7 @@ sys.path.append('code')
 
 class AttackerController():
     """
-    Attacker-Man controller
+    Attacker controller
     """
     def __init__(self, attacker_id, tree):
         """
@@ -23,15 +23,15 @@ class AttackerController():
         To device next move... TBD
         """
         # Set the next move
-        self.next_move = random.randint(0, 1)
-
-
-    def execute_move(self, game_state):
-        """
-        Actually execute the stored move
-        """
-        if (self.next_move == 0):
-            pass
+        treeval = self.tree.root.calc([game_state.G(),
+                                       game_state.P(),
+                                       game_state.W(),
+                                       game_state.F(),
+                                       game_state.M()])
+        if (treeval >= 0):
+            self.next_move = 'wait'
+        else:
+            self.next_move = 'attack'
 
 
 class DefenderController():
@@ -40,8 +40,7 @@ class DefenderController():
     """
     def __init__(self, defender_id, tree):
         """
-        Use instances of the same class for each defender -- need to know
-        which defender this class instance is for.
+        Initialization requires the expression tree asociated with this controller.
         """
         self.defender_id = defender_id
         self.tree = tree
@@ -53,12 +52,12 @@ class DefenderController():
         To device next move... TBD
         """
         # Set the next move
-        self.next_move = random.randint(0, 1)
-
-
-    def execute_move(self, game_state):
-        """
-        Actually execute the stored move
-        """
-        if (self.next_move == 0):
-            pass
+        treeval = self.tree.root.calc([game_state.G(),
+                                       game_state.P(),
+                                       game_state.W(),
+                                       game_state.F(),
+                                       game_state.M()])
+        if (treeval >= 0):
+            self.next_move = 'block'
+        else:
+            self.next_move = 'unblock'

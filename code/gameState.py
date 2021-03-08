@@ -4,47 +4,56 @@ import random
 
 class GameState:
     """
-    Class to hold game state for each eval/game
+    Class to hold game state for each eval/game.
     """
 
     def __init__(self):
         """
         Set up the game state given initialization parameters as listed.
         """
+        
+        self.time = 100  
+        
+        self.attacker_score = 0
+        self.defender_score = 0
 
         # Did the Defender win?
         self.defender_won = False
 
 
-
-    def G(self, pos, defender_id = -1):
+    def G(self):
         """
+        Random stand-in for something we can measure in the simulation
         """
-        return random.randint(0, 100)
-
-
-    def P(self, pos):
-        """
-        """
-        return random.randint(0, 100)
+        return random.randint(-100, 100)
 
 
-    def W(self, pos):
+    def P(self):
         """
+        Random stand-in for something we can measure in the simulation
         """
-        return random.randint(0, 100)
+        return random.randint(-100, 100)
 
 
-    def F(self, pos):
+    def W(self):
         """
+        Random stand-in for something we can measure in the simulation
         """
-        return random.randint(0, 100)
+        return random.randint(-100, 100)
 
 
-    def M(self, pos, attacker_id = -1):
+    def F(self):
         """
+        Random stand-in for something we can measure in the simulation
         """
-        return random.randint(0, 100)
+        return random.randint(-100, 100)
+
+
+    def M(self):
+        """
+        Random stand-in for something we can measure in the simulation
+        """
+        return random.randint(-100, 100)
 
 
     def play_turn(self, world_data, attacker_controllers, defender_controllers):
@@ -53,19 +62,25 @@ class GameState:
         and controllers for Attacker and Defenders.
         """
         game_over = False
+    
+        # Assume there is a single attacker and single defender,
+        # even though the EA supports sets of attackers and defenders.
+        attacker = attacker_controllers[0]
+        defender = defender_controllers[0]
 
         # Decide next moves
-        for attacker_controller in attacker_controllers:
-            attacker_controller.decide_move(self)
-        for defender_controller in defender_controllers:
-            defender_controller.decide_move(self)
+        attacker.decide_move(self)
+        defender.decide_move(self)
+
+        world_data.append('attacker: ' + attacker.next_move + ' vs. defender: ' 
+                          + defender.next_move + '\n')
 
         # Execute next moves
-        for attacker_controller in attacker_controllers:
-            attacker_controller.execute_move(self)
-        for defender_controller in defender_controllers:
-            defender_controller.execute_move(self)
-
+        if ((attacker.next_move == 'attack') and (defender.next_move == 'unblock')):
+            self.attacker_score += 1
+        if ((attacker.next_move == 'attack') and (defender.next_move == 'block')):
+            self.defender_score += 1
+        
         # Decrement time (yeah this is obvious but adding comment here is consistent)
         self.time -= 1
 

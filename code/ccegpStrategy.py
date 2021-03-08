@@ -622,11 +622,8 @@ class CCEGPStrategy(Strategy):
         Defender individual selected from their respective populations.
         """
         # Pick a new scenario and set up a new game state.
-        game_scenario = self.experiment.pre_loaded_scenarios[random.randint(0, 99)]
         self.experiment.world_data = []
-        game_state = GameState(game_scenario)
-        game_state.write_world_config(self.experiment.world_data)
-        game_state.write_world_time_score(self.experiment.world_data)
+        game_state = GameState()
 
         # Create new Attacker and Defender controllers
         for curr_attacker_id in range(self.experiment.num_attackers):
@@ -643,24 +640,25 @@ class CCEGPStrategy(Strategy):
                                              self.defender_controllers)
 
         # Set Attacker fitness and implement parsimony pressure
-        attacker_individual.fitness = game_state.score
+        attacker_individual.fitness = game_state.attacker_score
         if (self.attacker_pop.parsimony_technique == 'size'):
             attacker_individual.fitness -= (self.attacker_pop.pppc * attacker_individual.root.size)
         else:
             attacker_individual.fitness -= (self.attacker_pop.pppc * attacker_individual.root.height)
 
         # Set Defender fitness and implement parsimony pressure
-        defender_individual.fitness = -(game_state.score)
-        if (game_state.defender_won):
-            defender_individual.fitness += int((game_state.time * 100.0) / game_state.orig_time)
+        defender_individual.fitness = game_state.defender_score
         if (self.defender_pop.parsimony_technique == 'size'):
             defender_individual.fitness -= (self.defender_pop.pppc * defender_individual.root.size)
         else:
             defender_individual.fitness -= (self.defender_pop.pppc * defender_individual.root.height)
 
         # Set Attacker and Defender scores
-        attacker_individual.score = game_state.score # Score is raw game score without parsimony pressure for Attacker
-        defender_individual.score = defender_individual.fitness # Score and fitness interchangeable for Defender
+        # Score is raw game score without parsimony pressure for Attacker
+        attacker_individual.score = game_state.attacker_score 
+        defender_individual.score = game_state.defender_score
+
+        # print('Game over: Attacker', game_state.attacker_score, '/ Defender', game_state.defender_score)
 
 
     def generation_evals(self, attackers, defenders, eval_count, evals_with_no_change, attacker_gen_high_fitness):

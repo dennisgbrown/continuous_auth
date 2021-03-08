@@ -1,16 +1,11 @@
 Result Log
 
-random seed: 1615091143475
+random seed: 1615175407247
 strategy: ccegp
 number of runs per experiment: 1
 number of fitness evals per run: 20
 attacker solution file path: solutions/defaultAttackerSolution.txt
 defender solution file path: solutions/defaultDefenderSolution.txt
-highest-scoring world file path: worlds/defaultHighScoreWorld.txt
-pill density: 0.5
-fruit spawning probability: 0.5
-fruit score: 10
-time multiplier: 1
 attacker_mu: 100
 attacker_lambda: 50
 attacker_dmax_init: 7
@@ -36,4 +31,4 @@ CIAO data file path root: default
 parsimony log file path: data/defaultParsimonyLog.txt
 
 Run 1
-100	-50.13	32.5
+100	-43.34	57.5

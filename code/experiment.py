@@ -31,7 +31,7 @@ class Experiment:
         self.attacker_solution_file_path = 'solutions/defaultAttackerSolution.txt'
         self.defender_solution_file_path = 'solutions/defaultDefenderSolution.txt'
         self.high_score_world_file_path = 'worlds/defaultWorld.txt'
-        self.scenario_file_path = None
+        self.world_data = None  # Array of strings that will be written to world data file
 
         self.num_attackers = 1
         self.num_defenders = 1
@@ -125,8 +125,6 @@ class Experiment:
         """
 
         start_time = time.time()
-
-        self.pre_load_scenarios()
 
         strategy_instance = None
         if (self.strategy == 'ccegp'):
