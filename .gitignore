@@ -127,3 +127,11 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# For the time being, ignore the output directories
+# because they're likely to change as people fork and pull
+plots/
+logs/
+worlds/
+solutions/
+data/
