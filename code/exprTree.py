@@ -16,10 +16,10 @@ class ExprTree():
         self.world_data = []  # the world data that produced the fitness
 
     # Canonical list of terminals for Attacker supported by the Expression Tree class
-    attacker_terminals = ['G', 'P', 'W', 'F', 'constant']
+    attacker_terminals = ['T', 'S', 'W', 'constant']
 
     # Canonical list of terminals for Defender supported by the Expression Tree class
-    defender_terminals = ['G', 'P', 'W', 'F', 'M', 'constant']
+    defender_terminals = ['T', 'S', 'constant']
 
     # Canonical list of functions supported by the Expression Tree class
     functions = ['+', '-', '*', '/', 'RAND']
@@ -41,7 +41,7 @@ class Node():
         self.size = 1
 
 
-    def calc(self, gpwfm):
+    def calc(self, precalcs):
         """
         Return the recursively-calculated numerical value represented by
         this node.
@@ -51,16 +51,14 @@ class Node():
         in the tree.
         """
         # If this is an input node (leaf node) return a value.
-        if (self.expr == 'G'): return gpwfm[0]
-        if (self.expr == 'P'): return gpwfm[1]
-        if (self.expr == 'W'): return gpwfm[2]
-        if (self.expr == 'F'): return gpwfm[3]
-        if (self.expr == 'M'): return gpwfm[4]
+        if (self.expr == 'T'): return precalcs[0]
+        if (self.expr == 'S'): return precalcs[1]
+        if (self.expr == 'W'): return precalcs[2]
         if (self.expr == 'constant'): return self.constant
 
         # Calculate values of left and right children.
-        left_val = self.left.calc(gpwfm)
-        right_val = self.right.calc(gpwfm)
+        left_val = self.left.calc(precalcs)
+        right_val = self.right.calc(precalcs)
 
         # Apply the appropriate function to the child values and return it.
         if (self.expr == '+'): return left_val + right_val
@@ -133,7 +131,7 @@ class Node():
         """
 
         # If input (leaf) node, return string representing input.
-        if (self.expr in ['G', 'P', 'W', 'F', 'M', 'constant']):
+        if (self.expr in ['T', 'S', 'W', 'constant']):
             if (self.expr == 'constant'):
                 return ('|' * level) + str(self.constant) + '\n'
             else:

@@ -327,7 +327,7 @@ class CCEGPStrategy(Strategy):
         if (expr == 'constant'):
             # The random bounds are hard-coded. I should make this a config file
             # item but I don't plan on varying it so, hard-coded it is.
-            node.constant = random.uniform(-10, 10)
+            node.constant = random.uniform(-1, 1)
         node.depth = depth
 
         # If this node is a function, make its children and update
@@ -655,7 +655,7 @@ class CCEGPStrategy(Strategy):
 
         # Set Attacker and Defender scores
         # Score is raw game score without parsimony pressure for Attacker
-        attacker_individual.score = game_state.attacker_score 
+        attacker_individual.score = game_state.attacker_score
         defender_individual.score = game_state.defender_score
 
         # print('Game over: Attacker', game_state.attacker_score, '/ Defender', game_state.defender_score)

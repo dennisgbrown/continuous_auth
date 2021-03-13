@@ -1,59 +1,99 @@
 # -*- coding: utf-8 -*-
 import random
-
+from numpy.random import default_rng
 
 class GameState:
     """
     Class to hold game state for each eval/game.
     """
 
+    # Game states
+    UNBLOCKED = 0
+    BLOCKED = 1
+    ATTACKER_DETECTED = 2
+
+
     def __init__(self):
         """
         Set up the game state given initialization parameters as listed.
         """
-        
-        self.time = 100  
-        
+
+        self.time_limit = 100
+        self.t = 0
+
+        # Attacker score is amount of observation by the attacker (omega in Sartias paper)
         self.attacker_score = 0
+
         self.defender_score = 0
 
-        # Did the Defender win?
-        self.defender_won = False
+
+        self.state = GameState.UNBLOCKED
 
 
-    def G(self):
-        """
-        Random stand-in for something we can measure in the simulation
-        """
-        return random.randint(-100, 100)
+        self.rng = default_rng()
 
 
-    def P(self):
+        # User traffic: arrivals modeled by Poisson process with
+        # intensity lambda_u/iota where iota = length of time slot
+        self.lambda_u = 10
+
+        # User behavior
+        # Gaussian distribution with mean 100 and variance 3
+        self.Beta_u = [100, 3]
+
+        # False Positive (FP) rate
+        self.eta_u = 0.01
+
+        # User reward in Unblocked state
+        self.nu_r = 0.1
+
+        # Cut-off point for detecting attack: if Beta_u > c then positive
+        # (assuming being attacked); false positives possible
+        self.c_r = 1
+
+        # Probability of IDS detecting attacker listening (function of m)
+        # Assume: concave function, delta(0) = 0 and delta(m->inf) = 1
+        self.delta_l = 0.1
+
+        # Probability of IDS detecting attacker attacking (function of m)
+        # Assume: concave function, delta(0) = 0 and delta(m->inf) = 1
+        self.delta_a = 0.2
+
+        # Probability that user blocked in time state t is unblocked in t+1
+        self.q = 0.7
+
+        # Discount factor ????
+        self.rho = 0.98
+
+        # Attacker learning rate
+        self.gamma = 0.1
+
+        # Per-time-slot cost of operating IDS
+        self.m = 0
+
+        # Attacker's cost of compromising system
+        self.C_a = 0
+
+
+    def T(self):
         """
-        Random stand-in for something we can measure in the simulation
+        Return current time step in simulation
         """
-        return random.randint(-100, 100)
+        return self.t
+
+
+    def S(self):
+        """
+        Return state (blocked or unblocked)
+        """
+        return self.state
 
 
     def W(self):
         """
-        Random stand-in for something we can measure in the simulation
+        Return amount of observation by the attacker
         """
-        return random.randint(-100, 100)
-
-
-    def F(self):
-        """
-        Random stand-in for something we can measure in the simulation
-        """
-        return random.randint(-100, 100)
-
-
-    def M(self):
-        """
-        Random stand-in for something we can measure in the simulation
-        """
-        return random.randint(-100, 100)
+        return self.attacker_score
 
 
     def play_turn(self, world_data, attacker_controllers, defender_controllers):
@@ -62,9 +102,10 @@ class GameState:
         and controllers for Attacker and Defenders.
         """
         game_over = False
-    
-        # Assume there is a single attacker and single defender,
-        # even though the EA supports sets of attackers and defenders.
+
+        self.t += 1
+
+        # Assume one attacker and one defender
         attacker = attacker_controllers[0]
         defender = defender_controllers[0]
 
@@ -72,21 +113,70 @@ class GameState:
         attacker.decide_move(self)
         defender.decide_move(self)
 
-        world_data.append('attacker: ' + attacker.next_move + ' vs. defender: ' 
+        world_data.append('attacker: ' + attacker.next_move + ' vs. defender: '
                           + defender.next_move + '\n')
 
-        # Execute next moves
-        if ((attacker.next_move == 'attack') and (defender.next_move == 'unblock')):
-            self.attacker_score += 1
-        if ((attacker.next_move == 'attack') and (defender.next_move == 'block')):
-            self.defender_score += 1
-        
-        # Decrement time (yeah this is obvious but adding comment here is consistent)
-        self.time -= 1
+        if (defender.next_move == 'block'):
+            self.state = GameState.BLOCKED
+        elif (defender.next_move == 'unblock'):
+            self.state = GameState.UNBLOCKED
 
-        # Out of time? Game over.
-        if (self.time == 0):
+        if (attacker.next_move == 'listen'):
+            if (random.random() < self.delta_l):
+                self.state = GameState.ATTACKER_DETECTED
+        elif (attacker.next_move == 'attack'):
+            if (random.random() < self.delta_a):
+                self.state = GameState.ATTACKER_DETECTED
+            else:
+                self.attacker_score += self.c_r
+                self.defender_score -= self.c_r
+
+        # If attacker is detected, game over
+        if ((self.state == GameState.ATTACKER_DETECTED)
+            or ((self.time_limit - self.t) == 0)):
             game_over = True
 
         return game_over
 
+
+
+"""
+
+Saritas:
+
+User behvaior:
+t = time slot
+u = user
+r = resource
+Lambda_u(t) = amount of traffic generated by user u in time slot t
+(Poisson distributed with parameter lambda_u)
+--> arrivals modeled by Poisson process with intensity lambda_u/iota where
+iota = length of time slot)
+
+m = per-time-slot cost of operating IDS
+user behavior described by Gaussian distribution Beta_u ~ Nu(beta_u, sigma_u)
+  with mean beta_u and variance sigma_u
+
+user behavior is verified at end of every time slot; decision is made based
+  on match of user behavior model and actual behavior during slot.
+
+c = cut-off point
+if Beta_user > c then positive (assuming being attacked); false positives possible
+eta_u = false positive (FP) rate
+system applies detection threshold of c = Phi_u^-1 (1 - eta_u) where
+  Phi_u is cumulative dsitribution function (CDF) of Beta_u
+
+S = system, which is in one of three states: BL, UB, or AD (blocked, unblocked, attacker detected)
+In state UB, user can generate reward nu_r
+If user fails CA (either FP or true positive (TP)), system changes from UB to BL
+
+q = probability that user blocked in time state t is unblocked in t+1
+
+L(t) = number of observations by attacker at time t
+
+At time t:
+    l(t) = 1, a(t) = 0 if listening
+
+
+
+"""
