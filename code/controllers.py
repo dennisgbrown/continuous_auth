@@ -78,10 +78,18 @@ class DefenderController():
         from accessing the resource.
         """
         # Set the next move
-        treeval = self.tree.root.calc([game_state.T(),
-                                       game_state.S(),
-                                       game_state.W()])
-        if (treeval >= 0):
+        #treeval = self.tree.root.calc([game_state.T(),
+        #                               game_state.S(),
+        #                               game_state.W()])
+        #if (treeval >= 0):
+
+        # First check if the game is currently blocked, then there's nothing for the defender to do.
+        # This could probably be moved into the game state logic and the defender's turn here skipped.
+        if (game_state.state == game_state.BLOCKED):
+            self.next_move = 'block'
+            return
+        # Adding a static check (if behavior > false positive cut-off) for now
+        if (game_state.behavior_mask[-1] and game_state.behavior_history[-1] > game_state.c_r):
             self.next_move = 'block'
         else:
             self.next_move = 'unblock'

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import random
 import numpy as np
+import math
 from scipy.stats import norm
 
 class GameState:
@@ -39,8 +40,8 @@ class GameState:
         # listening mask is 1 if the attacker is listening at turn t
         self.listening_mask = []
         
-
-        self.rng = np.default_rng()
+        # TODO: unify random number generation
+        # self.rng = np.default_rng()
 
 
         # User traffic: arrivals modeled by Poisson process with
