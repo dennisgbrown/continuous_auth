@@ -1,7 +1,7 @@
+
 # -*- coding: utf-8 -*-
 import sys
 
-sys.path.append('code')
 from experiment import Experiment
 
 def main():

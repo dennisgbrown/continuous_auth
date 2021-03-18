@@ -5,7 +5,6 @@ import traceback
 import numpy
 import sys
 
-sys.path.append('code')
 from strategy import Strategy
 from gameState import GameState
 from controllers import AttackerController, DefenderController
