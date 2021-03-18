@@ -3,9 +3,7 @@ import configparser
 import random
 import time
 import traceback
-import sys
 
-sys.path.append('code')
 from ccegpStrategy import CCEGPStrategy
 
 

@@ -135,3 +135,10 @@ logs/
 worlds/
 solutions/
 data/
+
+# but keep stubs to maintain directories
+!logs/.placeholder
+!plots/.placeholder
+!worlds/.placeholder
+!solutions/.placeholder
+!data/.placeholder

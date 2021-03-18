@@ -2,8 +2,6 @@
 import random
 import sys
 
-sys.path.append('code')
-
 
 class ExprTree():
     """
