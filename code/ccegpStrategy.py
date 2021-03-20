@@ -34,7 +34,7 @@ class CCEGPStrategy(Strategy):
         self.attacker_parsimony_technique = 'size'
         self.attacker_pppc = 0.05  # parsimony pressure penalty coefficient
 
-        # Information for csetting up and ontrolling the Defender population
+        # Information for setting up and controlling the Defender population
         self.defender_controllers = [None for _ in range(experiment.num_defenders)]
         self.defender_mu = 10
         self.defender_lambda = 5
@@ -47,6 +47,11 @@ class CCEGPStrategy(Strategy):
         self.defender_tournament_size_for_survival_selection = 4
         self.defender_parsimony_technique = 'size'
         self.defender_pppc = 0.05  # parsimony pressure penalty coefficient
+        self.defender_strategy = 'ccegp'
+
+        # Bounds for randomly-generated constants in the tree
+        self.rand_constant_low = -1.0
+        self.rand_constant_high = 1.0
 
         # Logging and termination information
         self.ciao_file_path_root = 'data/defaultCIAOData'
@@ -211,6 +216,24 @@ class CCEGPStrategy(Strategy):
             print('config: defender_pppc not specified; using', self.defender_pppc)
 
         try:
+            self.defender_strategy = experiment.config_parser.get('ccegp_options', 'defender_strategy')
+            print('config: defender_strategy =', self.defender_strategy)
+        except:
+            print('config: defender_strategy not specified; using', self.defender_strategy)
+
+        try:
+            self.rand_constant_low = experiment.config_parser.getfloat('ccegp_options', 'rand_constant_low')
+            print('config: rand_constant_low =', self.rand_constant_low)
+        except:
+            print('config: rand_constant_low not specified; using', self.rand_constant_low)
+
+        try:
+            self.rand_constant_high = experiment.config_parser.getfloat('ccegp_options', 'rand_constant_high')
+            print('config: rand_constant_high =', self.rand_constant_high)
+        except:
+            print('config: rand_constant_high not specified; using', self.rand_constant_high)
+
+        try:
             self.termination = experiment.config_parser.get('ccegp_options',
                                                             'termination').lower()
             print('config: termination =', self.termination)
@@ -286,6 +309,9 @@ class CCEGPStrategy(Strategy):
                                       + str(self.defender_tournament_size_for_survival_selection) + '\n')
         experiment.log_file.write('defender_parsimony technique: ' + self.defender_parsimony_technique + '\n')
         experiment.log_file.write('defender_parsimony pressure penalty coefficient: ' + str(self.defender_pppc) + '\n')
+        experiment.log_file.write('defender_strategy: ' + self.defender_strategy + '\n')
+        experiment.log_file.write('rand_constant_low: ' + str(self.rand_constant_low) + '\n')
+        experiment.log_file.write('rand_constant_high: ' + str(self.rand_constant_high) + '\n')
         experiment.log_file.write('termination method: ' + self.termination + '\n')
         if (self.termination == 'convergence'):
             experiment.log_file.write('n evals for convergence: '
@@ -334,9 +360,8 @@ class CCEGPStrategy(Strategy):
         node.func1 = func1
         node.func2 = func2
         if ((func1 == 'constant') or (func2 == 'constant')):
-            # The random bounds are hard-coded. I should make this a config file
-            # item but I don't plan on varying it so, hard-coded it is.
-            node.constant = random.uniform(-1, 1)
+            node.constant = random.uniform(self.rand_constant_low,
+                                           self.rand_constant_high)
         node.depth = depth
 
         # If this node is not a terminal, make its children and update
@@ -643,7 +668,7 @@ class CCEGPStrategy(Strategy):
         """
         # Pick a new scenario and set up a new game state.
         self.experiment.world_data = []
-        game_state = GameState()
+        game_state = GameState(self.defender_strategy)
 
         # Create new Attacker and Defender controllers
         for curr_attacker_id in range(self.experiment.num_attackers):
