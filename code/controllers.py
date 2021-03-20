@@ -39,7 +39,7 @@ class AttackerController():
         To decide next move, just evaluate the tree, which should spit out
         the action with the expected best payoff
         """
-        print('------------------\n' + str(self.tree.root))
+        # print('------------------\n' + str(self.tree.root))
         # Set the next move
         self.next_move = self.tree.root.calc(fill_precalcs(self.functions, game_state))
 

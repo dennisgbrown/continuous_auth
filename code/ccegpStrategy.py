@@ -47,7 +47,6 @@ class CCEGPStrategy(Strategy):
         self.defender_tournament_size_for_survival_selection = 4
         self.defender_parsimony_technique = 'size'
         self.defender_pppc = 0.05  # parsimony pressure penalty coefficient
-        self.defender_strategy = 'ccegp'
 
         # Bounds for randomly-generated constants in the tree
         self.rand_constant_low = -1.0
@@ -216,12 +215,6 @@ class CCEGPStrategy(Strategy):
             print('config: defender_pppc not specified; using', self.defender_pppc)
 
         try:
-            self.defender_strategy = experiment.config_parser.get('ccegp_options', 'defender_strategy')
-            print('config: defender_strategy =', self.defender_strategy)
-        except:
-            print('config: defender_strategy not specified; using', self.defender_strategy)
-
-        try:
             self.rand_constant_low = experiment.config_parser.getfloat('ccegp_options', 'rand_constant_low')
             print('config: rand_constant_low =', self.rand_constant_low)
         except:
@@ -309,7 +302,6 @@ class CCEGPStrategy(Strategy):
                                       + str(self.defender_tournament_size_for_survival_selection) + '\n')
         experiment.log_file.write('defender_parsimony technique: ' + self.defender_parsimony_technique + '\n')
         experiment.log_file.write('defender_parsimony pressure penalty coefficient: ' + str(self.defender_pppc) + '\n')
-        experiment.log_file.write('defender_strategy: ' + self.defender_strategy + '\n')
         experiment.log_file.write('rand_constant_low: ' + str(self.rand_constant_low) + '\n')
         experiment.log_file.write('rand_constant_high: ' + str(self.rand_constant_high) + '\n')
         experiment.log_file.write('termination method: ' + self.termination + '\n')
@@ -668,7 +660,7 @@ class CCEGPStrategy(Strategy):
         """
         # Pick a new scenario and set up a new game state.
         self.experiment.world_data = []
-        game_state = GameState(self.defender_strategy)
+        game_state = GameState(self.experiment)
 
         # Create new Attacker and Defender controllers
         for curr_attacker_id in range(self.experiment.num_attackers):
@@ -685,14 +677,14 @@ class CCEGPStrategy(Strategy):
                                              self.defender_controllers)
 
         # Set Attacker fitness and implement parsimony pressure
-        attacker_individual.fitness = game_state.attacker_score
+        attacker_individual.fitness = game_state.calculate_attacker_fitness()
         if (self.attacker_pop.parsimony_technique == 'size'):
             attacker_individual.fitness -= (self.attacker_pop.pppc * attacker_individual.root.size)
         else:
             attacker_individual.fitness -= (self.attacker_pop.pppc * attacker_individual.root.height)
 
         # Set Defender fitness and implement parsimony pressure
-        defender_individual.fitness = game_state.defender_score
+        defender_individual.fitness = game_state.calculate_defender_fitness()
         if (self.defender_pop.parsimony_technique == 'size'):
             defender_individual.fitness -= (self.defender_pop.pppc * defender_individual.root.size)
         else:
@@ -700,8 +692,8 @@ class CCEGPStrategy(Strategy):
 
         # Set Attacker and Defender scores
         # Score is raw game score without parsimony pressure for Attacker
-        attacker_individual.score = game_state.attacker_score
-        defender_individual.score = game_state.defender_score
+        attacker_individual.score = game_state.calculate_attacker_fitness()
+        defender_individual.score = game_state.calculate_defender_fitness()
 
         # print('Game over: Attacker', game_state.attacker_score, '/ Defender', game_state.defender_score)
 

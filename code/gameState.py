@@ -15,20 +15,15 @@ class GameState:
     ATTACKER_DETECTED = 2
 
 
-    def __init__(self, defender_strategy):
+    def __init__(self, experiment):
         """
         Set up the game state given initialization parameters as listed.
         """
-        self.defender_strategy = defender_strategy
+        self.defender_strategy = experiment.defender_strategy
 
-        self.time_limit = 100
+        self.time_limit = experiment.game_time_limit
+
         self.t = 0
-
-        # Attacker score is amount of observation by the attacker (omega in Sartias paper)
-        self.attacker_score = 0
-
-        self.defender_score = 0
-
 
         self.state = GameState.UNBLOCKED
 
@@ -41,6 +36,8 @@ class GameState:
         # listening mask is 1 if the attacker is listening at turn t
         self.listening_mask = []
 
+        # Amount of successful observation by the attacker
+        self.omega = 0
 
         # User traffic: arrivals modeled by Poisson process with
         # intensity lambda_u/iota where iota = length of time slot
@@ -112,7 +109,7 @@ class GameState:
         """
         Return amount of observation by the attacker
         """
-        return self.attacker_score
+        return self.omega
 
 
     def play_turn(self, world_data, attacker_controllers, defender_controllers):
@@ -152,14 +149,16 @@ class GameState:
         The game state may transition to unblocked depending on if the game was
         blocked during the current turn
         """
+        # If we're here we know the game isn't over, but that could change.
         game_over = False
 
+        # Increment time step. Type in unnecessary comments.
         self.t += 1
 
-        # Assume one attacker and one defender
+        # Assume one attacker and one defender for now
+        # NOTE multi-user / attacker situations might be easy to extend
         attacker = attacker_controllers[0]
         defender = defender_controllers[0]
-        # NOTE multi-user / attacker situations might be easy to extend
 
         # First let the attacker and defender idnependently decide next move
 
@@ -207,6 +206,9 @@ class GameState:
                 else:
                     defender.next_move = 'unblock'
 
+        # Logging
+        world_data.append('attacker: ' + attacker.next_move + ' vs. defender: '
+                          + defender.next_move + '\n')
 
         # Then see how the current turn plays out
 
@@ -238,9 +240,6 @@ class GameState:
             self.behavior_history.append(0)
             self.behavior_mask.append(False)
 
-        world_data.append('attacker: ' + attacker.next_move + ' vs. defender: '
-                          + defender.next_move + '\n')
-
         # transition to blocked if the defender decides to block
         if (self.state == GameState.UNBLOCKED and defender.next_move == 'block'):
             self.state = GameState.BLOCKED
@@ -256,8 +255,7 @@ class GameState:
             if (random.random() < self.delta_a):
                 self.state = GameState.ATTACKER_DETECTED
             else:
-                self.attacker_score += self.c_r
-                self.defender_score -= self.c_r
+                self.omega += 1
 
         # If attacker is detected, game over
         if ((self.state == GameState.ATTACKER_DETECTED)
@@ -266,6 +264,23 @@ class GameState:
 
         return game_over
 
+
+    def calculate_attacker_fitness(self):
+        """
+        Calculate and return fitness for the attacker based on game state
+        """
+        # TODO: Make this something smarter!
+        return self.omega # just number of successful observations
+        # return random.uniform(0, 1000)
+
+
+    def calculate_defender_fitness(self):
+        """
+        Calculate and return fitness for the defender based on game state
+        """
+        # TODO: Make this something smarter!
+        return (self.t - self.omega) # just number of time steps in which attacker could not observe
+        # return random.uniform(0, 1000)
 
 
 """

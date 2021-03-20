@@ -40,6 +40,13 @@ class Experiment:
         self.defender_exp_high_fitness = float('-inf')
         self.defender_exp_best_solution = None
 
+        # Which strategy does the defender use? (ccegp or saritas)
+        self.defender_strategy = 'ccegp'
+
+        # Time limit for game
+        self.game_time_limit = 1000
+
+
         try:
             self.config_parser = configparser.ConfigParser()
             self.config_parser.read(config_file_path)
@@ -90,6 +97,18 @@ class Experiment:
             except:
                 print('config: defender_solution_file_path not properly specified; using', self.defender_solution_file_path)
 
+            try:
+                self.defender_strategy = self.config_parser.get('basic_options', 'defender_strategy')
+                print('config: defender_strategy =', self.defender_strategy)
+            except:
+                print('config: defender_strategy not specified; using', self.defender_strategy)
+
+            try:
+                self.game_time_limit = self.config_parser.getfloat('basic_options', 'game_time_limit')
+                print('config: game_time_limit =', self.game_time_limit)
+            except:
+                print('config: game_time_limit not specified; using', self.game_time_limit)
+
             # Dump parms to log file
             try:
                 self.log_file = open(self.log_file_path, 'w')
@@ -107,6 +126,10 @@ class Experiment:
                                     + self.attacker_solution_file_path + '\n')
                 self.log_file.write('defender solution file path: '
                                     + self.defender_solution_file_path + '\n')
+                self.log_file.write('defender_strategy: '
+                                    + self.defender_strategy + '\n')
+                self.log_file.write('game_time_limit: '
+                                    + str(self.game_time_limit) + '\n')
             except:
                 print('config: problem with log file', self.log_file_path)
                 traceback.print_exc()
