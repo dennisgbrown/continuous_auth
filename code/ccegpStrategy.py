@@ -246,14 +246,14 @@ class CCEGPStrategy(Strategy):
                                   self.attacker_p_m, self.attacker_survival_selection,
                                   self.attacker_tournament_size_for_survival_selection,
                                   self.attacker_parsimony_technique, self.attacker_pppc,
-                                  ExprTree.functions, ExprTree.attacker_terminals)
+                                  AttackerController.functions, AttackerController.terminals)
         self.defender_pop = Population('Defender', self.defender_mu, self.defender_lambda,
                                     self.defender_dmax_init, self.defender_dmax_overall,
                                     self.defender_parent_selection, self.defender_overselection_top,
                                     self.defender_p_m, self.defender_survival_selection,
                                     self.defender_tournament_size_for_survival_selection,
                                     self.defender_parsimony_technique, self.defender_pppc,
-                                    ExprTree.functions, ExprTree.defender_terminals)
+                                    DefenderController.functions, DefenderController.terminals)
 
         # Write configuration items to log file
         experiment.log_file.write('attacker_mu: ' + str(self.attacker_mu) + '\n')
@@ -307,35 +307,45 @@ class CCEGPStrategy(Strategy):
         Recursively build an expression tree to the given depth using either
         the 'grow' or 'full' method.
         """
+        func1 = None
+        func2 = None
         # Randomly choose a new expression. If not at depth limit,
         # choose an inner node from a set that depends on method 'grow' or 'full'
         if (depth < dmax):
             # Grow selects from all functions and terminals at this depth
             if (grow_or_full == 'grow'):
-                expr = (ExprTree.functions + pop.terminals) \
-                    [random.randint(0, (len(ExprTree.functions) + len(pop.terminals) - 1))]
-            # Full selects only from functions at this depth
+                # Choose the left value
+                func1 = (pop.functions + pop.terminals) \
+                    [random.randint(0, (len(pop.functions) + len(pop.terminals) - 1))]
+                # If the first func isn't a terminal, choose the right value
+                # from the non-terminals.
+                # TODO: Ensure we don't build node with two constants... ???
+                if (func1 in pop.functions):
+                    func2 = pop.functions[random.randint(0, len(pop.functions) - 1)]
+            # Full selects only from non-terminals at this depth
             else:
-                expr = ExprTree.functions[random.randint(0, len(ExprTree.functions) - 1)]
-        # If depth is at Dmax, choose a terminal.
+                func1 = pop.functions[random.randint(0, len(pop.functions) - 1)]
+                func2 = pop.functions[random.randint(0, len(pop.functions) - 1)]
+        # If depth is at Dmax, randomly choose a terminal.
         else:
-            expr = pop.terminals[random.randint(0, len(pop.terminals) - 1)]
+            func1 = pop.terminals[random.randint(0, len(pop.terminals) - 1)]
 
-        # Make a new tree node with this expression.
-        node.expr = expr
-        if (expr == 'constant'):
+        # Make a new tree node with this info
+        node.func1 = func1
+        node.func2 = func2
+        if ((func1 == 'constant') or (func2 == 'constant')):
             # The random bounds are hard-coded. I should make this a config file
             # item but I don't plan on varying it so, hard-coded it is.
             node.constant = random.uniform(-1, 1)
         node.depth = depth
 
-        # If this node is a function, make its children and update
+        # If this node is not a terminal, make its children and update
         # height and count of this node.
-        if (expr in ExprTree.functions):
-            node.left = Node()
-            self.build_tree(pop, node.left, depth + 1, dmax, grow_or_full)
-            node.right = Node()
-            self.build_tree(pop, node.right, depth + 1, dmax, grow_or_full)
+        if (not (func1 in pop.terminals)):
+            node.left_child = Node()
+            self.build_tree(pop, node.left_child, depth + 1, dmax, grow_or_full)
+            node.right_child = Node()
+            self.build_tree(pop, node.right_child, depth + 1, dmax, grow_or_full)
 
         return node
 
@@ -529,6 +539,11 @@ class CCEGPStrategy(Strategy):
         # Randomly pick a node in the expression tree
         selected_node = offspring.root.find_nth_node(random.randint(1, offspring.root.size))
 
+        # If the selected node is a terminal node, skip mutation.
+        # TODO: Support terminal nodes too!
+        if (not (selected_node.left_child is None)):
+            return offspring
+
         # Build a new (sub)tree there. Arbitrarily choose 'grow' method and limit depth to dmax_overall.
         self.build_tree(pop, selected_node, selected_node.depth, pop.dmax_overall, 'grow')
 
@@ -552,6 +567,12 @@ class CCEGPStrategy(Strategy):
             # Pick a node in each tree
             selected_node1 = offspring1.root.find_nth_node(random.randint(1, offspring1.root.size))
             selected_node2 = offspring2.root.find_nth_node(random.randint(1, offspring2.root.size))
+
+            # If either node is a terminal node, skip recombination.
+            # TODO: Support terminal nodes too!
+            if ((selected_node1.left_child is None)
+                or (selected_node2.left_child is None)):
+                return [offspring1, offspring2]
 
             # If the swap would cause either offspring to exceed Dmax,
             # try again.

@@ -1,10 +1,30 @@
 # -*- coding: utf-8 -*-
 
 
+def fill_precalcs(function_names, game_state):
+    """
+    Precalculate the game state values before evaluating the tree
+    so we don't recalculate "static" values repeatedly (static within
+    the scope of a single tree evalution)
+    """
+    precalcs = {}
+    for function_name in function_names:
+        if (function_name != 'constant'):
+            precalcs[function_name] = getattr(game_state, function_name)()
+    return precalcs
+
+
 class AttackerController():
     """
     Attacker controller
     """
+    # Canonical list of functions for Attacker supported by the Expression Tree class
+    functions = ['T', 'S', 'W', 'constant']
+
+    # Canonical list of terminals for Attacker supported by the Expression Tree class
+    terminals = ['attack', 'listen', 'wait']
+
+
     def __init__(self, attacker_id, tree):
         """
         Initialization requires the expression tree asociated with this controller.
@@ -16,27 +36,25 @@ class AttackerController():
 
     def decide_move(self, game_state):
         """
-        To device next move... TBD
+        To decide next move, just evaluate the tree, which should spit out
+        the action with the expected best payoff
         """
-
-        # print('------------------\n', self.tree.root)
-
+        print('------------------\n' + str(self.tree.root))
         # Set the next move
-        treeval = self.tree.root.calc([game_state.T(),
-                                       game_state.S(),
-                                       game_state.W()])
-        if (treeval <= -0.33):
-            self.next_move = 'wait'
-        elif (treeval <= 0.33):
-            self.next_move = 'listen'
-        else:
-            self.next_move = 'attack'
+        self.next_move = self.tree.root.calc(fill_precalcs(self.functions, game_state))
 
 
 class DefenderController():
     """
     Defender controller
     """
+    # Canonical list of functions for Defender supported by the Expression Tree class
+    functions = ['T', 'S', 'constant']
+
+    # Canonical list of terminals for Defender supported by the Expression Tree class
+    terminals = ['block', 'unblock']
+
+
     def __init__(self, defender_id, tree):
         """
         Initialization requires the expression tree asociated with this controller.
@@ -48,9 +66,7 @@ class DefenderController():
 
     def decide_move(self, game_state):
         """
-        To device next move... TBD
-
-        COMMENTARY: 
+        COMMENTARY:
         During each turn in the game in which the user generates traffic, the defender is basically
         trying to learn confidence intervals on the mean and variance of the traffic generator
         (intervals that should shrink over time as more traffic is generated). If behavior deviates
@@ -74,19 +90,20 @@ class DefenderController():
         the defender blocks, with fitness for that based on how often the real user is prevented
         from accessing the resource.
         """
-        # Set the next move
-        #treeval = self.tree.root.calc([game_state.T(),
-        #                               game_state.S(),
-        #                               game_state.W()])
-        #if (treeval >= 0):
+        # # First check if the game is currently blocked, then there's nothing for the defender to do.
+        # # This could probably be moved into the game state logic and the defender's turn here skipped.
+        # if (game_state.state == game_state.BLOCKED):
+        #     self.next_move = 'block'
+        #     return
+        # # Adding a static check (if behavior > false positive cut-off) for now
+        # if (game_state.behavior_mask[-1] and game_state.behavior_history[-1] > game_state.c_r):
+        #     self.next_move = 'block'
+        # else:
+        #     self.next_move = 'unblock'
 
-        # First check if the game is currently blocked, then there's nothing for the defender to do.
-        # This could probably be moved into the game state logic and the defender's turn here skipped.
-        if (game_state.state == game_state.BLOCKED):
-            self.next_move = 'block'
-            return
-        # Adding a static check (if behavior > false positive cut-off) for now
-        if (game_state.behavior_mask[-1] and game_state.behavior_history[-1] > game_state.c_r):
-            self.next_move = 'block'
-        else:
-            self.next_move = 'unblock'
+        """
+        To decide next move, just evaluate the tree, which should spit out
+        the action with the expected best payoff
+        """
+        # Set the next move
+        self.next_move = self.tree.root.calc(fill_precalcs(self.functions, game_state))

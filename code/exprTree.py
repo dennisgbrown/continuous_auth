@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import random
 import sys
 
 
@@ -13,25 +12,32 @@ class ExprTree():
         self.score = -1
         self.world_data = []  # the world data that produced the fitness
 
-    # Canonical list of terminals for Attacker supported by the Expression Tree class
-    attacker_terminals = ['T', 'S', 'W', 'constant']
-
-    # Canonical list of terminals for Defender supported by the Expression Tree class
-    defender_terminals = ['T', 'S', 'constant']
-
-    # Canonical list of functions supported by the Expression Tree class
-    functions = ['+', '-', '*', '/', 'RAND']
-
 
 class Node():
     """
     Defines a node in an ExprTree.
+
+    We're building a (form of) Decision Tree. Will it work? Definitely maybe!
+
+    Each interior node will have
+    two values from the controller function set (func1 and func2)
+    that are compared.
+
+    Each leaf node will have a single value from the controller terminal set.
+
+    Some abuses:
+        - There are either 2 children or 0 children.
+        - 0 children indicates this is a terminal node. It's often checked
+          by left_child is None?
+        - func1 is the node value if this is a terminal node.
     """
-    def __init__(self, expr = None, left = None, right = None,
+    def __init__(self, func1 = None, func2 = None,
+                 left_child = None, right_child = None,
                  constant = 0):
-        self.expr = expr
-        self.left = left
-        self.right = right
+        self.func1 = func1
+        self.func2 = func2
+        self.left_child = left_child
+        self.right_child = right_child
         self.constant = constant
         self.parent = None
         self.depth = 0
@@ -41,32 +47,30 @@ class Node():
 
     def calc(self, precalcs):
         """
-        Return the recursively-calculated numerical value represented by
-        this node.
-
-        gpwf is a list containing the values of G, P, W, and F so we
-        don't have to recalculate them each time they are encountered
-        in the tree.
+        Return the value represented by this node.
         """
-        # If this is an input node (leaf node) return a value.
-        if (self.expr == 'T'): return precalcs[0]
-        if (self.expr == 'S'): return precalcs[1]
-        if (self.expr == 'W'): return precalcs[2]
-        if (self.expr == 'constant'): return self.constant
+        # If this is a terminal, return its value (stored as "func1")
+        if (self.left_child is None):
+            return self.func1
 
-        # Calculate values of left and right children.
-        left_val = self.left.calc(precalcs)
-        right_val = self.right.calc(precalcs)
+        # Set left and right values for comparison
+        val1 = 0
+        val2 = 0
+        if (self.func1 == 'constant'):
+            val1 = self.constant
+        else:
+            val1 = precalcs[self.func1]
 
-        # Apply the appropriate function to the child values and return it.
-        if (self.expr == '+'): return left_val + right_val
-        if (self.expr == '-'): return left_val - right_val
-        if (self.expr == '*'): return left_val * right_val
-        if (self.expr == '/'):
-            if (right_val == 0): return 0  # lazy way to deal with divide-by-zero
-            else: return left_val / right_val
-        if (self.expr == 'RAND'):
-            return random.uniform(left_val, right_val)
+        if (self.func2 == 'constant'):
+            val2 = self.constant
+        else:
+            val2 = precalcs[self.func2]
+
+        # Return either left or right child based on comparison
+        if (val1 < val2):
+            return self.left_child.calc(precalcs)
+        else:
+            return self.right_child.calc(precalcs)
 
 
     def reset_metrics(self, parent = None, depth = 0):
@@ -77,11 +81,13 @@ class Node():
         self.depth = depth
         self.height = 0
         self.size = 1
-        if (self.expr in ExprTree.functions):
-            self.left.reset_metrics(parent = self, depth = self.depth + 1)
-            self.right.reset_metrics(parent = self, depth = self.depth + 1)
-            self.size += (self.left.size + self.right.size)
-            self.height = 1 + max(self.left.height, self.right.height)
+
+        # If not terminal node, recurse.
+        if (not (self.left_child is None)):
+            self.left_child.reset_metrics(parent = self, depth = self.depth + 1)
+            self.right_child.reset_metrics(parent = self, depth = self.depth + 1)
+            self.size += (self.left_child.size + self.right_child.size)
+            self.height = 1 + max(self.left_child.height, self.right_child.height)
 
 
     def find_nth_node(self, n, counter = 1):
@@ -102,18 +108,20 @@ class Node():
             counter += 1
             if (counter == n):
                 return curr
-            if (curr.expr in ExprTree.functions):
-                to_visit.append(curr.left)
-                to_visit.append(curr.right)
+            # If not terminal node, add children to visit queue.
+            if (not (curr.left_child is None)):
+                to_visit.append(curr.left_child)
+                to_visit.append(curr.right_child)
 
 
     def copy(self, node):
         """
         Copy values from given node to this node
         """
-        self.expr = node.expr
-        self.left = node.left
-        self.right = node.right
+        self.func1 = node.func1
+        self.func2 = node.func2
+        self.left_child = node.left_child
+        self.right_child = node.right_child
         self.constant = node.constant
         self.parent = node.parent
         self.depth = node.depth
@@ -127,19 +135,27 @@ class Node():
 
         level = depth of this node, for printing the pipe indents
         """
+        # If terminal node, return string representing it
+        if (self.left_child is None):
+            return ('|' * level) + self.func1 + '\n'
 
-        # If input (leaf) node, return string representing input.
-        if (self.expr in ['T', 'S', 'W', 'constant']):
-            if (self.expr == 'constant'):
-                return ('|' * level) + str(self.constant) + '\n'
-            else:
-                return ('|' * level) + self.expr + '\n'
-
-        # If operator node, return a recursively-generated string.
+        # If function node, return a recursively-generated string.
         else:
-            return ('|' * level) + self.expr + '\n' \
-                + self.left.repr_helper(level + 1) \
-                + self.right.repr_helper(level + 1)
+            return_string = ('|' * level) + 'if ';
+            if (self.func1 == 'constant'):
+                return_string += str(self.constant)
+            else:
+                return_string += self.func1
+            return_string += ' < '
+            if (self.func2 == 'constant'):
+                return_string += str(self.constant)
+            else:
+                return_string += self.func2
+            return_string += '\n'
+
+            return return_string \
+                + self.left_child.repr_helper(level + 1) \
+                + self.right_child.repr_helper(level + 1)
 
 
     def __repr__(self):
