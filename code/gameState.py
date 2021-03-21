@@ -23,6 +23,8 @@ class GameState:
 
         self.time_limit = experiment.game_time_limit
 
+        self.ca_classifiers = experiment.ca_classifiers
+
         self.t = 0
 
         self.state = GameState.UNBLOCKED
@@ -226,11 +228,13 @@ class GameState:
         # defender's decision (see TODO in docstring above)
         if (attacker.next_move == 'attack' and
             self.state == GameState.UNBLOCKED):
-            L_t = np.array(self.user_history)[np.array(self.listening_mask)]
-            self.behavior_history.append(np.random.normal(
-                self.beta_u * (1 + math.exp(-self.gamma * np.sum(L_t))),
-                self.sigma_u * (1 + math.exp(-self.gamma * np.sum(L_t)))))
-            self.behavior_mask.append(True)
+            # Use basic model with no CA classifiers
+            if (len(self.ca_classifiers) == 0):
+                L_t = np.array(self.user_history)[np.array(self.listening_mask)]
+                self.behavior_history.append(np.random.normal(
+                    self.beta_u * (1 + math.exp(-self.gamma * np.sum(L_t))),
+                    self.sigma_u * (1 + math.exp(-self.gamma * np.sum(L_t)))))
+                self.behavior_mask.append(True)
         elif (self.user_history[-1]):
             # if the user generates any traffic, that behavior is N(beta_u, sigma_u)
             self.behavior_history.append(np.random.normal(self.beta_u,

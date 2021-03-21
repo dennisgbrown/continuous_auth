@@ -4,6 +4,7 @@ import configparser
 import random
 import time
 import traceback
+import ast
 
 from ccegpStrategy import CCEGPStrategy
 
@@ -45,6 +46,9 @@ class Experiment:
 
         # Time limit for game
         self.game_time_limit = 1000
+
+        # List of CA classifiers to use
+        self.ca_classifiers = []
 
 
         try:
@@ -109,6 +113,12 @@ class Experiment:
             except:
                 print('config: game_time_limit not specified; using', self.game_time_limit)
 
+            try:
+                self.ca_classifiers = ast.literal_eval(self.config_parser.get('basic_options', 'ca_classifiers'))
+                print('config: ca_classifiers =', self.ca_classifiers)
+            except:
+                print('config: ca_classifiers not specified; using', self.ca_classifiers)
+
             # Dump parms to log file
             try:
                 self.log_file = open(self.log_file_path, 'w')
@@ -130,6 +140,8 @@ class Experiment:
                                     + self.defender_strategy + '\n')
                 self.log_file.write('game_time_limit: '
                                     + str(self.game_time_limit) + '\n')
+                self.log_file.write('ca_classifiers: '
+                                    + str(self.ca_classifiers) + '\n')
             except:
                 print('config: problem with log file', self.log_file_path)
                 traceback.print_exc()
