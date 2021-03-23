@@ -708,6 +708,10 @@ class CCEGPStrategy(Strategy):
         Run games with Attacker vs Defender from the provided populations.
         Average fitnesses of multiple evaluations of the same individual.
         """
+
+        # METHOD 1: Evaluate each attacker once.
+        # USES O(N) EVALUATIONS
+
         # Set up matrices to hold per-game fitness values for Attacker and Defender
         attacker_fitnesses = [[] for _ in range(len(attackers))]
         defender_fitnesses = [[] for _ in range(len(defenders))]
@@ -745,13 +749,14 @@ class CCEGPStrategy(Strategy):
         for defender_index in range(len(defenders)):
             defenders[defender_index].fitness = numpy.mean(defender_fitnesses[defender_index])
 
-        # ALTERNATE METHOD: Play every Attacker against every Defender and average fitnesses
-        # [Takes WAY too many evaluations]
+        # # METHOD 2: Play every Attacker against every Defender and average fitnesses
+        # # USES O(N^2) EVALUATIONS
+
         # # Set up matrices to hold per-game fitness values for Attacker and Defender
         # attacker_fitnesses = numpy.zeros((len(self.attacker_pop.individuals),
-        #                              len(self.defender_pop.individuals)))
+        #                               len(self.defender_pop.individuals)))
         # defender_fitnesses = numpy.zeros((len(self.defender_pop.individuals),
-        #                                len(self.attacker_pop.individuals)))
+        #                                 len(self.attacker_pop.individuals)))
         # # Play every Attacker against every Defender and perform bookkeeping
         # for attacker_index in range(len(self.attacker_pop.individuals)):
         #     attacker_individual = self.attacker_pop.individuals[attacker_index]
@@ -895,9 +900,10 @@ class CCEGPStrategy(Strategy):
             defender_offspring = self.recombine_mutate(self.defender_pop, defender_parents)
             self.defender_pop.individuals += defender_offspring
 
-            # Evaluate offspring
+            # Evaluate offspring within the total population
             eval_count, self.attacker_pop.evals_with_no_change = \
-                self.generation_evals(attacker_offspring, defender_offspring,
+                self.generation_evals(self.attacker_pop.individuals,
+                                      self.defender_pop.individuals,
                                       eval_count, self.attacker_pop.evals_with_no_change,
                                       self.attacker_pop.gen_high_fitness)
 
