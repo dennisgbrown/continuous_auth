@@ -115,24 +115,25 @@ class Experiment:
             except:
                 print('config: defender_solution_file_path not properly specified; using', self.defender_solution_file_path)
 
+            # Parse gamestate config properties
             try:
-                self.defender_strategy = self.config_parser.get('basic_options', 'defender_strategy')
+                self.defender_strategy = self.config_parser.get('game_options', 'defender_strategy')
                 print('config: defender_strategy =', self.defender_strategy)
             except:
                 print('config: defender_strategy not specified; using', self.defender_strategy)
 
             try:
-                self.game_time_limit = self.config_parser.getfloat('basic_options', 'game_time_limit')
+                self.game_time_limit = self.config_parser.getfloat('game_options', 'game_time_limit')
                 print('config: game_time_limit =', self.game_time_limit)
             except:
                 print('config: game_time_limit not specified; using', self.game_time_limit)
 
             try:
-                self.ca_classifiers = ast.literal_eval(self.config_parser.get('basic_options', 'ca_classifiers'))
+                self.ca_classifiers = ast.literal_eval(self.config_parser.get('game_options', 'ca_classifiers'))
                 print('config: ca_classifiers =', self.ca_classifiers)
             except:
                 print('config: ca_classifiers not specified; using', self.ca_classifiers)
-            # Parse gamestate config properties
+
             try:
                 self.lambda_u = self.config_parser.getfloat('game_options', 'lambda_u')
                 print('config: lambda_u =', self.lambda_u)
@@ -192,10 +193,8 @@ class Experiment:
                 self.log_file = open(self.log_file_path, 'w')
 
                 self.log_file.write('Result Log\n\n')
-                self.log_file.write('random seed: '
-                                    + str(self.random_seed) + '\n')
-                self.log_file.write('strategy: '
-                                    + self.strategy + '\n')
+                self.log_file.write('random seed: ' + str(self.random_seed) + '\n')
+                self.log_file.write('strategy: ' + self.strategy + '\n')
                 self.log_file.write('number of runs per experiment: '
                                     + str(self.num_runs_per_experiment) + '\n')
                 self.log_file.write('number of fitness evals per run: '
@@ -204,12 +203,19 @@ class Experiment:
                                     + self.attacker_solution_file_path + '\n')
                 self.log_file.write('defender solution file path: '
                                     + self.defender_solution_file_path + '\n')
-                self.log_file.write('defender_strategy: '
-                                    + self.defender_strategy + '\n')
-                self.log_file.write('game_time_limit: '
-                                    + str(self.game_time_limit) + '\n')
-                self.log_file.write('ca_classifiers: '
-                                    + str(self.ca_classifiers) + '\n')
+                self.log_file.write('defender_strategy: ' + self.defender_strategy + '\n')
+                self.log_file.write('game_time_limit: ' + str(self.game_time_limit) + '\n')
+                self.log_file.write('ca_classifiers: ' + str(self.ca_classifiers) + '\n')
+                self.log_file.write('lambda_u: ' + str(self.lambda_u) + '\n')
+                self.log_file.write('beta_u: ' + str(self.beta_u) + '\n')
+                self.log_file.write('sigma_u: ' + str(self.sigma_u) + '\n')
+                self.log_file.write('eta_u: ' + str(self.eta_u) + '\n')
+                self.log_file.write('nu_r: ' + str(self.nu_r) + '\n')
+                self.log_file.write('delta_l: ' + str(self.delta_l) + '\n')
+                self.log_file.write('delta_a: ' + str(self.delta_a) + '\n')
+                self.log_file.write('q: ' + str(self.q) + '\n')
+                self.log_file.write('gamma: ' + str(self.gamma) + '\n')
+
             except:
                 print('config: problem with log file', self.log_file_path)
                 traceback.print_exc()
