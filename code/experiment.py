@@ -50,6 +50,20 @@ class Experiment:
         # List of CA classifiers to use
         self.ca_classifiers = []
 
+        # game parameters
+        self.lambda_u = 1
+        self.beta_u = 100
+        self.sigma_u = 3
+        self.eta_u = 0.01
+        self.nu_r = 0.1
+        self.delta_l = 0.1
+        self.delta_a = 0.2
+        self.q = 0.7
+        self.gamma = 0.1
+        #self.m = 0
+        #self.C_a = 0
+
+
 
         try:
             self.config_parser = configparser.ConfigParser()
@@ -118,6 +132,60 @@ class Experiment:
                 print('config: ca_classifiers =', self.ca_classifiers)
             except:
                 print('config: ca_classifiers not specified; using', self.ca_classifiers)
+            # Parse gamestate config properties
+            try:
+                self.lambda_u = self.config_parser.getfloat('game_options', 'lambda_u')
+                print('config: lambda_u =', self.lambda_u)
+            except:
+                print('config: lambda_u not specified; using', self.lambda_u)
+
+            try:
+                self.beta_u = self.config_parser.getfloat('game_options', 'beta_u')
+                print('config: beta_u =', self.beta_u)
+            except:
+                print('config: beta_u not specified; using', self.beta_u)
+
+            try:
+                self.sigma_u = self.config_parser.getfloat('game_options', 'sigma_u')
+                print('config: sigma_u =', self.sigma_u)
+            except:
+                print('config: sigma_u not specified; using', self.sigma_u)
+
+            try:
+                self.eta_u = self.config_parser.getfloat('game_options', 'eta_u')
+                print('config: eta_u =', self.eta_u)
+            except:
+                print('config: eta_u not specified; using', self.eta_u)
+
+            try:
+                self.nu_r = self.config_parser.getfloat('game_options', 'nu_r')
+                print('config: nu_r =', self.nu_r)
+            except:
+                print('config: nu_r not specified; using', self.nu_r)
+
+            try:
+                self.delta_l = self.config_parser.getfloat('game_options', 'delta_l')
+                print('config: delta_l =', self.delta_l)
+            except:
+                print('config: delta_l not specified; using', self.delta_l)
+
+            try:
+                self.delta_a = self.config_parser.getfloat('game_options', 'delta_a')
+                print('config: delta_a =', self.delta_a)
+            except:
+                print('config: delta_a not specified; using', self.delta_a)
+
+            try:
+                self.q = self.config_parser.getfloat('game_options', 'q')
+                print('config: q =', self.q)
+            except:
+                print('config: q not specified; using', self.q)
+
+            try:
+                self.gamma = self.config_parser.getfloat('game_options', 'gamma')
+                print('config: gamma =', self.gamma)
+            except:
+                print('config: gamma not specified; using', self.gamma)
 
             # Dump parms to log file
             try:
