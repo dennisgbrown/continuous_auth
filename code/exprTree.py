@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import sys
+import random
 
 
 class ExprTree():
@@ -13,32 +14,60 @@ class ExprTree():
         self.world_data = []  # the world data that produced the fitness
 
 
+    def build_tree(self, pop, node, depth, dmax, grow_or_full):
+        """
+        Recursively build an expression tree to the given depth using either
+        the 'grow' or 'full' method.
+        """
+        expr_parms = None
+        # Randomly choose a new expression. If not at depth limit,
+        # choose an inner node from a set that depends on method 'grow' or 'full'
+        if (depth < dmax):
+            # Grow selects from all functions and terminals at this depth
+            if (grow_or_full == 'grow'):
+                # Choose the left value
+                expr_parms = random.choice(pop.functions + pop.terminals)
+            # Full selects only from non-terminals at this depth
+            else:
+                expr_parms = random.choice(pop.functions)
+        # If depth is at Dmax, randomly choose a terminal.
+        else:
+            expr_parms = random.choice(pop.terminals)
+
+        # Make a new tree node with this info
+        node.expr = DTExpr(expr_parms)
+        node.depth = depth
+
+        # If this node is not a terminal, make its children and update
+        # height and count of this node.
+        if (not (node.expr.datatype == 'terminal')):
+            node.left_child = Node()
+            self.build_tree(pop, node.left_child, depth + 1, dmax, grow_or_full)
+            node.right_child = Node()
+            self.build_tree(pop, node.right_child, depth + 1, dmax, grow_or_full)
+
+        return node
+
+
 class Node():
     """
     Defines a node in an ExprTree.
 
     We're building a (form of) Decision Tree. Will it work? Definitely maybe!
 
-    Each interior node will have
-    two values from the controller function set (func1 and func2)
-    that are compared.
-
-    Each leaf node will have a single value from the controller terminal set.
+    Each node contains an expression. Interior nodes produce a boolean value
+    while leaf nodes produce terminal values.
 
     Some abuses:
         - There are either 2 children or 0 children.
         - 0 children indicates this is a terminal node. It's often checked
           by left_child is None?
-        - func1 is the node value if this is a terminal node.
     """
-    def __init__(self, func1 = None, func2 = None,
-                 left_child = None, right_child = None,
-                 constant = 0):
-        self.func1 = func1
-        self.func2 = func2
+    def __init__(self, expr = None,
+                 left_child = None, right_child = None):
+        self.expr = expr
         self.left_child = left_child
         self.right_child = right_child
-        self.constant = constant
         self.parent = None
         self.depth = 0
         self.height = 0
@@ -47,27 +76,16 @@ class Node():
 
     def calc(self, precalcs):
         """
-        Return the value represented by this node.
+        Recursive method to determine the value represented by this node.
         """
-        # If this is a terminal, return its value (stored as "func1")
+        curr_val = self.expr.calc_expr(precalcs)
+
+        # If this is a terminal, return its value
         if (self.left_child is None):
-            return self.func1
+            return curr_val
 
-        # Set left and right values for comparison
-        val1 = 0
-        val2 = 0
-        if (self.func1 == 'constant'):
-            val1 = self.constant
-        else:
-            val1 = precalcs[self.func1]
-
-        if (self.func2 == 'constant'):
-            val2 = self.constant
-        else:
-            val2 = precalcs[self.func2]
-
-        # Return either left or right child based on comparison
-        if (val1 < val2):
+        # Return either left or right child based on boolean result of calc
+        if (curr_val == True):
             return self.left_child.calc(precalcs)
         else:
             return self.right_child.calc(precalcs)
@@ -118,11 +136,9 @@ class Node():
         """
         Copy values from given node to this node
         """
-        self.func1 = node.func1
-        self.func2 = node.func2
+        self.expr = node.expr
         self.left_child = node.left_child
         self.right_child = node.right_child
-        self.constant = node.constant
         self.parent = node.parent
         self.depth = node.depth
         self.height = node.height
@@ -135,24 +151,14 @@ class Node():
 
         level = depth of this node, for printing the pipe indents
         """
+        return_string = ('|' * level) + self.expr.__repr__() + '\n'
+
         # If terminal node, return string representing it
         if (self.left_child is None):
-            return ('|' * level) + self.func1 + '\n'
+            return return_string
 
         # If function node, return a recursively-generated string.
         else:
-            return_string = ('|' * level) + 'if ';
-            if (self.func1 == 'constant'):
-                return_string += str(self.constant)
-            else:
-                return_string += self.func1
-            return_string += ' < '
-            if (self.func2 == 'constant'):
-                return_string += str(self.constant)
-            else:
-                return_string += self.func2
-            return_string += '\n'
-
             return return_string \
                 + self.left_child.repr_helper(level + 1) \
                 + self.right_child.repr_helper(level + 1)
@@ -163,3 +169,64 @@ class Node():
         Return a string representing this node.
         """
         return self.repr_helper(0)
+
+
+class DTExpr():
+    """
+    Decision Tree expressions that live in Nodes of the expression tree
+    """
+    def __init__(self, expr_parms):
+        self.name = expr_parms[0]
+        self.datatype = expr_parms[1]
+        self.invert = False
+        self.opts_list = expr_parms[2] if (len(expr_parms) > 2) else None
+        self.comp_name = None
+        self.constant = 0
+
+        # If this is a real comparison, choose against what we compare it.
+        if (self.datatype == 'real'):
+            self.comp_name = random.choice(self.opts_list[0])
+            if (self.comp_name == 'constant'):
+                self.constant = random.uniform(self.opts_list[1][0],
+                                               self.opts_list[1][1])
+
+        # Randomly choose if this comparison is inverted
+        # ("greater than" instead of "less than")
+        self.invert = (random.random() < 0.5)
+
+
+    def calc_expr(self, precalcs):
+        """
+        Return the current value of this expression (name if terminal,
+        boolean if internal node)
+        """
+        if (self.datatype == 'terminal'):
+            return self.name
+
+        retval = True
+        val1 = precalcs[self.name]
+
+        # Check for boolean (one argument) case
+        if (self.datatype == 'boolean'):
+            retval = bool(val1)
+
+        # Check for comparison of real values
+        if (self.datatype == 'real'):
+            val2 = self.constant if (self.comp_name == 'constant') \
+                else precalcs[self.comp_name]
+            retval = (val1 < val2)
+
+        return retval if (not(self.invert)) else (not(retval))
+
+
+    def __repr__(self):
+        if (self.datatype == 'terminal'):
+            return self.name
+        if (self.datatype == 'boolean'):
+            return 'if ' + ('not ' if (self.invert) else '') + self.name
+        if (self.datatype == 'real'):
+            return_string = 'if ' + self.name
+            return_string += ' < ' if (not(self.invert)) else ' > '
+            return_string += str(self.constant) if (self.comp_name == 'constant') else self.comp_name
+            return return_string
+        return 'unknown datatype: ' + self.datatype

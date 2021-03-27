@@ -1,37 +1,50 @@
 # -*- coding: utf-8 -*-
 
-
-def fill_precalcs(function_names, game_state):
+class Controller():
     """
-    Precalculate the game state values before evaluating the tree
-    so we don't recalculate "static" values repeatedly (static within
-    the scope of a single tree evalution)
+    Base class for controllers.
     """
-    precalcs = {}
-    for function_name in function_names:
-        if (function_name != 'constant'):
-            precalcs[function_name] = getattr(game_state, function_name)()
-    return precalcs
+
+    def __init__(self, id, tree):
+        """
+        Initialization requires the expression tree asociated with this controller.
+        """
+        self.id = id
+        self.tree = tree
+        self.next_move = None
 
 
-class AttackerController():
+    @staticmethod
+    def fill_precalcs(functions, game_state):
+        """
+        Precalculate the game state values before evaluating the tree
+        so we don't recalculate "static" values repeatedly (static within
+        the scope of a single tree evalution)
+        """
+        precalcs = {}
+        for function in functions:
+            if (function[0] != 'constant'):
+                precalcs[function[0]] = getattr(game_state, function[0])()
+        return precalcs
+
+
+    def decide_move(self, game_state):
+        pass
+
+
+class AttackerController(Controller):
     """
     Attacker controller
     """
     # Canonical list of functions for Attacker supported by the Expression Tree class
-    functions = ['T', 'S', 'W', 'constant']
+    functions = [['S', 'boolean'],
+                 ['T', 'real', [['W', 'constant'], [0, 1000]]],
+                 ['W', 'real', [['T', 'constant'], [0, 1000]]]]
 
     # Canonical list of terminals for Attacker supported by the Expression Tree class
-    terminals = ['attack', 'listen', 'wait']
-
-
-    def __init__(self, attacker_id, tree):
-        """
-        Initialization requires the expression tree asociated with this controller.
-        """
-        self.attacker_id = attacker_id
-        self.tree = tree
-        self.next_move = None
+    terminals = [['attack', 'terminal'],
+                 ['listen', 'terminal'],
+                 ['wait', 'terminal']]
 
 
     def decide_move(self, game_state):
@@ -41,27 +54,21 @@ class AttackerController():
         """
         # print('------------------\n' + str(self.tree.root))
         # Set the next move
-        self.next_move = self.tree.root.calc(fill_precalcs(self.functions, game_state))
+        self.next_move = self.tree.root.calc(Controller.fill_precalcs(self.functions,
+                                                                      game_state))
 
 
-class DefenderController():
+class DefenderController(Controller):
     """
     Defender controller
     """
     # Canonical list of functions for Defender supported by the Expression Tree class
-    functions = ['T', 'S', 'constant']
+    functions = [['S', 'boolean'],
+                 ['T', 'real', [['constant'], [0, 1000]]]]
 
     # Canonical list of terminals for Defender supported by the Expression Tree class
-    terminals = ['block', 'unblock']
-
-
-    def __init__(self, defender_id, tree):
-        """
-        Initialization requires the expression tree asociated with this controller.
-        """
-        self.defender_id = defender_id
-        self.tree = tree
-        self.next_move = None
+    terminals = [['block', 'terminal'],
+                 ['unblock', 'terminal']]
 
 
     def decide_move(self, game_state):
@@ -70,4 +77,7 @@ class DefenderController():
         the action with the expected best payoff
         """
         # Set the next move
-        self.next_move = self.tree.root.calc(fill_precalcs(self.functions, game_state))
+        self.next_move = self.tree.root.calc(Controller.fill_precalcs(self.functions,
+                                                                      game_state))
+
+

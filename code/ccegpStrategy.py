@@ -48,10 +48,6 @@ class CCEGPStrategy(Strategy):
         self.defender_parsimony_technique = 'size'
         self.defender_pppc = 0.05  # parsimony pressure penalty coefficient
 
-        # Bounds for randomly-generated constants in the tree
-        self.rand_constant_low = -1.0
-        self.rand_constant_high = 1.0
-
         # Logging and termination information
         self.ciao_file_path_root = 'data/defaultCIAOData'
         self.parsimony_log_file_path = 'data/defaultParsimonyLog.txt'
@@ -215,18 +211,6 @@ class CCEGPStrategy(Strategy):
             print('config: defender_pppc not specified; using', self.defender_pppc)
 
         try:
-            self.rand_constant_low = experiment.config_parser.getfloat('ccegp_options', 'rand_constant_low')
-            print('config: rand_constant_low =', self.rand_constant_low)
-        except:
-            print('config: rand_constant_low not specified; using', self.rand_constant_low)
-
-        try:
-            self.rand_constant_high = experiment.config_parser.getfloat('ccegp_options', 'rand_constant_high')
-            print('config: rand_constant_high =', self.rand_constant_high)
-        except:
-            print('config: rand_constant_high not specified; using', self.rand_constant_high)
-
-        try:
             self.termination = experiment.config_parser.get('ccegp_options',
                                                             'termination').lower()
             print('config: termination =', self.termination)
@@ -302,8 +286,6 @@ class CCEGPStrategy(Strategy):
                                       + str(self.defender_tournament_size_for_survival_selection) + '\n')
         experiment.log_file.write('defender_parsimony technique: ' + self.defender_parsimony_technique + '\n')
         experiment.log_file.write('defender_parsimony pressure penalty coefficient: ' + str(self.defender_pppc) + '\n')
-        experiment.log_file.write('rand_constant_low: ' + str(self.rand_constant_low) + '\n')
-        experiment.log_file.write('rand_constant_high: ' + str(self.rand_constant_high) + '\n')
         experiment.log_file.write('termination method: ' + self.termination + '\n')
         if (self.termination == 'convergence'):
             experiment.log_file.write('n evals for convergence: '
@@ -320,53 +302,6 @@ class CCEGPStrategy(Strategy):
             return None
 
 
-    def build_tree(self, pop, node, depth, dmax, grow_or_full):
-        """
-        Recursively build an expression tree to the given depth using either
-        the 'grow' or 'full' method.
-        """
-        func1 = None
-        func2 = None
-        # Randomly choose a new expression. If not at depth limit,
-        # choose an inner node from a set that depends on method 'grow' or 'full'
-        if (depth < dmax):
-            # Grow selects from all functions and terminals at this depth
-            if (grow_or_full == 'grow'):
-                # Choose the left value
-                func1 = (pop.functions + pop.terminals) \
-                    [random.randint(0, (len(pop.functions) + len(pop.terminals) - 1))]
-                # If the first func isn't a terminal, choose the right value
-                # from the non-terminals.
-                # TODO: Ensure we don't build node with two constants... ???
-                if (func1 in pop.functions):
-                    func2 = pop.functions[random.randint(0, len(pop.functions) - 1)]
-            # Full selects only from non-terminals at this depth
-            else:
-                func1 = pop.functions[random.randint(0, len(pop.functions) - 1)]
-                func2 = pop.functions[random.randint(0, len(pop.functions) - 1)]
-        # If depth is at Dmax, randomly choose a terminal.
-        else:
-            func1 = pop.terminals[random.randint(0, len(pop.terminals) - 1)]
-
-        # Make a new tree node with this info
-        node.func1 = func1
-        node.func2 = func2
-        if ((func1 == 'constant') or (func2 == 'constant')):
-            node.constant = random.uniform(self.rand_constant_low,
-                                           self.rand_constant_high)
-        node.depth = depth
-
-        # If this node is not a terminal, make its children and update
-        # height and count of this node.
-        if (not (func1 in pop.terminals)):
-            node.left_child = Node()
-            self.build_tree(pop, node.left_child, depth + 1, dmax, grow_or_full)
-            node.right_child = Node()
-            self.build_tree(pop, node.right_child, depth + 1, dmax, grow_or_full)
-
-        return node
-
-
     def initialize_population(self, pop):
         """
         Given an empty population, generate and return an initial population
@@ -376,14 +311,16 @@ class CCEGPStrategy(Strategy):
 
         for i in range(pop.ea_mu):
             root = Node()
+            pop.individuals[i] = ExprTree(root)
+
             # Full method
             if (random.random() < 0.5):
-                self.build_tree(pop, root, 0, pop.dmax_init, 'full')
+                pop.individuals[i].build_tree(pop, root, 0, pop.dmax_init, 'full')
+
             # Grow method
             else:
-                self.build_tree(pop, root, 0, pop.dmax_init, 'grow')
+                pop.individuals[i].build_tree(pop, root, 0, pop.dmax_init, 'grow')
 
-            pop.individuals[i] = ExprTree(root)
             pop.individuals[i].root.reset_metrics()
 
 
@@ -556,13 +493,13 @@ class CCEGPStrategy(Strategy):
         # Randomly pick a node in the expression tree
         selected_node = offspring.root.find_nth_node(random.randint(1, offspring.root.size))
 
-        # If the selected node is a terminal node, skip mutation.
-        # TODO: Support terminal nodes too!
-        if (not (selected_node.left_child is None)):
-            return offspring
+        # # If the selected node is a terminal node, skip mutation.
+        # # TODO: Support terminal nodes too!
+        # if (not (selected_node.left_child is None)):
+        #     return offspring
 
         # Build a new (sub)tree there. Arbitrarily choose 'grow' method and limit depth to dmax_overall.
-        self.build_tree(pop, selected_node, selected_node.depth, pop.dmax_overall, 'grow')
+        offspring.build_tree(pop, selected_node, selected_node.depth, pop.dmax_overall, 'grow')
 
         # Reset the tree metrics we just screwed up
         offspring.root.reset_metrics()
@@ -585,11 +522,11 @@ class CCEGPStrategy(Strategy):
             selected_node1 = offspring1.root.find_nth_node(random.randint(1, offspring1.root.size))
             selected_node2 = offspring2.root.find_nth_node(random.randint(1, offspring2.root.size))
 
-            # If either node is a terminal node, skip recombination.
-            # TODO: Support terminal nodes too!
-            if ((selected_node1.left_child is None)
-                or (selected_node2.left_child is None)):
-                return [offspring1, offspring2]
+            # # If either node is a terminal node, skip recombination.
+            # # TODO: Support terminal nodes too!
+            # if ((selected_node1.left_child is None)
+            #     or (selected_node2.left_child is None)):
+            #     return [offspring1, offspring2]
 
             # If the swap would cause either offspring to exceed Dmax,
             # try again.
