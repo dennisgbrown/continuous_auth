@@ -194,6 +194,11 @@ class DTExpr():
         # ("greater than" instead of "less than")
         self.invert = (random.random() < 0.5)
 
+        # Generate random parameters for attack
+        if (self.name == 'attack'):
+            self.opts_list = []
+            for _ in range(6): self.opts_list.append(random.random())
+
 
     def calc_expr(self, precalcs):
         """
@@ -221,7 +226,10 @@ class DTExpr():
 
     def __repr__(self):
         if (self.datatype == 'terminal'):
-            return self.name
+            if (self.name == 'attack'):
+                return self.name + ' ' + str(self.opts_list)
+            else:
+                return self.name
         if (self.datatype == 'boolean'):
             return 'if ' + ('not ' if (self.invert) else '') + self.name
         if (self.datatype == 'real'):
