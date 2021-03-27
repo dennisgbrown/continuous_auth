@@ -493,11 +493,6 @@ class CCEGPStrategy(Strategy):
         # Randomly pick a node in the expression tree
         selected_node = offspring.root.find_nth_node(random.randint(1, offspring.root.size))
 
-        # # If the selected node is a terminal node, skip mutation.
-        # # TODO: Support terminal nodes too!
-        # if (not (selected_node.left_child is None)):
-        #     return offspring
-
         # Build a new (sub)tree there. Arbitrarily choose 'grow' method and limit depth to dmax_overall.
         offspring.build_tree(pop, selected_node, selected_node.depth, pop.dmax_overall, 'grow')
 
@@ -521,12 +516,6 @@ class CCEGPStrategy(Strategy):
             # Pick a node in each tree
             selected_node1 = offspring1.root.find_nth_node(random.randint(1, offspring1.root.size))
             selected_node2 = offspring2.root.find_nth_node(random.randint(1, offspring2.root.size))
-
-            # # If either node is a terminal node, skip recombination.
-            # # TODO: Support terminal nodes too!
-            # if ((selected_node1.left_child is None)
-            #     or (selected_node2.left_child is None)):
-            #     return [offspring1, offspring2]
 
             # If the swap would cause either offspring to exceed Dmax,
             # try again.
