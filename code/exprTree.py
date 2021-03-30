@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import sys
 import random
-
+from graphviz import Digraph
 
 class ExprTree():
     """
@@ -48,7 +48,32 @@ class ExprTree():
 
         return node
 
-
+    def dot_viz(self):
+        """
+        Return a graphviz DOT object that can be rendered to display
+        the expression tree.
+        """
+        dot = Digraph()
+        self._dot_viz_recurse(self.root, dot)
+        return dot
+        
+    def _dot_viz_recurse(self, node, dot, order=0):
+        """
+        auxiliary recursive function for dot_viz that passes the dot object,
+        order is just a counter for a (preorder?) traversal used to uniquely
+        name the nodes
+        """
+        dot.node(str(order), str(node.expr.__repr__()))
+        if (node.left_child is None):
+            return order
+        new_order = self._dot_viz_recurse(node.left_child, dot, order=order+1)
+        dot.edge(str(order),str(order+1))
+        # I take your word that a non-leaf node has exactly two children
+        newer_order = self._dot_viz_recurse(node.right_child, dot, order=new_order+1)
+        dot.edge(str(order),str(new_order+1))
+        # ordering the edge after the nodes results in awkward memory
+        return newer_order
+    
 class Node():
     """
     Defines a node in an ExprTree.

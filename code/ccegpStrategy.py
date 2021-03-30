@@ -850,5 +850,7 @@ class CCEGPStrategy(Strategy):
 
         return self.attacker_pop.run_high_fitness, self.experiment.world_data, \
             str(self.attacker_pop.run_best_individual.root), \
-            self.defender_pop.run_high_fitness, str(self.defender_pop.run_best_individual.root)
+            self.defender_pop.run_high_fitness, str(self.defender_pop.run_best_individual.root), \
+            self.attacker_pop.run_best_individual.dot_viz(), \
+            self.defender_pop.run_best_individual.dot_viz()
 
