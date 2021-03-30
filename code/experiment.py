@@ -29,16 +29,16 @@ class Experiment:
         self.log_file_path = 'logs/defaultLog.txt'
         self.log_file = None
         self.attacker_solution_file_path = 'solutions/defaultAttackerSolution.txt'
-        self.attacker_solution_png_path = 'solutions/defaultAttackerSolution.png'
+        self.attacker_solution_png_path = 'solutions/defaultAttackerSolution.dot'
         self.defender_solution_file_path = 'solutions/defaultDefenderSolution.txt'
-        self.defender_solution_png_path = 'solutions/defaultDefenderSolution.txt'
+        self.defender_solution_png_path = 'solutions/defaultDefenderSolution.dot'
         self.high_score_world_file_path = 'worlds/defaultWorld.txt'
         self.world_data = None  # Array of strings that will be written to world data file
 
         self.render_solutions = False
         self.attacker_open_png = False
         self.defender_open_png = False
-        
+
         self.num_attackers = 1
         self.num_defenders = 1
 
@@ -116,10 +116,10 @@ class Experiment:
 
             try:
                 self.attacker_solution_png_path = self.config_parser.get('basic_options', 'attacker_solution_png_path')
-                print('config: attacker_solution_png_path =', self.attacker_soltuion_png_path)
+                print('config: attacker_solution_png_path =', self.attacker_solution_png_path)
             except:
                 print('config: attacker_solution_png_path not properly specified; using', self.attacker_solution_png_path)
-                
+
             try:
                 self.defender_solution_file_path = self.config_parser.get('basic_options', 'defender_solution_file_path')
                 print('config: defender_solution_file_path =', self.defender_solution_file_path)
@@ -128,7 +128,7 @@ class Experiment:
 
             try:
                 self.defender_solution_png_path = self.config_parser.get('basic_options', 'defender_solution_png_path')
-                print('config: defender_solution_png_path =', self.defender_soltuion_png_path)
+                print('config: defender_solution_png_path =', self.defender_solution_png_path)
             except:
                 print('config: defender_solution_png_path not properly specified; using', self.defender_solution_png_path)
 
@@ -143,14 +143,12 @@ class Experiment:
                 print('config: attacker_open_png =', self.attacker_open_png)
             except:
                 print('config: attacker_open_png not properly specified; using', self.attacker_open_png)
-                
+
             try:
                 self.defender_open_png = self.config_parser.getboolean('basic_options', 'defender_open_png')
                 print('config: defender_open_png =', self.defender_open_png)
             except:
                 print('config: defender_open_png not properly specified; using', self.defender_open_png)
- 
-                
 
             # Parse gamestate config properties
             try:
@@ -291,8 +289,10 @@ class Experiment:
                 defender_run_high_fitness, defender_run_best_solution, attacker_dot, defender_dot \
                 = strategy_instance.execute_one_run()
 
-            print('Best attacker tree of run:\n' + attacker_run_best_solution)
-            print('Best defender tree of run:\n' + defender_run_best_solution)
+            print('\nBest attacker tree of run:\n' + attacker_run_best_solution)
+            print('\nBest attacker dot of run:\n' + str(attacker_dot))
+            print('\nBest defender tree of run:\n' + defender_run_best_solution)
+            print('\nBest defender dot of run:\n' + str(defender_dot))
 
             # If best of run is best overall, update appropriate values
             if (self.strategy != 'ccegp'):

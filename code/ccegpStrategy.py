@@ -665,9 +665,9 @@ class CCEGPStrategy(Strategy):
             else:
                 evals_with_no_change = 0
 
-            # Provide status message every nth evaluation.
-            if ((eval_count % 10) == 0):
-                print('\r', eval_count, 'evals', end =" ")
+            # # Provide status message every nth evaluation.
+            # if ((eval_count % 10) == 0):
+            #     print('\r', eval_count, 'evals', end =" ")
 
         # Set the fitness of each Attacker and Defender to the average of its list of fitnesses
         for attacker_index in range(len(attackers)):
@@ -733,9 +733,9 @@ class CCEGPStrategy(Strategy):
                 # 0,0 is lower left, so adjust the row index
                 fitnesses[num_gens - attacker - 1][defender] = self.attacker_pop.best_individuals[attacker].fitness
 
-                # Provide status message every nth evaluation.
-                if ((eval_count % 10) == 0):
-                    print('\r', eval_count, 'evals', end = ' ')
+                # # Provide status message every nth evaluation.
+                # if ((eval_count % 10) == 0):
+                #     print('\r', eval_count, 'evals', end = ' ')
 
         # Normalize fitnesses to [0.0 - 1.0] where 1.0 is best
         min_fitness = numpy.min(fitnesses)

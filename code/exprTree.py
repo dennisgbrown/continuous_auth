@@ -56,7 +56,7 @@ class ExprTree():
         dot = Digraph()
         self._dot_viz_recurse(self.root, dot)
         return dot
-        
+
     def _dot_viz_recurse(self, node, dot, order=0):
         """
         auxiliary recursive function for dot_viz that passes the dot object,
@@ -73,7 +73,7 @@ class ExprTree():
         dot.edge(str(order),str(new_order+1))
         # ordering the edge after the nodes results in awkward memory
         return newer_order
-    
+
 class Node():
     """
     Defines a node in an ExprTree.
@@ -222,7 +222,7 @@ class DTExpr():
         # Generate random parameters for attack
         if (self.name == 'attack'):
             self.opts_list = []
-            for _ in range(6): self.opts_list.append(random.random())
+            # for _ in range(6): self.opts_list.append(random.random())
 
 
     def calc_expr(self, precalcs):

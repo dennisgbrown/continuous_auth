@@ -37,9 +37,10 @@ class AttackerController(Controller):
     Attacker controller
     """
     # Canonical list of functions for Attacker supported by the Expression Tree class
-    functions = [['S', 'boolean'],
-                 ['T', 'real', [['W', 'constant'], [0, 1000]]],
-                 ['W', 'real', [['T', 'constant'], [0, 1000]]]]
+    functions = [['B', 'boolean'],
+                 ['T', 'real', [['AO', 'constant'], [0, 1000]]],
+                 ['AO', 'real', [['T', 'AR', 'constant'], [0, 1000]]],
+                 ['AR', 'real', [['T', 'AO', 'constant'], [0, 1000]]]]
 
     # Canonical list of terminals for Attacker supported by the Expression Tree class
     terminals = [['attack', 'terminal'],
@@ -63,7 +64,7 @@ class DefenderController(Controller):
     Defender controller
     """
     # Canonical list of functions for Defender supported by the Expression Tree class
-    functions = [['S', 'boolean'],
+    functions = [['B', 'boolean'],
                  ['T', 'real', [['constant'], [0, 1000]]]]
 
     # Canonical list of terminals for Defender supported by the Expression Tree class
