@@ -66,10 +66,10 @@ class ExprTree():
         dot.node(str(order), str(node.expr.__repr__()))
         if (node.left_child is None):
             return order
-        new_order = self._dot_viz_recurse(node.left_child, dot, order=order+1)
-        dot.edge(str(order),str(order+1))
         # I take your word that a non-leaf node has exactly two children
-        newer_order = self._dot_viz_recurse(node.right_child, dot, order=new_order+1)
+        new_order = self._dot_viz_recurse(node.right_child, dot, order=order+1)
+        dot.edge(str(order),str(order+1))
+        newer_order = self._dot_viz_recurse(node.left_child, dot, order=new_order+1)
         dot.edge(str(order),str(new_order+1))
         # ordering the edge after the nodes results in awkward memory
         return newer_order

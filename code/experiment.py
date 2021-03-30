@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-d
+# -*- coding: utf-8 -*-
 import sys
 import configparser
 import random
