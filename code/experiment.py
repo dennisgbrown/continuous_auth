@@ -36,6 +36,7 @@ class Experiment:
         self.world_data = None  # Array of strings that will be written to world data file
 
         self.render_solutions = False
+        self.print_dots = False
         self.attacker_open_png = False
         self.defender_open_png = False
 
@@ -66,6 +67,7 @@ class Experiment:
         self.delta_a = 0.2
         self.q = 0.7
         self.gamma = 0.1
+        self.rho = 0.98
         #self.m = 0
         #self.C_a = 0
 
@@ -137,6 +139,12 @@ class Experiment:
                 print('config: render_solutions =', self.render_solutions)
             except:
                 print('config: render_solutions not properly specified; using', self.render_solutions)
+
+            try:
+                self.print_dots = self.config_parser.getboolean('basic_options', 'print_dots')
+                print('config: print_dots =', self.print_dots)
+            except:
+                print('config: print_dots not properly specified; using', self.print_dots)
 
             try:
                 self.attacker_open_png = self.config_parser.getboolean('basic_options', 'attacker_open_png')
@@ -223,6 +231,13 @@ class Experiment:
             except:
                 print('config: gamma not specified; using', self.gamma)
 
+            try:
+                self.rho = self.config_parser.getfloat('game_options', 'rho')
+                print('config: rho =', self.rho)
+            except:
+                print('config: rho not specified; using', self.rho)
+
+
             # Dump parms to log file
             try:
                 self.log_file = open(self.log_file_path, 'w')
@@ -250,6 +265,7 @@ class Experiment:
                 self.log_file.write('delta_a: ' + str(self.delta_a) + '\n')
                 self.log_file.write('q: ' + str(self.q) + '\n')
                 self.log_file.write('gamma: ' + str(self.gamma) + '\n')
+                self.log_file.write('rho: ' + str(self.rho) + '\n')
 
             except:
                 print('config: problem with log file', self.log_file_path)
@@ -290,9 +306,11 @@ class Experiment:
                 = strategy_instance.execute_one_run()
 
             print('\nBest attacker tree of run:\n' + attacker_run_best_solution)
-            print('\nBest attacker dot of run:\n' + str(attacker_dot))
+            if (self.print_dots):
+                print('\nBest attacker dot of run:\n' + str(attacker_dot))
             print('\nBest defender tree of run:\n' + defender_run_best_solution)
-            print('\nBest defender dot of run:\n' + str(defender_dot))
+            if (self.print_dots):
+                print('\nBest defender dot of run:\n' + str(defender_dot))
 
             # If best of run is best overall, update appropriate values
             if (self.strategy != 'ccegp'):

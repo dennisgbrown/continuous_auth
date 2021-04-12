@@ -60,6 +60,7 @@ class GameState:
         self.delta_a = experiment.delta_a
         self.q = experiment.q
         self.gamma = experiment.gamma
+        self.rho = experiment.rho
         #self.m = 0
         #self.C_a = 0
 
@@ -219,7 +220,8 @@ class GameState:
             if (random.random() < self.delta_a):
                 self.state = GameState.ATTACKER_DETECTED
             else:
-                self.attacker_reward += 1
+                # the attacker reward is discounted by a rho factor in to add time pressure
+                self.attacker_reward += self.rho ** (self.t - 1)
 
         # If attacker is detected, game over
         if ((self.state == GameState.ATTACKER_DETECTED)

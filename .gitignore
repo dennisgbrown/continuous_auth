@@ -142,3 +142,6 @@ data/
 !worlds/.placeholder
 !solutions/.placeholder
 !data/.placeholder
+
+# emacs backups
+*~
