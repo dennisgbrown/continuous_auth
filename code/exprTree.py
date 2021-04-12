@@ -13,7 +13,6 @@ class ExprTree():
         self.score = -1
         self.world_data = []  # the world data that produced the fitness
 
-
     def build_tree(self, pop, node, depth, dmax, grow_or_full):
         """
         Recursively build an expression tree to the given depth using either
@@ -45,8 +44,40 @@ class ExprTree():
             self.build_tree(pop, node.left_child, depth + 1, dmax, grow_or_full)
             node.right_child = Node()
             self.build_tree(pop, node.right_child, depth + 1, dmax, grow_or_full)
-
+        
         return node
+
+    def clean_tree(self):
+        """
+        Do some simple tree cleaning by collapsing any subtrees that result in a single
+        terminal node. It's probably worth doing this after every tree generation and
+        mutation so that mutations are more meaningful.
+        """
+        self.root = self._clean_tree_recurse(self.root)
+        # is one reset better here than incremental resets as we collapse the tree?
+        #self.root.reset_metrics()
+        # actually it appears that resetting metrics is delegated to the caller
+        
+    def _clean_tree_recurse(self, node):
+        """
+        recurse on the node and collapse redundant branches
+        """
+        # If this is a terminal node return it
+        if (node.left_child is None):
+            return node
+        # else clean the left and right subtrees
+        node.left_child = self._clean_tree_recurse(node.left_child)
+        node.right_child = self._clean_tree_recurse(node.right_child)
+        # if both left and right subtrees are terminal, and their actions are the same,
+        # then compress this subtree into that action by returning the terminal node
+        if ((node.left_child.left_child is None and node.right_child.left_child is None) and
+            (node.left_child.expr.name == node.right_child.expr.name)):
+            # TODO: maybe delete right and parent nodes? recursively delete right? idk
+            # maybe python garbage collection is fine
+            return node.left_child
+        # else we can't colapse this node so return the full tree
+        return node
+            
 
     def dot_viz(self):
         """
@@ -97,7 +128,6 @@ class Node():
         self.depth = 0
         self.height = 0
         self.size = 1
-
 
     def calc(self, precalcs):
         """
@@ -219,10 +249,11 @@ class DTExpr():
         # ("greater than" instead of "less than")
         self.invert = (random.random() < 0.5)
 
+        # Commenting this out while it's unused
         # Generate random parameters for attack
-        if (self.name == 'attack'):
-            self.opts_list = []
-            # for _ in range(6): self.opts_list.append(random.random())
+        # if (self.name == 'attack'):
+        #     self.opts_list = []
+        #     # for _ in range(6): self.opts_list.append(random.random())
 
 
     def calc_expr(self, precalcs):
@@ -251,10 +282,12 @@ class DTExpr():
 
     def __repr__(self):
         if (self.datatype == 'terminal'):
-            if (self.name == 'attack'):
-                return self.name + ' ' + str(self.opts_list)
-            else:
-                return self.name
+            return self.name
+        # again commenting out while unused
+            # if (self.name == 'attack'):
+            #     return self.name + ' ' + str(self.opts_list)
+            # else:
+            #     return self.name
         if (self.datatype == 'boolean'):
             return 'if ' + ('not ' if (self.invert) else '') + self.name
         if (self.datatype == 'real'):

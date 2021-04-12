@@ -320,7 +320,8 @@ class CCEGPStrategy(Strategy):
             # Grow method
             else:
                 pop.individuals[i].build_tree(pop, root, 0, pop.dmax_init, 'grow')
-
+                
+            pop.individuals[i].clean_tree()
             pop.individuals[i].root.reset_metrics()
 
 
@@ -496,6 +497,8 @@ class CCEGPStrategy(Strategy):
         # Build a new (sub)tree there. Arbitrarily choose 'grow' method and limit depth to dmax_overall.
         offspring.build_tree(pop, selected_node, selected_node.depth, pop.dmax_overall, 'grow')
 
+        # clean the tree to remove non-branches
+        offspring.clean_tree()
         # Reset the tree metrics we just screwed up
         offspring.root.reset_metrics()
 
@@ -530,6 +533,8 @@ class CCEGPStrategy(Strategy):
             selected_node2.copy(temp_node)
             match_found = True
 
+        offspring1.clean_tree()
+        offspring2.clean_tree()
         # Reset the tree metrics we just screwed up
         offspring1.root.reset_metrics()
         offspring2.root.reset_metrics()
