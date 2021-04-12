@@ -15,8 +15,9 @@ class Keystrokes():
     """
 
     def __init__(self, filename):
-        self.strokes = _init_from_txt(filename)
+        self.strokes = Keystrokes._init_from_txt(filename)
 
+    @staticmethod
     def _init_from_txt(filename):
         """
         For our purposes it's easiest to store keylogs in a human readable txt file (since we're not
@@ -98,23 +99,23 @@ class ngrams():
         """
         for ks in keystrokes:
             i = 0
-
+            strokes = ks.strokes
             # TODO: clean this mess into
             # i = find_first_ngram()
             # add durations for keys i, i+1, ... , i+n-2
             # do add_ngram while key i+n and i+n-1 within latency cutoff
             # if not done JMP to TODO:
-            while i + n <= len(ks):
+            while i + n <= len(strokes):
                 
                 # keep a flag if we're starting an ngram chain to avoid overcounting
                 # individual key durations within the chain
-                Fresh = True
+                fresh = True
                 j = i
                 # for j = i, i+1, ... i+n-2, find the first n keys where all digram latencies are
                 # within the cutoff
-                while j + 1 < len(ks) and j < i + n - 1:
+                while j + 1 < len(strokes) and j < i + n - 1:
                     # Check that the latency between key j+1 and j is within the cutoff
-                    if ks[j+1][1] - ks[j][1] > cutoff:
+                    if strokes[j+1][1] - strokes[j][1] > cutoff:
                         # if not, reset i to the next key and restart
                         i = j + 1
                         j = i
@@ -122,14 +123,14 @@ class ngrams():
                         j += 1
                 # now we have an ngram within the cutoff, and as long as the next key doesn't break
                 # that, we can keep adding ngrams from this sequence to the pool
-                while i + n <= len(ks):
+                while i + n <= len(strokes):
                     # note this looks very nested but it's really just a messy jump
-                    self.add_ngram(ks[i:i+n], fresh)
+                    self.add_ngram(strokes[i:i+n], fresh)
                     fresh = False
 
                     # break out of this and "restart" the ngram window if the next key would break
                     # the latency cutoff
-                    if i + n < len(ks) and ks[i+n][1] - ks[i+n-1][1] > cutoff:
+                    if i + n < len(strokes) and strokes[i+n][1] - strokes[i+n-1][1] > cutoff:
                         i = i+n
                         break
                     # else move the sliding window over and grab the next ngram
@@ -147,12 +148,12 @@ class ngrams():
         # first add duration(s), if this ngram is "fresh", add all three durations, else add only
         # the last duration to avoid overcounting any overlapping keys
         for i in ([2],[0,1,2])[fresh]:
-            if keys[i] not in self.durations:
-                self.durations[keys[i]] = 1
+            if keys[i][0] not in self.durations:
+                self.durations[keys[i][0]] = 1
             else:
-                self.durations[keys[i]] += 1
-        
-        keyseq = tuple([key for key in keys])
+                self.durations[keys[i][0]] += 1
+
+        keyseq = tuple([key[0] for key in keys])
         new_latency = keys[-1][1] - keys[0][1]
         if keyseq not in self.latencies:
             self.latencies[keyseq] = [1, new_latency, 0]
