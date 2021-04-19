@@ -1,0 +1,85 @@
+* Game config testing:
+
+# Ultimately we don't have our system in a state where it's generating precise
+# enough strategies for a fine-grained, nuanced analysis of "take this parameter
+# and vary it over a spectrum and watch how the strategies change".
+# But, we can run different configurations adjusted in coarse-grained setups
+# that should produce significantly different strategies and see if
+# that... happens. I'll call these different setups "scenarios", and we can
+# reason about how they might fit different real-world settings.
+
+** Scenario A: extremely active user
+# generates a lot of traffic each turn:
+lambda_u = 3
+# generates traffic with high variance
+sigma_u = 10
+# the system is frequently blocked, so the IT department is used to bringing it
+# back up:
+q = 0.85
+
+# How would we expect these changes to affect strategies?
+# - the defender should relax the detection cutoff (false positive rate), since
+# the user generates more traffic the user is affected more by system blockages,
+# and the user's traffic varies wildly, which makes it more likely to trigger
+# the cutoff
+# - the attacker should become more aggressive, since the user generates traffic
+# with high variance, they are easier to mimic. Essentially as the defender
+# relaxes, the attacker should attack earler (with less total listening
+# observations)
+
+** Scenario B: patient attacker
+# attacker has a long time horizon
+rho = 0.995
+# the attacker makes little noise when listening
+delta_l = 0.001
+
+# These changes should promote a patient attacker that listens over a long
+# period of time before attacking. Since the attacker has little IDS detection
+# risk from listening, they should abuse that and gather a lot of user
+# observation before attacking. This is where we should see the "threshold"
+# behavior start to come in
+
+** Scenario C: skillful attacker
+# attacker learns a lot about the user per observation
+gamma = 0.5
+# attacker makes little IDS noise
+delta_l = 0.01
+delta_a = 0.05
+
+# These changes should promote both an attacker that listens early on, and an
+# attacker that becomes aggressive early on. In contrast to scenario A, they
+# should also encourage a stricter defender since the attacker will quickly
+# become indistinguishable from the user.
+
+** Scenario D: risk-averse defender
+# defender loses a lot of points if the attacker succeeds
+attacker_penalty = 1.2
+# the system stays blocked for a while if the defender suspects something
+q = 0.4
+
+# These should cause the defender to favor blocking. However, if the defender
+# accidentally blocks the user, the system shuts down for a longer period of
+# time, which sort of adds counteractive pressure to avoid blocking. The
+# attacker should also favor listening more, since attacking is likely to bring
+# it down for a longer period of time.
+
+** Scenario E: what defender?
+# the user must not be interrupted at all costs
+user_bonus = 0.15
+
+# This should balance the user's reward so that it cares a lot more about
+# successful user interaction rather than data breaches. We'd expect the same
+# type of defender to come from this as scenario A, and as a byproduct; a more
+# aggressive attacker.
+
+** Scenario F: testing without IDS
+# the defender is in charge of ending the game when it successfully blocks the
+# attacker 
+IDLess = no
+
+# There's still some tuning and fitness changing to get this mode to work, but
+# feel free to play around with it. I can't seem to strike the balance between a
+# strict/fully open defender, so either the defender evolves to only block, in
+# which case the game ends very quickly, or the defender only unblocks, in which
+# case the game lasts until the time limit. This threshold seems to be around
+# 0.07 user bonus and 1 attacker penalty
