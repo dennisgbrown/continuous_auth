@@ -68,8 +68,8 @@ class Experiment:
         self.q = 0.7
         self.gamma = 0.1
         self.rho = 0.98
-        #self.m = 0
-        #self.C_a = 0
+        self.user_bonus = 1
+        self.attacker_penalty = 1
 
 
         try:
@@ -237,6 +237,18 @@ class Experiment:
             except:
                 print('config: rho not specified; using', self.rho)
 
+            try:
+                self.user_bonus = self.config_parser.getfloat('game_options', 'user_bonus')
+                print('config: user_bonus =', self.user_bonus)
+            except:
+                print('config: user_bonus not specified; using', self.user_bonus)
+
+            try:
+                self.attacker_penalty = self.config_parser.getfloat('game_options', 'attacker_penalty')
+                print('config: attacker_penalty =', self.attacker_penalty)
+            except:
+                print('config: attacker_penalty not specified; using', self.attacker_penalty)                
+
 
             # Dump parms to log file
             try:
@@ -266,6 +278,9 @@ class Experiment:
                 self.log_file.write('q: ' + str(self.q) + '\n')
                 self.log_file.write('gamma: ' + str(self.gamma) + '\n')
                 self.log_file.write('rho: ' + str(self.rho) + '\n')
+                self.log_file.write('user_bonus: ' + str(self.user_bonus) + '\n')
+                self.log_file.write('attacker_penalty: ' \
+                                    + str(self.attacker_penalty) + '\n')
 
             except:
                 print('config: problem with log file', self.log_file_path)
