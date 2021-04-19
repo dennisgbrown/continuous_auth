@@ -60,7 +60,7 @@ class CCEGPStrategy(Strategy):
 
         # Parse config properties
         try:
-            self.gen_evals = experiment.config_parser.getint('ccegp_options', 'gen_evals')
+            self.gen_evals = experiment.config_parser.get('ccegp_options', 'gen_evals')
             print('config: gen_evals =', self.gen_evals)
         except:
             print('config: gen_evals not specified; using', self.gen_evals)
