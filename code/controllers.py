@@ -64,7 +64,8 @@ class DefenderController(Controller):
     Defender controller
     """
     # Canonical list of functions for Defender supported by the Expression Tree class
-    functions = [['B', 'boolean'],
+    functions = [['BM', 'boolean'],
+                 ['BH', 'real', [['constant'], [-100,300]]],
                  ['T', 'real', [['constant'], [0, 1000]]]]
 
     # Canonical list of terminals for Defender supported by the Expression Tree class
