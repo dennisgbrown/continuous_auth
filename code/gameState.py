@@ -256,6 +256,7 @@ class GameState:
         return self.user_bonus * (self.A_u)\
             - self.attacker_penalty * (self.attacker_reward)
 
+
 """
 
 Saritas:

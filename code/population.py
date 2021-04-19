@@ -123,12 +123,12 @@ class Population():
         Update the experiment and parsimony logs
         """
         # Update log
-        experiment_log.write(str(eval_count) + '\t' \
+        experiment_log.write(self.pop_name + '\t' + str(eval_count) + '\t' \
                              + str(self.gen_fitness_total / len(self.individuals)) + '\t'
                              + str(self.gen_high_fitness) + '\n')
 
         # Update parsimony log
-        parsimony_log.write(str(eval_count) + '\t' \
+        parsimony_log.write(self.pop_name + '\t' + str(eval_count) + '\t' \
                             + str(self.gen_tree_height_total / len(self.individuals)) + '\t'
                             + str(self.gen_max_tree_height) + '\t'
                             + str(self.gen_tree_size_total / len(self.individuals)) + '\t'
