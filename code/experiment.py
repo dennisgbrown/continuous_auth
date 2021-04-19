@@ -70,7 +70,7 @@ class Experiment:
         self.rho = 0.98
         self.user_bonus = 1
         self.attacker_penalty = 1
-
+        self.IDLess = False
 
         try:
             self.config_parser = configparser.ConfigParser()
@@ -247,8 +247,13 @@ class Experiment:
                 self.attacker_penalty = self.config_parser.getfloat('game_options', 'attacker_penalty')
                 print('config: attacker_penalty =', self.attacker_penalty)
             except:
-                print('config: attacker_penalty not specified; using', self.attacker_penalty)                
+                print('config: attacker_penalty not specified; using', self.attacker_penalty)
 
+            try:
+                self.IDLess = self.config_parser.getboolean('game_options', 'IDLess')
+                print('config: IDLess =', self.IDLess)
+            except:
+                print('config: IDLess not specified; using', self.IDLess)
 
             # Dump parms to log file
             try:
@@ -281,6 +286,7 @@ class Experiment:
                 self.log_file.write('user_bonus: ' + str(self.user_bonus) + '\n')
                 self.log_file.write('attacker_penalty: ' \
                                     + str(self.attacker_penalty) + '\n')
+                self.log_file.write('IDLess: ' + str(self.IDLess) + '\n')
 
             except:
                 print('config: problem with log file', self.log_file_path)

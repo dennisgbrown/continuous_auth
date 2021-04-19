@@ -64,6 +64,9 @@ class GameState:
         # we're out of Greek, someone as the frats for more
         self.user_bonus = experiment.user_bonus
         self.attacker_penalty = experiment.attacker_penalty
+
+        # Do we have the IDS serve as the end-game or the defender?
+        self.IDLess = experiment.IDLess
         
         #self.m = 0
         #self.C_a = 0
@@ -102,6 +105,22 @@ class GameState:
         """
         return self.attacker_reward
 
+    def BH(self):
+        """
+        Return the last observed behavior value from 
+        user or attacker
+        """
+        return self.behavior_history[-1]
+
+    def BM(self):
+        """
+        Return true if the user or attacker actually generated behavior. If this
+        is false, the value returned by BH() is meaningless. But I don't know
+        how to "force" BH() to return a value only conditional upon this being
+        true in an evolved algorithm, other than the let the EA figure it out
+        itself, so *shrug*
+        """
+        return self.behavior_mask[-1]
 
     def play_turn(self, world_data, attacker_controllers, defender_controllers):
         """
@@ -221,7 +240,9 @@ class GameState:
             else:
                 self.omega += self.user_history[-1] #TODO: index by t for less confusion
         elif (attacker.next_move == 'attack'):
-            if (random.random() < self.delta_a):
+            if ((not self.IDLess) and (random.random() < self.delta_a)):
+                self.state = GameState.ATTACKER_DETECTED
+            elif ((self.IDLess) and (defender.next_move == 'block')):
                 self.state = GameState.ATTACKER_DETECTED
             else:
                 # the attacker reward is discounted by a rho factor in to add time pressure
@@ -253,8 +274,8 @@ class GameState:
         # Here we make the tradeoff between service and security.
         # If only judged by amount of information lost, the defender
         # will ALWAYS block, which provides terrible service.
-        return self.user_bonus * (self.A_u)\
-            - self.attacker_penalty * (self.attacker_reward)
+        return (self.user_bonus * (self.A_u)\
+            - self.attacker_penalty * (self.attacker_reward)) / self.t
 
 
 """
