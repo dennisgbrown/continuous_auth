@@ -61,6 +61,10 @@ class GameState:
         self.q = experiment.q
         self.gamma = experiment.gamma
         self.rho = experiment.rho
+        # we're out of Greek, someone as the frats for more
+        self.user_bonus = experiment.user_bonus
+        self.attacker_penalty = experiment.attacker_penalty
+        
         #self.m = 0
         #self.C_a = 0
 
@@ -249,9 +253,8 @@ class GameState:
         # Here we make the tradeoff between service and security.
         # If only judged by amount of information lost, the defender
         # will ALWAYS block, which provides terrible service.
-        # TODO: THIS IS STILL GARBAGE
-        return 0 - self.omega - self.time_blocked
-
+        return self.user_bonus * (self.A_u)\
+            - self.attacker_penalty * (self.attacker_reward)
 
 """
 
