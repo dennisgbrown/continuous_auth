@@ -20,6 +20,9 @@ class CCEGPStrategy(Strategy):
     def __init__(self, experiment):
         self.experiment = experiment
 
+        # How to perform generation evals
+        self.gen_evals = 'one_vs_one'
+
         # Information for setting up and controlling the Attacker population
         self.attacker_controllers = [None for _ in range(experiment.num_attackers)]
         self.attacker_mu = 10
@@ -56,6 +59,12 @@ class CCEGPStrategy(Strategy):
         self.n_for_convergence = 10
 
         # Parse config properties
+        try:
+            self.gen_evals = experiment.config_parser.getint('ccegp_options', 'gen_evals')
+            print('config: gen_evals =', self.gen_evals)
+        except:
+            print('config: gen_evals not specified; using', self.gen_evals)
+
         try:
             self.attacker_mu = experiment.config_parser.getint('ccegp_options', 'attacker_mu')
             print('config: attacker_mu =', self.attacker_mu)
@@ -256,6 +265,7 @@ class CCEGPStrategy(Strategy):
                                     DefenderController.functions, DefenderController.terminals)
 
         # Write configuration items to log file
+        experiment.log_file.write('gen_evals: ' + self.gen_evals + '\n')
         experiment.log_file.write('attacker_mu: ' + str(self.attacker_mu) + '\n')
         experiment.log_file.write('attacker_lambda: ' + str(self.attacker_lambda) + '\n')
         experiment.log_file.write('attacker_dmax_init: ' + str(self.attacker_dmax_init) + '\n')
@@ -320,7 +330,7 @@ class CCEGPStrategy(Strategy):
             # Grow method
             else:
                 pop.individuals[i].build_tree(pop, root, 0, pop.dmax_init, 'grow')
-                
+
             pop.individuals[i].clean_tree()
             pop.individuals[i].root.reset_metrics()
 
@@ -640,79 +650,86 @@ class CCEGPStrategy(Strategy):
         Average fitnesses of multiple evaluations of the same individual.
         """
 
-        # METHOD 1: Evaluate each attacker once.
-        # USES O(N) EVALUATIONS
+        if (self.gen_evals == 'one_vs_one'):
+            # METHOD 1: Evaluate each attacker once.
+            # USES O(N) EVALUATIONS
 
-        # Set up matrices to hold per-game fitness values for Attacker and Defender
-        attacker_fitnesses = [[] for _ in range(len(attackers))]
-        defender_fitnesses = [[] for _ in range(len(defenders))]
+            # Set up matrices to hold per-game fitness values for Attacker and Defender
+            attacker_fitnesses = [[] for _ in range(len(attackers))]
+            defender_fitnesses = [[] for _ in range(len(defenders))]
 
-        # Shuffle the attackers and defenders, then play each Attacker against one Defender
-        random.shuffle(attackers)
-        random.shuffle(defenders)
-        num_games = max(len(attackers), len(defenders))
-        for curr_game in range(num_games):
-            # If num attackers < num defenders, some attackers will go multiple times
-            attacker_index = curr_game % len(attackers)
-            # If num defenders < num attackers, some defenders will go multiple times
-            defender_index = curr_game % len(defenders)
-            attacker_individual = attackers[attacker_index]
-            defender_individual = defenders[defender_index]
-            self.execute_one_game(attacker_individual, defender_individual)
-            # Save the fitness in a list so we can average the results later
-            attacker_fitnesses[attacker_index].append(attacker_individual.fitness)
-            defender_fitnesses[defender_index].append(defender_individual.fitness)
+            # Shuffle the attackers and defenders, then play each Attacker against one Defender
+            random.shuffle(attackers)
+            random.shuffle(defenders)
+            num_games = max(len(attackers), len(defenders))
+            for curr_game in range(num_games):
+                # If num attackers < num defenders, some attackers will go multiple times
+                attacker_index = curr_game % len(attackers)
+                # If num defenders < num attackers, some defenders will go multiple times
+                defender_index = curr_game % len(defenders)
+                attacker_individual = attackers[attacker_index]
+                defender_individual = defenders[defender_index]
+                self.execute_one_game(attacker_individual, defender_individual)
+                # Save the fitness in a list so we can average the results later
+                attacker_fitnesses[attacker_index].append(attacker_individual.fitness)
+                defender_fitnesses[defender_index].append(defender_individual.fitness)
 
-            # Bookkeeping
-            eval_count += 1
-            if (attacker_individual.fitness <= attacker_gen_high_fitness):
-                evals_with_no_change += 1
-            else:
-                evals_with_no_change = 0
+                # Bookkeeping
+                eval_count += 1
+                if (attacker_individual.fitness <= attacker_gen_high_fitness):
+                    evals_with_no_change += 1
+                else:
+                    evals_with_no_change = 0
 
-            # # Provide status message every nth evaluation.
-            # if ((eval_count % 10) == 0):
-            #     print('\r', eval_count, 'evals', end =" ")
+                # # Provide status message every nth evaluation.
+                # if ((eval_count % 10) == 0):
+                #     print('\r', eval_count, 'evals', end =" ")
 
-        # Set the fitness of each Attacker and Defender to the average of its list of fitnesses
-        for attacker_index in range(len(attackers)):
-            attackers[attacker_index].fitness = numpy.mean(attacker_fitnesses[attacker_index])
-        for defender_index in range(len(defenders)):
-            defenders[defender_index].fitness = numpy.mean(defender_fitnesses[defender_index])
+            # Set the fitness of each Attacker and Defender to the average of its list of fitnesses
+            for attacker_index in range(len(attackers)):
+                attackers[attacker_index].fitness = numpy.mean(attacker_fitnesses[attacker_index])
+            for defender_index in range(len(defenders)):
+                defenders[defender_index].fitness = numpy.mean(defender_fitnesses[defender_index])
 
-        # # METHOD 2: Play every Attacker against every Defender and average fitnesses
-        # # USES O(N^2) EVALUATIONS
+        elif (self.gen_evals == 'all_vs_all'):
+            # METHOD 2: Play every Attacker against every Defender and average fitnesses
+            # USES O(N^2) EVALUATIONS
 
-        # # Set up matrices to hold per-game fitness values for Attacker and Defender
-        # attacker_fitnesses = numpy.zeros((len(self.attacker_pop.individuals),
-        #                               len(self.defender_pop.individuals)))
-        # defender_fitnesses = numpy.zeros((len(self.defender_pop.individuals),
-        #                                 len(self.attacker_pop.individuals)))
-        # # Play every Attacker against every Defender and perform bookkeeping
-        # for attacker_index in range(len(self.attacker_pop.individuals)):
-        #     attacker_individual = self.attacker_pop.individuals[attacker_index]
-        #     for defender_index in range(len(self.defender_pop.individuals)):
-        #         defender_individual = self.defender_pop.individuals[defender_index]
-        #         self.execute_one_game(attacker_individual, defender_individual)
-        #         attacker_fitnesses[attacker_index][defender_index] = attacker_individual.fitness
-        #         defender_fitnesses[defender_index][attacker_index] = defender_individual.fitness
-        #         # Bookkeeping
-        #         eval_count += 1
-        #         if (attacker_individual.fitness <= attacker_gen_high_fitness):
-        #             evals_with_no_change += 1
-        #         else:
-        #             evals_with_no_change = 0
-        #         # Provide status message every nth evaluation.
-        #         if ((eval_count % 10) == 0):
-        #             print('\r', eval_count, 'evals', end =" ")
-        # # Set the fitness of each Attacker to the mean of its fitnesses against every Defender
-        # # and vice-versa for the Defenders.
-        # for attacker_index in range(len(self.attacker_pop.individuals)):
-        #     attacker_individual = self.attacker_pop.individuals[attacker_index]
-        #     attacker_individual.fitness = numpy.mean(attacker_fitnesses[attacker_index])
-        # for defender_index in range(len(self.defender_pop.individuals)):
-        #     defender_individual = self.defender_pop.individuals[defender_index]
-        #     defender_individual.fitness = numpy.mean(defender_fitnesses[defender_index])
+            # Set up matrices to hold per-game fitness values for Attacker and Defender
+            attacker_fitnesses = numpy.zeros((len(self.attacker_pop.individuals),
+                                          len(self.defender_pop.individuals)))
+            defender_fitnesses = numpy.zeros((len(self.defender_pop.individuals),
+                                            len(self.attacker_pop.individuals)))
+            # Play every Attacker against every Defender and perform bookkeeping
+            for attacker_index in range(len(self.attacker_pop.individuals)):
+                attacker_individual = self.attacker_pop.individuals[attacker_index]
+                for defender_index in range(len(self.defender_pop.individuals)):
+                    defender_individual = self.defender_pop.individuals[defender_index]
+                    self.execute_one_game(attacker_individual, defender_individual)
+                    attacker_fitnesses[attacker_index][defender_index] = attacker_individual.fitness
+                    defender_fitnesses[defender_index][attacker_index] = defender_individual.fitness
+                    # Bookkeeping
+                    eval_count += 1
+                    if (attacker_individual.fitness <= attacker_gen_high_fitness):
+                        evals_with_no_change += 1
+                    else:
+                        evals_with_no_change = 0
+                    # Provide status message every nth evaluation.
+                    if ((eval_count % 100) == 0):
+                        print('\r', eval_count, 'evals', end =" ")
+            # Set the fitness of each Attacker to the mean of its fitnesses against every Defender
+            # and vice-versa for the Defenders.
+            for attacker_index in range(len(self.attacker_pop.individuals)):
+                attacker_individual = self.attacker_pop.individuals[attacker_index]
+                attacker_individual.fitness = numpy.mean(attacker_fitnesses[attacker_index])
+            for defender_index in range(len(self.defender_pop.individuals)):
+                defender_individual = self.defender_pop.individuals[defender_index]
+                defender_individual.fitness = numpy.mean(defender_fitnesses[defender_index])
+
+        else:
+            print('Unknown generation evaluation method:', self.gen_eval)
+            sys.exit(1)
+
 
         return eval_count, evals_with_no_change
 
@@ -799,6 +816,7 @@ class CCEGPStrategy(Strategy):
             self.attacker_pop.generation_bookkeeping()
             self.attacker_pop.update_logs(eval_count, self.experiment.log_file, self.parsimony_log)
             self.defender_pop.generation_bookkeeping()
+            self.defender_pop.update_logs(eval_count, self.experiment.log_file, self.parsimony_log)
 
             # Update run bookkeeping
             self.attacker_pop.calc_run_stats()

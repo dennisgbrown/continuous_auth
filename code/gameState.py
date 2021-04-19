@@ -250,7 +250,7 @@ class GameState:
         # If only judged by amount of information lost, the defender
         # will ALWAYS block, which provides terrible service.
         # TODO: THIS IS STILL GARBAGE
-        return 0 - self.omega - self.time_blocked
+        return (self.t - self.time_blocked) - self.omega
 
 
 """
