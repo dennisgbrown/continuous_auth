@@ -7,9 +7,11 @@ import traceback
 Read a log file plot best vs. average with "error bars" to show min-max range
 """
 
-fileroot = 'default'
+fileroot = 'cfga'
 
-filename = 'logs/' + fileroot + '.txt'
+actor = 'Defender'
+
+filename = '../logs/' + fileroot + '.txt'
 
 curr_run = -1
 run_evals = []
@@ -30,14 +32,17 @@ with open(filename, 'r') as reader:
         elif ((len(curr_line) > 0) and (curr_run > -1)):
             try:
                 data_list = list(curr_line.split("\t"))
+                if (data_list[0] != actor):
+                    curr_line = reader.readline()
+                    continue
                 if (len(run_evals) < (curr_eval + 1)):
-                    run_evals.append(int(data_list[0]))
+                    run_evals.append(int(data_list[1]))
                 if (len(run_average_lists) < (curr_eval + 1)):
                     run_average_lists.append([])
                 if (len(run_best_lists) < (curr_eval + 1)):
                     run_best_lists.append([])
-                run_average_lists[curr_eval].append(float(data_list[1]))
-                run_best_lists[curr_eval].append(float(data_list[2]))
+                run_average_lists[curr_eval].append(float(data_list[2]))
+                run_best_lists[curr_eval].append(float(data_list[3]))
                 curr_eval += 1
             except:
                 print('Problem in line ' + str(lineno) + ': |' + curr_line + '|')
@@ -89,7 +94,7 @@ plt.legend(loc='lower right')
 
 # plt.show()
 
-plt.savefig('plots/' + fileroot + '.png', dpi = 600)
+plt.savefig('../plots/' + actor + '-avgbest-' + fileroot + '.png', dpi = 600)
 
 # Ref:
 # https://stackoverflow.com/questions/33328774/box-plot-with-min-max-average-and-standard-deviation

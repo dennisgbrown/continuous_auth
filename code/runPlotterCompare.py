@@ -6,11 +6,11 @@ import traceback
 
 
 """
-Plot the bests from two files and dump them to csv for easy read into Excel.
+Plot the bests from two files, perform statistical analysis, and provide plot + table.
 """
 
 
-def read_file(filename):
+def read_file(filename, actor):
     """
     Read the results of the log file and return a list of the best of each run.
     """
@@ -36,7 +36,10 @@ def read_file(filename):
                 else:
                     try:
                         data_list = list(curr_line.split("\t"))
-                        last_best = float(data_list[2])
+                        if (data_list[0] != actor):
+                            curr_line = reader.readline()
+                            continue
+                        last_best = float(data_list[3])
                         #print('found new last_best', last_best)
                     except:
                         print('Problem in line ' + str(lineno) + ': |' + curr_line + '|')
@@ -51,16 +54,17 @@ def read_file(filename):
 
 
 # Compare two log files
+actor = 'Defender'
 
-fileroot1 = 'config1'
-fileroot2 = 'config1'
-combo_fileroot = fileroot1 + '-' + fileroot2
+fileroot1 = 'cfge'
+fileroot2 = 'cfgf'
+combo_fileroot = actor + '-' + fileroot1 + '-vs-' + fileroot2
 
-filename1 = 'logs/exploring/' + fileroot1 + '.txt'
-filename2 = 'logs/' + fileroot2 + '.txt'
+filename1 = '../logs/' + fileroot1 + '.txt'
+filename2 = '../logs/' + fileroot2 + '.txt'
 
-bests1 = read_file(filename1)
-bests2 = read_file(filename2)
+bests1 = read_file(filename1, actor)
+bests2 = read_file(filename2, actor)
 runs = numpy.linspace(1, len(bests1), num = len(bests1), endpoint=True)
 
 # Calculate F-Test Two-Sample for Variances
@@ -151,12 +155,6 @@ else:
     print('\\noindent abs(t Stat) $<$ abs(t Critical two-tail) so we accept the null hypothesis -- the two samples are NOT statistically different.')
 print('-----------------------------')
 
-# # Dump the data to CSV for Excel
-# writer = open('data/' + combo_fileroot + '.csv', 'w')
-# for i in range(len(bests1)):
-#     writer.write(str(bests1[i]) + ', ' + str(bests2[i]) + '\n');
-# writer.close()
-
 # Plot the data
 overall_max = numpy.max([numpy.max(bests1), numpy.max(bests2)])
 bins = numpy.arange(0, overall_max + 1, (overall_max / 10.0))
@@ -167,6 +165,6 @@ plt.xlabel('Fitness')
 plt.ylabel('Number of bests')
 plt.legend(loc='upper right')
 
-plt.savefig('plots/' + combo_fileroot + '.png', dpi = 600)
+plt.savefig('../plots/' + combo_fileroot + '.png', dpi = 600)
 
 

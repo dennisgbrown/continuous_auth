@@ -1,0 +1,77 @@
+Result Log
+
+random seed: 1618802369054
+strategy: ccegp
+number of runs per experiment: 1
+number of fitness evals per run: 300000
+attacker solution file path: solutions/sandboxAttackerSolution.txt
+defender solution file path: solutions/sandboxDefenderSolution.txt
+defender_strategy: ccegp
+game_time_limit: 1000.0
+ca_classifiers: []
+lambda_u: 1.0
+beta_u: 100.0
+sigma_u: 3.0
+eta_u: 0.01
+nu_r: 0.1
+delta_l: 0.1
+delta_a: 0.2
+q: 0.7
+gamma: 0.1
+rho: 0.98
+user_bonus: 1
+attacker_penalty: 1
+gen_evals: all_vs_all
+attacker_mu: 100
+attacker_lambda: 50
+attacker_dmax_init: 7
+attacker_dmax_overall: 9
+attacker_parent selection method: overselection
+attacker_overselection top for parent selection: 0.32
+attacker_probability of mutation p_m: 0.05
+attacker_survival selection method: truncation
+attacker_parsimony technique: size
+attacker_parsimony pressure penalty coefficient: 0.0
+defender_mu: 100
+defender_lambda: 50
+defender_dmax_init: 7
+defender_dmax_overall: 9
+defender_parent selection method: overselection
+defender_overselection top for parent selection: 0.32
+defender_probability of mutation p_m: 0.05
+defender_survival selection method: truncation
+defender_parsimony technique: size
+defender_parsimony pressure penalty coefficient: 0.0
+termination method: number_of_evals
+CIAO data file path root: sandbox
+parsimony log file path: data/sandboxParsimonyLog.txt
+
+Run 1
+Attacker	10000	1.2419093425134482	4.454464450641561
+Defender	10000	170.83559065748653	366.3970698173826
+Attacker	32500	2.196443008568946	4.329679370358478
+Defender	32500	247.09794870089638	330.0624726014533
+Attacker	55000	3.3772441548723866	4.5268004055466
+Defender	55000	175.53755849994155	188.20190013401697
+Attacker	77500	3.8166903024539804	4.480722630341605
+Defender	77500	57.58165234128992	61.76681263979899
+Attacker	100000	3.848428847098553	4.583835608778102
+Defender	100000	34.90373707009853	35.874535139231064
+Attacker	122500	3.8208184815255732	4.688900824227054
+Defender	122500	8.192236399371904	9.01000107649659
+Attacker	145000	3.8520251572049	4.522142970471092
+Defender	145000	39.778800731589556	41.02465672540167
+Attacker	167500	3.855132951117191	4.546928479390659
+Defender	167500	3.695421976432849	4.1874029720296475
+Attacker	190000	3.8655222844902806	4.526668314691615
+Defender	190000	17.21792524433319	17.993245450514028
+Attacker	212500	3.8504815247277144	4.411746390446734
+Defender	212500	21.602045551821593	22.555056148104203
+Attacker	235000	3.8769984023726973	4.494153493367243
+Defender	235000	21.530018301809896	22.327365757290213
+Attacker	257500	3.8312144866879096	4.715577599311799
+Defender	257500	21.46049568778108	22.640066680927
+Attacker	280000	3.824975850558461	4.344814201115093
+Defender	280000	8.216006343427127	8.863569949437313
+Attacker	302500	3.833301036694774	4.527129732623456
+Defender	302500	8.480436821822758	9.245348612350552
