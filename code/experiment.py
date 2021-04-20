@@ -149,6 +149,12 @@ class Experiment:
                 print('config: defender_solution_png_path not properly specified; using', self.defender_solution_png_path)
 
             try:
+                self.high_score_world_file_path = self.config_parser.get('basic_options', 'high_score_world_file_path')
+                print('config: high_score_world_file_path =', self.high_score_world_file_path)
+            except:
+                print('config: high_score_world_file_path not properly specified; using', self.high_score_world_file_path)
+
+            try:
                 self.render_solutions = self.config_parser.getboolean('basic_options', 'render_solutions')
                 print('config: render_solutions =', self.render_solutions)
             except:
@@ -292,6 +298,8 @@ class Experiment:
                                     + self.defender_solution_dot_path + '\n')
                 self.log_file.write('defender solution png path: '
                                     + self.defender_solution_png_path + '\n')
+                self.log_file.write('high score world file path: '
+                                    + self.high_score_world_file_path + '\n')
                 self.log_file.write('defender_strategy: ' + self.defender_strategy + '\n')
                 self.log_file.write('game_time_limit: ' + str(self.game_time_limit) + '\n')
                 self.log_file.write('ca_classifiers: ' + str(self.ca_classifiers) + '\n')
