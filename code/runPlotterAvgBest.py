@@ -7,7 +7,7 @@ import traceback
 Read a log file plot best vs. average with "error bars" to show min-max range
 """
 
-fileroot = 'cfga'
+fileroot = 'default'
 
 actor = 'Defender'
 
