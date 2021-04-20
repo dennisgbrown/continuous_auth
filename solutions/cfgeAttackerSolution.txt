@@ -1,0 +1,27 @@
+if AO < T
+|attack
+|if AR < T
+||if B
+|||if not B
+||||if T > 544.2456359103467
+|||||if T < AO
+||||||listen
+||||||if not B
+|||||||attack
+|||||||listen
+|||||wait
+||||if B
+|||||if B
+||||||wait
+||||||if AR > AO
+|||||||attack
+|||||||wait
+|||||listen
+|||listen
+||if AR > 539.5004787111149
+|||if T > AO
+||||attack
+||||listen
+|||if AR < 865.9585741786157
+||||wait
+||||listen

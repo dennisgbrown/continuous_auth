@@ -130,18 +130,20 @@ dmypy.json
 
 # For the time being, ignore the output directories
 # because they're likely to change as people fork and pull
-plots/
-logs/
-worlds/
-solutions/
-data/
+# COMMENTING OUT NOW BECAUSE WE'RE RUNNING FINAL EXPERIMENT AND
+# WANT TO SAVE AND SHARE RESULT DATA, LOGS, ETC.
+# plots/
+# logs/
+# worlds/
+# solutions/
+# data/
 
 # but keep stubs to maintain directories
-!logs/.placeholder
-!plots/.placeholder
-!worlds/.placeholder
-!solutions/.placeholder
-!data/.placeholder
+# !logs/.placeholder
+# !plots/.placeholder
+# !worlds/.placeholder
+# !solutions/.placeholder
+# !data/.placeholder
 
 # emacs backups
 *~
