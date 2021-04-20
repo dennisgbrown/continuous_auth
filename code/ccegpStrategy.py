@@ -591,7 +591,7 @@ class CCEGPStrategy(Strategy):
                                                                    pop.ea_mu)
         else:
             print('Unknown parent selection method:', pop.survival_selection)
-            exit(1)
+            sys.exit(1)
 
 
     def execute_one_game(self, attacker_individual, defender_individual):

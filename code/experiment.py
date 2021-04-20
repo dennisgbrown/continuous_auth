@@ -29,9 +29,11 @@ class Experiment:
         self.log_file_path = 'logs/defaultLog.txt'
         self.log_file = None
         self.attacker_solution_file_path = 'solutions/defaultAttackerSolution.txt'
-        self.attacker_solution_png_path = 'solutions/defaultAttackerSolution.dot'
+        self.attacker_solution_dot_path = 'solutions/defaultAttackerSolution.dot'
+        self.attacker_solution_png_path = 'solutions/defaultAttackerSolution.png'
         self.defender_solution_file_path = 'solutions/defaultDefenderSolution.txt'
-        self.defender_solution_png_path = 'solutions/defaultDefenderSolution.dot'
+        self.defender_solution_dot_path = 'solutions/defaultDefenderSolution.dot'
+        self.defender_solution_png_path = 'solutions/defaultDefenderSolution.png'
         self.high_score_world_file_path = 'worlds/defaultWorld.txt'
         self.world_data = None  # Array of strings that will be written to world data file
 
@@ -117,6 +119,12 @@ class Experiment:
                 print('config: attacker_solution_file_path not properly specified; using', self.attacker_solution_file_path)
 
             try:
+                self.attacker_solution_dot_path = self.config_parser.get('basic_options', 'attacker_solution_dot_path')
+                print('config: attacker_solution_dot_path =', self.attacker_solution_dot_path)
+            except:
+                print('config: attacker_solution_dot_path not properly specified; using', self.attacker_solution_dot_path)
+
+            try:
                 self.attacker_solution_png_path = self.config_parser.get('basic_options', 'attacker_solution_png_path')
                 print('config: attacker_solution_png_path =', self.attacker_solution_png_path)
             except:
@@ -127,6 +135,12 @@ class Experiment:
                 print('config: defender_solution_file_path =', self.defender_solution_file_path)
             except:
                 print('config: defender_solution_file_path not properly specified; using', self.defender_solution_file_path)
+
+            try:
+                self.defender_solution_dot_path = self.config_parser.get('basic_options', 'defender_solution_dot_path')
+                print('config: defender_solution_dot_path =', self.defender_solution_dot_path)
+            except:
+                print('config: defender_solution_dot_path not properly specified; using', self.defender_solution_dot_path)
 
             try:
                 self.defender_solution_png_path = self.config_parser.get('basic_options', 'defender_solution_png_path')
@@ -358,15 +372,26 @@ class Experiment:
             the_file.write(line)
         the_file.close()
 
-        # Dump best Attacker solution to file
+        # Dump best Attacker solution (text) to file
         the_file = open(self.attacker_solution_file_path, 'w')
         the_file.write(self.attacker_exp_best_solution)
         the_file.close()
 
-        # Dump best Defender solution to file
+        # Dump best Defender solution (text) to file
         if (self.strategy == 'ccegp'):
             the_file = open(self.defender_solution_file_path, 'w')
             the_file.write(self.defender_exp_best_solution)
+            the_file.close()
+
+        # Dump best Attacker solution (dot) to file
+        the_file = open(self.attacker_solution_dot_path, 'w')
+        the_file.write(str(self.attacker_exp_best_dot))
+        the_file.close()
+
+        # Dump best Defender solution (dot) to file
+        if (self.strategy == 'ccegp'):
+            the_file = open(self.defender_solution_dot_path, 'w')
+            the_file.write(str(self.defender_exp_best_dot))
             the_file.close()
 
         # Dump and display best Attacker solution
