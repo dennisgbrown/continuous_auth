@@ -282,8 +282,16 @@ class Experiment:
                                     + str(self.num_fitness_evals_per_run) + '\n')
                 self.log_file.write('attacker solution file path: '
                                     + self.attacker_solution_file_path + '\n')
+                self.log_file.write('attacker solution dot path: '
+                                    + self.attacker_solution_dot_path + '\n')
+                self.log_file.write('attacker solution png path: '
+                                    + self.attacker_solution_png_path + '\n')
                 self.log_file.write('defender solution file path: '
                                     + self.defender_solution_file_path + '\n')
+                self.log_file.write('defender solution dot path: '
+                                    + self.defender_solution_dot_path + '\n')
+                self.log_file.write('defender solution png path: '
+                                    + self.defender_solution_png_path + '\n')
                 self.log_file.write('defender_strategy: ' + self.defender_strategy + '\n')
                 self.log_file.write('game_time_limit: ' + str(self.game_time_limit) + '\n')
                 self.log_file.write('ca_classifiers: ' + str(self.ca_classifiers) + '\n')
