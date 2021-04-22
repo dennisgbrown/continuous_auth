@@ -1,10 +1,11 @@
 # continuous_auth
 Continuous Authentication project for AI4Sec course
 
-Alaeddin Almubayed, aas0072@auburn.edu
-Dennis Brown, dgb0028@auburn.edu
-Dongji Feng, dzf0023@auburn.edu
-Tripp Isbell, cai0004@auburn.edu
+Project team:
+- Alaeddin Almubayed, aas0072@auburn.edu
+- Dennis Brown, dgb0028@auburn.edu
+- Dongji Feng, dzf0023@auburn.edu
+- Tripp Isbell, cai0004@auburn.edu
 
 ## Overview & Usage
 
