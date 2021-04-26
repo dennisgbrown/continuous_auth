@@ -37,8 +37,6 @@ Malformed inputs generally cause the program to report an error and halt. Defaul
 
 ![Architecture](images/architecture.png)
 
-![Sequence Diagram](images/sequence_diagram.png)
-
 Execution kicks off in *start.py*, which parses command line arguments and sets up an Experiment instance.
 
 The *Experiment* class contains the experiment parameters read from the config file, sets up the experiment, and executes the runs and evaluations of the experiment using a specified *Strategy*.
