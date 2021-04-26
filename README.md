@@ -59,7 +59,7 @@ The *runPlotter* etc. modules are just helpful utilities for me to make plots of
 
 Sequence Diagram:
 
-![Sequence Diagram](images/sequence diagram.png)
+![Sequence_Diagram]("images/sequence diagram.png")
 
 ## Extras
 
