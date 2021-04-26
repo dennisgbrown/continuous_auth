@@ -35,7 +35,7 @@ Malformed inputs generally cause the program to report an error and halt. Defaul
 
 ## Architecture
 
-[Architecture](images/architecture.png)
+![Architecture](images/architecture.png)
 
 Execution kicks off in *start.py*, which parses command line arguments and sets up an Experiment instance.
 
@@ -58,7 +58,8 @@ The *controllers* module holds the *AttackerController* and *DefenderController*
 The *runPlotter* etc. modules are just helpful utilities for me to make plots of experimental data. At this point the names are nonsensical and the code quality is atrocious. Please ignore them.
 
 Sequence Diagram:
-[Sequence Diagram](images/sequence diagram.png)
+
+![Sequence Diagram](images/sequence diagram.png)
 
 ## Extras
 
