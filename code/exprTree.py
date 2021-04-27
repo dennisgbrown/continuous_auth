@@ -77,8 +77,24 @@ class ExprTree():
             return node.left_child
         # else we can't colapse this node so return the full tree
         return node
-            
+    
+    def is_passive(self):
+        """
+        Return True if no terminals evaluate to attack
+        This doesn't always return true if the attacker is "effectively" passive,
+        or when it has attacker terminals only hidden underneath conditionals that
+        will never be true.
+        """
+        return self._is_passive_recurse(self.root)
 
+    def _is_passive_recurse(self, node):
+        """
+        I really gotta put these in the Node class...
+        """
+        if (node.left_child is None):
+            return node.expr.name != 'attack'
+        return self._is_passive_recurse(node.left_child) and self._is_passive_recurse(node.right_child)
+        
     def dot_viz(self):
         """
         Return a graphviz DOT object that can be rendered to display
@@ -104,6 +120,9 @@ class ExprTree():
         dot.edge(str(order),str(new_order+1))
         # ordering the edge after the nodes results in awkward memory
         return newer_order
+
+    
+
 
 class Node():
     """
