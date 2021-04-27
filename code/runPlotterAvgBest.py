@@ -7,9 +7,10 @@ import traceback
 Read a log file plot best vs. average with "error bars" to show min-max range
 """
 
-fileroot = 'default'
-
-actor = 'Defender'
+fileroot = 'cfgf'
+#actor = 'Defender'
+actor = 'Attacker'
+title = 'Scenario F: ' + actor
 
 filename = '../logs/' + fileroot + '.txt'
 
@@ -87,7 +88,7 @@ plt.errorbar(run_evals, run_average_bests,
 plt.errorbar(run_evals, run_average_bests, run_std_bests,
              lw = 0.6, ecolor = 'blue', fmt = 'b')
 
-plt.title(fileroot)
+plt.title(title)
 plt.xlabel('Evaluations')
 plt.ylabel('Fitness')
 plt.legend(loc='lower right')

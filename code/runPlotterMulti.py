@@ -14,7 +14,16 @@ datafiles = [
              'cfgf'
              ]
 
-actor = 'Attacker'
+labels = [
+          'Scenario A',
+          'Scenario B',
+          'Scenario C',
+          'Scenario D',
+          'Scenario E',
+          'Scenario F'
+          ]
+
+actor = 'Defender'
 
 plotfile = actor + ' Population Averages'
 
@@ -67,7 +76,7 @@ for curr_file in range(len(datafiles)):
             total += y_values[r][y]
         avg_y_values.append(total / num_runs)
 
-    plt.plot(x_values[0], avg_y_values, label = datafiles[curr_file])
+    plt.plot(x_values[0], avg_y_values, label = labels[curr_file])
 
 plt.title(plotfile + ' Average over 30 Runs')
 plt.xlabel('Evaluations')
