@@ -1,15 +1,3 @@
 digraph {
-	0 [label="if AR > AO"]
-	1 [label="if T > 766.4184000118372"]
-	2 [label=wait]
-	1 -> 2
-	3 [label="if T > 741.1637266603842"]
-	4 [label=listen]
-	3 -> 4
-	5 [label=attack]
-	3 -> 5
-	1 -> 3
-	0 -> 1
-	6 [label=attack]
-	0 -> 6
+	0 [label=attack]
 }

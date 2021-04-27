@@ -1,1 +1,165 @@
-attack
+if not B
+|if AO > AR
+||if AO > 65.73897496262492
+|||if not B
+||||if AO > 56.126794651824795
+|||||if AO < AR
+||||||if AR > T
+|||||||listen
+|||||||wait
+||||||if AO > AR
+|||||||attack
+|||||||listen
+|||||if AO > T
+||||||listen
+||||||if B
+|||||||listen
+|||||||if T < AO
+||||||||attack
+||||||||wait
+||||if AO > T
+|||||if AO > AR
+||||||if AR > AO
+|||||||attack
+|||||||listen
+||||||if AO > AR
+|||||||attack
+|||||||listen
+|||||if T > 477.1078814158419
+||||||if T < 259.7152124436319
+|||||||listen
+|||||||wait
+||||||attack
+|||if AO < 769.6917738674656
+||||if AR < 802.2859065528442
+|||||if T < 683.6999921080273
+||||||if T > 721.0676851545576
+|||||||attack
+|||||||listen
+||||||wait
+|||||if B
+||||||listen
+||||||attack
+||||if AR < T
+|||||if T > 21.2776390454138
+||||||if AR < AO
+|||||||attack
+|||||||wait
+||||||if T > AO
+|||||||attack
+|||||||listen
+|||||if B
+||||||listen
+||||||if T > AO
+|||||||if not B
+||||||||wait
+||||||||listen
+|||||||if AO > T
+||||||||listen
+||||||||wait
+||if AR < 199.98571527096453
+|||if B
+||||if B
+|||||if B
+||||||if AO < T
+|||||||listen
+|||||||wait
+||||||if AO < T
+|||||||listen
+|||||||attack
+|||||if not B
+||||||if AO > AR
+|||||||attack
+|||||||wait
+||||||attack
+||||if not B
+|||||if AR < 581.437033782425
+||||||if T > AO
+|||||||attack
+|||||||listen
+||||||listen
+|||||if T < AO
+||||||wait
+||||||attack
+|||if AR < T
+||||if not B
+|||||wait
+|||||if B
+||||||if not B
+|||||||listen
+|||||||attack
+||||||wait
+||||if T > AO
+|||||if T > AO
+||||||if T > AO
+|||||||attack
+|||||||wait
+||||||if AR > T
+|||||||wait
+|||||||listen
+|||||if AR > T
+||||||if B
+|||||||wait
+|||||||attack
+||||||if AR > 282.1668875758454
+|||||||wait
+|||||||listen
+|if T > 119.88722703976539
+||wait
+||if AR > T
+|||if AR > 202.62200017752974
+||||if AO < 155.20469118662194
+|||||if AO < T
+||||||if B
+|||||||listen
+|||||||if T < AO
+||||||||attack
+||||||||wait
+||||||if T > AO
+|||||||listen
+|||||||wait
+|||||if AO > AR
+||||||if AR < 43.231662069013744
+|||||||attack
+|||||||listen
+||||||listen
+||||if T > AO
+|||||if AR < 979.8955230224818
+||||||if B
+|||||||listen
+|||||||attack
+||||||if B
+|||||||wait
+|||||||listen
+|||||if AR < AO
+||||||if AR > 554.5471609583142
+|||||||listen
+|||||||wait
+||||||if T > 894.6936494143958
+|||||||wait
+|||||||listen
+|||if not B
+||||if T < AO
+|||||if B
+||||||if not B
+|||||||listen
+|||||||attack
+||||||wait
+|||||if AO < T
+||||||if B
+|||||||wait
+|||||||listen
+||||||wait
+||||if B
+|||||if AO > 970.9620614265878
+||||||if AR > T
+|||||||listen
+|||||||wait
+||||||if T > AO
+|||||||wait
+|||||||listen
+|||||if AO < 423.09286646273614
+||||||listen
+||||||if AO > T
+|||||||attack
+|||||||wait

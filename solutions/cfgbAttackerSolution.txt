@@ -1,7 +1,1 @@
-if AR > AO
-|attack
-|if T > 766.4184000118372
-||if T > 741.1637266603842
-|||attack
-|||listen
-||wait
+attack
