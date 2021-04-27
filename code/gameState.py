@@ -75,7 +75,7 @@ class GameState:
         # (assuming being attacked); false positives possible
         # the cut off is the point at which the area under the normal curve to
         # the right of the cut off is equal to the false positive rate
-        self.c_r = norm.ppf(1 - self.eta_u)
+        self.c_r = norm.ppf(1 - self.eta_u, self.beta_u, self.sigma_u)
 
 
     def T(self):
@@ -159,12 +159,13 @@ class GameState:
         The game state may transition to unblocked depending on if the game was
         blocked during the current turn
         """
+
         # If we're here we know the game isn't over, but that could change.
         game_over = False
 
         # Increment time step. Type in unnecessary comments.
         self.t += 1
-
+            
         if (self.state == GameState.BLOCKED): self.time_blocked += 1
 
         # Assume one attacker and one defender for now
@@ -219,8 +220,7 @@ class GameState:
                 defender.next_move = 'block'
             else:
                 # (if behavior > false positive cut-off)
-                if ((len(self.behavior_mask) > 0) # First turn = unblock
-                    and (self.behavior_mask[-1])
+                if ((self.behavior_mask[-1])
                     and (self.behavior_history[-1] > self.c_r)):
                     defender.next_move = 'block'
                 else:
@@ -244,28 +244,32 @@ class GameState:
                 self.state = GameState.ATTACKER_DETECTED
             elif ((self.IDLess) and (defender.next_move == 'block')):
                 self.state = GameState.ATTACKER_DETECTED
-            else:
-                # the attacker reward is discounted by a rho factor in to add time pressure
-                self.attacker_reward += self.rho ** (self.t - 1)
+            elif (self.state != GameState.BLOCKED and defender.next_move != 'block'):
+                self.attacker_reward += 1
+            # else you get nothing
 
         # If attacker is detected, game over
         if ((self.state == GameState.ATTACKER_DETECTED)
-            or ((self.time_limit - self.t) == 0)):
+            or (self.t >= self.time_limit)):
             game_over = True
 
+        # If doing attacker only evolving, check if the attacker is "passive", and
+        # if so, there's no point in continuing the game until the time limit
+        if (self.defender_strategy == 'saritas' and attacker.tree.is_passive()):
+            game_over = True
+            # note this check is constant over the entire game (and shouldn't be
+            # done repeatedly here, but this is just a quick place I know to put it)
         # Logging
         world_data.append('attacker: ' + attacker.next_move + ' vs. defender: '
                           + defender.next_move + '\n')
 
         return game_over
 
-
     def calculate_attacker_fitness(self):
         """
         Calculate and return fitness for the attacker based on game state
         """
-        return self.attacker_reward
-
+        return self.attacker_reward * self.rho ** (self.t - 1)
 
     def calculate_defender_fitness(self):
         """
@@ -276,7 +280,6 @@ class GameState:
         # will ALWAYS block, which provides terrible service.
         return (self.user_bonus * (self.A_u)\
             - self.attacker_penalty * (self.attacker_reward)) / self.t
-
 
 """
 
@@ -314,7 +317,5 @@ L(t) = number of observations by attacker at time t
 
 At time t:
     l(t) = 1, a(t) = 0 if listening
-
-
 
 """
