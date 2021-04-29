@@ -1,0 +1,1254 @@
+\subsection{Attacker: Scenario A vs Scenario B}
+
+\begin{table}[H]
+\centering
+\caption{F-Test for Scenario A vs. Scenario B with $\alpha = 0.05$}
+\label{tab:ftest-Scenario A-vs-Scenario B}
+\begin{tabular}{lll}
+\hline
+ & Scenario A & Scenario B \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{5.473506936168566} & \multicolumn{1}{l|}{6.06759601206557} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{23.515138928072933} & \multicolumn{1}{l|}{34.62744291486278} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{29} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{F}     & \multicolumn{1}{l|}{0.6790896742184729} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(F$\leq$f) one-tail}     & \multicolumn{1}{l|}{0.15152290548212435} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{F Critical one-tail}     & \multicolumn{1}{l|}{0.5373999648406917} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(mean 1) $<$ abs(mean 2) and F $>$ F Critical implies equal variances.
+
+\begin{table}[H]
+\centering
+\caption{t-Test for Scenario A vs. Scenario B with 
+Equal Variances}
+\label{tab:ttest-Scenario A-vs-Scenario B}
+\begin{tabular}{lll}
+\hline
+ & Scenario A & Scenario B \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{5.473506936168566} & \multicolumn{1}{l|}{6.06759601206557} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{23.515138928072933} & \multicolumn{1}{l|}{34.62744291486278} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{58} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{t Stat}     & \multicolumn{1}{l|}{-0.4267416553928619} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(T$\leq$t) two-tail}     & \multicolumn{1}{l|}{0.6711473819708522} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{t Critical two-tail}     & \multicolumn{1}{l|}{2.0017174830120923} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(t Stat) $<$ abs(t Critical two-tail) so we accept the null hypothesis -- the two samples are NOT statistically different.
+
+\subsection{Attacker: Scenario A vs Scenario C}
+
+\begin{table}[H]
+\centering
+\caption{F-Test for Scenario A vs. Scenario C with $\alpha = 0.05$}
+\label{tab:ftest-Scenario A-vs-Scenario C}
+\begin{tabular}{lll}
+\hline
+ & Scenario A & Scenario C \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{5.473506936168566} & \multicolumn{1}{l|}{7.431752659470688} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{23.515138928072933} & \multicolumn{1}{l|}{58.67026577200222} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{29} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{F}     & \multicolumn{1}{l|}{0.4008016431944389} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(F$\leq$f) one-tail}     & \multicolumn{1}{l|}{0.008188358413386715} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{F Critical one-tail}     & \multicolumn{1}{l|}{0.5373999648406917} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(mean 1) $<$ abs(mean 2) and F $<$ F Critical implies unequal variances.
+
+\begin{table}[H]
+\centering
+\caption{t-Test for Scenario A vs. Scenario C with 
+Unequal Variances}
+\label{tab:ttest-Scenario A-vs-Scenario C}
+\begin{tabular}{lll}
+\hline
+ & Scenario A & Scenario C \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{5.473506936168566} & \multicolumn{1}{l|}{7.431752659470688} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{23.515138928072933} & \multicolumn{1}{l|}{58.67026577200222} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{58} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{t Stat}     & \multicolumn{1}{l|}{-1.1831245471259009} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(T$\leq$t) two-tail}     & \multicolumn{1}{l|}{0.2424650776385962} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{t Critical two-tail}     & \multicolumn{1}{l|}{2.0017174830120923} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(t Stat) $<$ abs(t Critical two-tail) so we accept the null hypothesis -- the two samples are NOT statistically different.
+
+\subsection{Attacker: Scenario A vs Scenario D}
+
+\begin{table}[H]
+\centering
+\caption{F-Test for Scenario A vs. Scenario D with $\alpha = 0.05$}
+\label{tab:ftest-Scenario A-vs-Scenario D}
+\begin{tabular}{lll}
+\hline
+ & Scenario A & Scenario D \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{5.473506936168566} & \multicolumn{1}{l|}{2.6057949115593106} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{23.515138928072933} & \multicolumn{1}{l|}{7.773587494928107} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{29} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{F}     & \multicolumn{1}{l|}{3.0250047283079313} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(F$\leq$f) one-tail}     & \multicolumn{1}{l|}{0.9980420517532338} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{F Critical one-tail}     & \multicolumn{1}{l|}{0.5373999648406917} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(mean 1) $>$ abs(mean 2) and F $>$ F Critical implies unequal variances.
+
+\begin{table}[H]
+\centering
+\caption{t-Test for Scenario A vs. Scenario D with 
+Unequal Variances}
+\label{tab:ttest-Scenario A-vs-Scenario D}
+\begin{tabular}{lll}
+\hline
+ & Scenario A & Scenario D \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{5.473506936168566} & \multicolumn{1}{l|}{2.6057949115593106} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{23.515138928072933} & \multicolumn{1}{l|}{7.773587494928107} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{58} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{t Stat}     & \multicolumn{1}{l|}{2.808033093290253} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(T$\leq$t) two-tail}     & \multicolumn{1}{l|}{0.007274515910889109} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{t Critical two-tail}     & \multicolumn{1}{l|}{2.0017174830120923} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(t Stat) $>$ abs(t Critical two-tail) so we reject the null hypothesis -- the two samples are statistically different.
+The average improvement of Scenario A over Scenario D is 2.8677120246092556.
+
+\subsection{Attacker: Scenario A vs Scenario E}
+
+\begin{table}[H]
+\centering
+\caption{F-Test for Scenario A vs. Scenario E with $\alpha = 0.05$}
+\label{tab:ftest-Scenario A-vs-Scenario E}
+\begin{tabular}{lll}
+\hline
+ & Scenario A & Scenario E \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{5.473506936168566} & \multicolumn{1}{l|}{4.150738073639686} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{23.515138928072933} & \multicolumn{1}{l|}{16.687971121518455} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{29} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{F}     & \multicolumn{1}{l|}{1.4091071201430307} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(F$\leq$f) one-tail}     & \multicolumn{1}{l|}{0.8194586491995712} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{F Critical one-tail}     & \multicolumn{1}{l|}{0.5373999648406917} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(mean 1) $>$ abs(mean 2) and F $>$ F Critical implies unequal variances.
+
+\begin{table}[H]
+\centering
+\caption{t-Test for Scenario A vs. Scenario E with 
+Unequal Variances}
+\label{tab:ttest-Scenario A-vs-Scenario E}
+\begin{tabular}{lll}
+\hline
+ & Scenario A & Scenario E \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{5.473506936168566} & \multicolumn{1}{l|}{4.150738073639686} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{23.515138928072933} & \multicolumn{1}{l|}{16.687971121518455} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{58} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{t Stat}     & \multicolumn{1}{l|}{1.142654055152919} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(T$\leq$t) two-tail}     & \multicolumn{1}{l|}{0.25801197286504796} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{t Critical two-tail}     & \multicolumn{1}{l|}{2.0017174830120923} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(t Stat) $<$ abs(t Critical two-tail) so we accept the null hypothesis -- the two samples are NOT statistically different.
+
+\subsection{Attacker: Scenario A vs Scenario F}
+
+\begin{table}[H]
+\centering
+\caption{F-Test for Scenario A vs. Scenario F with $\alpha = 0.05$}
+\label{tab:ftest-Scenario A-vs-Scenario F}
+\begin{tabular}{lll}
+\hline
+ & Scenario A & Scenario F \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{5.473506936168566} & \multicolumn{1}{l|}{0.529202583817578} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{23.515138928072933} & \multicolumn{1}{l|}{2.4929075933465334} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{29} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{F}     & \multicolumn{1}{l|}{9.432816118348654} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(F$\leq$f) one-tail}     & \multicolumn{1}{l|}{0.9999999809557717} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{F Critical one-tail}     & \multicolumn{1}{l|}{0.5373999648406917} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(mean 1) $>$ abs(mean 2) and F $>$ F Critical implies unequal variances.
+
+\begin{table}[H]
+\centering
+\caption{t-Test for Scenario A vs. Scenario F with 
+Unequal Variances}
+\label{tab:ttest-Scenario A-vs-Scenario F}
+\begin{tabular}{lll}
+\hline
+ & Scenario A & Scenario F \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{5.473506936168566} & \multicolumn{1}{l|}{0.529202583817578} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{23.515138928072933} & \multicolumn{1}{l|}{2.4929075933465334} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{58} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{t Stat}     & \multicolumn{1}{l|}{5.310213189691896} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(T$\leq$t) two-tail}     & \multicolumn{1}{l|}{6.231323155198016e-06} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{t Critical two-tail}     & \multicolumn{1}{l|}{2.0017174830120923} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(t Stat) $>$ abs(t Critical two-tail) so we reject the null hypothesis -- the two samples are statistically different.
+The average improvement of Scenario A over Scenario F is 4.944304352350988.
+
+\subsection{Attacker: Scenario B vs Scenario C}
+
+\begin{table}[H]
+\centering
+\caption{F-Test for Scenario B vs. Scenario C with $\alpha = 0.05$}
+\label{tab:ftest-Scenario B-vs-Scenario C}
+\begin{tabular}{lll}
+\hline
+ & Scenario B & Scenario C \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{6.06759601206557} & \multicolumn{1}{l|}{7.431752659470688} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{34.62744291486278} & \multicolumn{1}{l|}{58.67026577200222} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{29} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{F}     & \multicolumn{1}{l|}{0.5902042961493996} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(F$\leq$f) one-tail}     & \multicolumn{1}{l|}{0.08081351989118808} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{F Critical one-tail}     & \multicolumn{1}{l|}{0.5373999648406917} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(mean 1) $<$ abs(mean 2) and F $>$ F Critical implies equal variances.
+
+\begin{table}[H]
+\centering
+\caption{t-Test for Scenario B vs. Scenario C with 
+Equal Variances}
+\label{tab:ttest-Scenario B-vs-Scenario C}
+\begin{tabular}{lll}
+\hline
+ & Scenario B & Scenario C \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{6.06759601206557} & \multicolumn{1}{l|}{7.431752659470688} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{34.62744291486278} & \multicolumn{1}{l|}{58.67026577200222} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{58} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{t Stat}     & \multicolumn{1}{l|}{-0.7735517661059019} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(T$\leq$t) two-tail}     & \multicolumn{1}{l|}{0.44233741259631054} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{t Critical two-tail}     & \multicolumn{1}{l|}{2.0017174830120923} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(t Stat) $<$ abs(t Critical two-tail) so we accept the null hypothesis -- the two samples are NOT statistically different.
+
+\subsection{Attacker: Scenario B vs Scenario D}
+
+\begin{table}[H]
+\centering
+\caption{F-Test for Scenario B vs. Scenario D with $\alpha = 0.05$}
+\label{tab:ftest-Scenario B-vs-Scenario D}
+\begin{tabular}{lll}
+\hline
+ & Scenario B & Scenario D \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{6.06759601206557} & \multicolumn{1}{l|}{2.6057949115593106} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{34.62744291486278} & \multicolumn{1}{l|}{7.773587494928107} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{29} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{F}     & \multicolumn{1}{l|}{4.454499667940385} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(F$\leq$f) one-tail}     & \multicolumn{1}{l|}{0.9999343951504642} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{F Critical one-tail}     & \multicolumn{1}{l|}{0.5373999648406917} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(mean 1) $>$ abs(mean 2) and F $>$ F Critical implies unequal variances.
+
+\begin{table}[H]
+\centering
+\caption{t-Test for Scenario B vs. Scenario D with 
+Unequal Variances}
+\label{tab:ttest-Scenario B-vs-Scenario D}
+\begin{tabular}{lll}
+\hline
+ & Scenario B & Scenario D \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{6.06759601206557} & \multicolumn{1}{l|}{2.6057949115593106} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{34.62744291486278} & \multicolumn{1}{l|}{7.773587494928107} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{58} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{t Stat}     & \multicolumn{1}{l|}{2.9118871079569937} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(T$\leq$t) two-tail}     & \multicolumn{1}{l|}{0.005764566624982235} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{t Critical two-tail}     & \multicolumn{1}{l|}{2.0017174830120923} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(t Stat) $>$ abs(t Critical two-tail) so we reject the null hypothesis -- the two samples are statistically different.
+The average improvement of Scenario B over Scenario D is 3.461801100506259.
+
+\subsection{Attacker: Scenario B vs Scenario E}
+
+\begin{table}[H]
+\centering
+\caption{F-Test for Scenario B vs. Scenario E with $\alpha = 0.05$}
+\label{tab:ftest-Scenario B-vs-Scenario E}
+\begin{tabular}{lll}
+\hline
+ & Scenario B & Scenario E \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{6.06759601206557} & \multicolumn{1}{l|}{4.150738073639686} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{34.62744291486278} & \multicolumn{1}{l|}{16.687971121518455} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{29} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{F}     & \multicolumn{1}{l|}{2.0749941777051686} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(F$\leq$f) one-tail}     & \multicolumn{1}{l|}{0.973058948279951} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{F Critical one-tail}     & \multicolumn{1}{l|}{0.5373999648406917} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(mean 1) $>$ abs(mean 2) and F $>$ F Critical implies unequal variances.
+
+\begin{table}[H]
+\centering
+\caption{t-Test for Scenario B vs. Scenario E with 
+Unequal Variances}
+\label{tab:ttest-Scenario B-vs-Scenario E}
+\begin{tabular}{lll}
+\hline
+ & Scenario B & Scenario E \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{6.06759601206557} & \multicolumn{1}{l|}{4.150738073639686} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{34.62744291486278} & \multicolumn{1}{l|}{16.687971121518455} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{58} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{t Stat}     & \multicolumn{1}{l|}{1.465637729751036} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(T$\leq$t) two-tail}     & \multicolumn{1}{l|}{0.148804733727445} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{t Critical two-tail}     & \multicolumn{1}{l|}{2.0017174830120923} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(t Stat) $<$ abs(t Critical two-tail) so we accept the null hypothesis -- the two samples are NOT statistically different.
+
+\subsection{Attacker: Scenario B vs Scenario F}
+
+\begin{table}[H]
+\centering
+\caption{F-Test for Scenario B vs. Scenario F with $\alpha = 0.05$}
+\label{tab:ftest-Scenario B-vs-Scenario F}
+\begin{tabular}{lll}
+\hline
+ & Scenario B & Scenario F \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{6.06759601206557} & \multicolumn{1}{l|}{0.529202583817578} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{34.62744291486278} & \multicolumn{1}{l|}{2.4929075933465334} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{29} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{F}     & \multicolumn{1}{l|}{13.8903836657572} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(F$\leq$f) one-tail}     & \multicolumn{1}{l|}{0.9999999998381953} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{F Critical one-tail}     & \multicolumn{1}{l|}{0.5373999648406917} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(mean 1) $>$ abs(mean 2) and F $>$ F Critical implies unequal variances.
+
+\begin{table}[H]
+\centering
+\caption{t-Test for Scenario B vs. Scenario F with 
+Unequal Variances}
+\label{tab:ttest-Scenario B-vs-Scenario F}
+\begin{tabular}{lll}
+\hline
+ & Scenario B & Scenario F \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{6.06759601206557} & \multicolumn{1}{l|}{0.529202583817578} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{34.62744291486278} & \multicolumn{1}{l|}{2.4929075933465334} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{58} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{t Stat}     & \multicolumn{1}{l|}{4.978957239290012} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(T$\leq$t) two-tail}     & \multicolumn{1}{l|}{1.9410690253329136e-05} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{t Critical two-tail}     & \multicolumn{1}{l|}{2.0017174830120923} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(t Stat) $>$ abs(t Critical two-tail) so we reject the null hypothesis -- the two samples are statistically different.
+The average improvement of Scenario B over Scenario F is 5.538393428247992.
+
+\subsection{Attacker: Scenario C vs Scenario D}
+
+\begin{table}[H]
+\centering
+\caption{F-Test for Scenario C vs. Scenario D with $\alpha = 0.05$}
+\label{tab:ftest-Scenario C-vs-Scenario D}
+\begin{tabular}{lll}
+\hline
+ & Scenario C & Scenario D \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{7.431752659470688} & \multicolumn{1}{l|}{2.6057949115593106} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{58.67026577200222} & \multicolumn{1}{l|}{7.773587494928107} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{29} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{F}     & \multicolumn{1}{l|}{7.547386044124639} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(F$\leq$f) one-tail}     & \multicolumn{1}{l|}{0.9999997446736751} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{F Critical one-tail}     & \multicolumn{1}{l|}{0.5373999648406917} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(mean 1) $>$ abs(mean 2) and F $>$ F Critical implies unequal variances.
+
+\begin{table}[H]
+\centering
+\caption{t-Test for Scenario C vs. Scenario D with 
+Unequal Variances}
+\label{tab:ttest-Scenario C-vs-Scenario D}
+\begin{tabular}{lll}
+\hline
+ & Scenario C & Scenario D \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{7.431752659470688} & \multicolumn{1}{l|}{2.6057949115593106} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{58.67026577200222} & \multicolumn{1}{l|}{7.773587494928107} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{58} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{t Stat}     & \multicolumn{1}{l|}{3.242774411626482} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(T$\leq$t) two-tail}     & \multicolumn{1}{l|}{0.0025293458503654123} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{t Critical two-tail}     & \multicolumn{1}{l|}{2.0017174830120923} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(t Stat) $>$ abs(t Critical two-tail) so we reject the null hypothesis -- the two samples are statistically different.
+The average improvement of Scenario C over Scenario D is 4.825957747911378.
+
+\subsection{Attacker: Scenario C vs Scenario E}
+
+\begin{table}[H]
+\centering
+\caption{F-Test for Scenario C vs. Scenario E with $\alpha = 0.05$}
+\label{tab:ftest-Scenario C-vs-Scenario E}
+\begin{tabular}{lll}
+\hline
+ & Scenario C & Scenario E \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{7.431752659470688} & \multicolumn{1}{l|}{4.150738073639686} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{58.67026577200222} & \multicolumn{1}{l|}{16.687971121518455} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{29} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{F}     & \multicolumn{1}{l|}{3.515721913992847} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(F$\leq$f) one-tail}     & \multicolumn{1}{l|}{0.9994338603902423} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{F Critical one-tail}     & \multicolumn{1}{l|}{0.5373999648406917} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(mean 1) $>$ abs(mean 2) and F $>$ F Critical implies unequal variances.
+
+\begin{table}[H]
+\centering
+\caption{t-Test for Scenario C vs. Scenario E with 
+Unequal Variances}
+\label{tab:ttest-Scenario C-vs-Scenario E}
+\begin{tabular}{lll}
+\hline
+ & Scenario C & Scenario E \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{7.431752659470688} & \multicolumn{1}{l|}{4.150738073639686} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{58.67026577200222} & \multicolumn{1}{l|}{16.687971121518455} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{58} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{t Stat}     & \multicolumn{1}{l|}{2.0701576695485366} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(T$\leq$t) two-tail}     & \multicolumn{1}{l|}{0.04430272820014352} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{t Critical two-tail}     & \multicolumn{1}{l|}{2.0017174830120923} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(t Stat) $>$ abs(t Critical two-tail) so we reject the null hypothesis -- the two samples are statistically different.
+The average improvement of Scenario C over Scenario E is 3.2810145858310023.
+
+\subsection{Attacker: Scenario C vs Scenario F}
+
+\begin{table}[H]
+\centering
+\caption{F-Test for Scenario C vs. Scenario F with $\alpha = 0.05$}
+\label{tab:ftest-Scenario C-vs-Scenario F}
+\begin{tabular}{lll}
+\hline
+ & Scenario C & Scenario F \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{7.431752659470688} & \multicolumn{1}{l|}{0.529202583817578} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{58.67026577200222} & \multicolumn{1}{l|}{2.4929075933465334} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{29} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{F}     & \multicolumn{1}{l|}{23.534873867202585} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(F$\leq$f) one-tail}     & \multicolumn{1}{l|}{0.9999999999998355} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{F Critical one-tail}     & \multicolumn{1}{l|}{0.5373999648406917} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(mean 1) $>$ abs(mean 2) and F $>$ F Critical implies unequal variances.
+
+\begin{table}[H]
+\centering
+\caption{t-Test for Scenario C vs. Scenario F with 
+Unequal Variances}
+\label{tab:ttest-Scenario C-vs-Scenario F}
+\begin{tabular}{lll}
+\hline
+ & Scenario C & Scenario F \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{7.431752659470688} & \multicolumn{1}{l|}{0.529202583817578} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{58.67026577200222} & \multicolumn{1}{l|}{2.4929075933465334} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{58} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{t Stat}     & \multicolumn{1}{l|}{4.834206392311254} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(T$\leq$t) two-tail}     & \multicolumn{1}{l|}{3.340171148989831e-05} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{t Critical two-tail}     & \multicolumn{1}{l|}{2.0017174830120923} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(t Stat) $>$ abs(t Critical two-tail) so we reject the null hypothesis -- the two samples are statistically different.
+The average improvement of Scenario C over Scenario F is 6.90255007565311.
+
+\subsection{Attacker: Scenario D vs Scenario E}
+
+\begin{table}[H]
+\centering
+\caption{F-Test for Scenario D vs. Scenario E with $\alpha = 0.05$}
+\label{tab:ftest-Scenario D-vs-Scenario E}
+\begin{tabular}{lll}
+\hline
+ & Scenario D & Scenario E \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{2.6057949115593106} & \multicolumn{1}{l|}{4.150738073639686} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{7.773587494928107} & \multicolumn{1}{l|}{16.687971121518455} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{29} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{F}     & \multicolumn{1}{l|}{0.4658198074722448} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(F$\leq$f) one-tail}     & \multicolumn{1}{l|}{0.021923100547620457} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{F Critical one-tail}     & \multicolumn{1}{l|}{0.5373999648406917} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(mean 1) $<$ abs(mean 2) and F $<$ F Critical implies unequal variances.
+
+\begin{table}[H]
+\centering
+\caption{t-Test for Scenario D vs. Scenario E with 
+Unequal Variances}
+\label{tab:ttest-Scenario D-vs-Scenario E}
+\begin{tabular}{lll}
+\hline
+ & Scenario D & Scenario E \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{2.6057949115593106} & \multicolumn{1}{l|}{4.150738073639686} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{7.773587494928107} & \multicolumn{1}{l|}{16.687971121518455} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{58} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{t Stat}     & \multicolumn{1}{l|}{-1.7109253894783036} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(T$\leq$t) two-tail}     & \multicolumn{1}{l|}{0.0931479725584689} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{t Critical two-tail}     & \multicolumn{1}{l|}{2.0017174830120923} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(t Stat) $<$ abs(t Critical two-tail) so we accept the null hypothesis -- the two samples are NOT statistically different.
+
+\subsection{Attacker: Scenario D vs Scenario F}
+
+\begin{table}[H]
+\centering
+\caption{F-Test for Scenario D vs. Scenario F with $\alpha = 0.05$}
+\label{tab:ftest-Scenario D-vs-Scenario F}
+\begin{tabular}{lll}
+\hline
+ & Scenario D & Scenario F \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{2.6057949115593106} & \multicolumn{1}{l|}{0.529202583817578} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{7.773587494928107} & \multicolumn{1}{l|}{2.4929075933465334} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{29} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{F}     & \multicolumn{1}{l|}{3.118281446001243} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(F$\leq$f) one-tail}     & \multicolumn{1}{l|}{0.9984631501279486} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{F Critical one-tail}     & \multicolumn{1}{l|}{0.5373999648406917} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(mean 1) $>$ abs(mean 2) and F $>$ F Critical implies unequal variances.
+
+\begin{table}[H]
+\centering
+\caption{t-Test for Scenario D vs. Scenario F with 
+Unequal Variances}
+\label{tab:ttest-Scenario D-vs-Scenario F}
+\begin{tabular}{lll}
+\hline
+ & Scenario D & Scenario F \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{2.6057949115593106} & \multicolumn{1}{l|}{0.529202583817578} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{7.773587494928107} & \multicolumn{1}{l|}{2.4929075933465334} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{58} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{t Stat}     & \multicolumn{1}{l|}{3.5497745434779833} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(T$\leq$t) two-tail}     & \multicolumn{1}{l|}{0.0009037272392815528} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{t Critical two-tail}     & \multicolumn{1}{l|}{2.0017174830120923} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(t Stat) $>$ abs(t Critical two-tail) so we reject the null hypothesis -- the two samples are statistically different.
+The average improvement of Scenario D over Scenario F is 2.0765923277417326.
+
+\subsection{Attacker: Scenario E vs Scenario F}
+
+\begin{table}[H]
+\centering
+\caption{F-Test for Scenario E vs. Scenario F with $\alpha = 0.05$}
+\label{tab:ftest-Scenario E-vs-Scenario F}
+\begin{tabular}{lll}
+\hline
+ & Scenario E & Scenario F \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{4.150738073639686} & \multicolumn{1}{l|}{0.529202583817578} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{16.687971121518455} & \multicolumn{1}{l|}{2.4929075933465334} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{29} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{F}     & \multicolumn{1}{l|}{6.694179586141883} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(F$\leq$f) one-tail}     & \multicolumn{1}{l|}{0.9999990237812761} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{F Critical one-tail}     & \multicolumn{1}{l|}{0.5373999648406917} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(mean 1) $>$ abs(mean 2) and F $>$ F Critical implies unequal variances.
+
+\begin{table}[H]
+\centering
+\caption{t-Test for Scenario E vs. Scenario F with 
+Unequal Variances}
+\label{tab:ttest-Scenario E-vs-Scenario F}
+\begin{tabular}{lll}
+\hline
+ & Scenario E & Scenario F \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{4.150738073639686} & \multicolumn{1}{l|}{0.529202583817578} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{16.687971121518455} & \multicolumn{1}{l|}{2.4929075933465334} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{58} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{t Stat}     & \multicolumn{1}{l|}{4.529175227481918} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(T$\leq$t) two-tail}     & \multicolumn{1}{l|}{5.8470356682610376e-05} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{t Critical two-tail}     & \multicolumn{1}{l|}{2.0017174830120923} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(t Stat) $>$ abs(t Critical two-tail) so we reject the null hypothesis -- the two samples are statistically different.
+The average improvement of Scenario E over Scenario F is 3.621535489822108.
+
+\subsection{Defender: Scenario A vs Scenario B}
+
+\begin{table}[H]
+\centering
+\caption{F-Test for Scenario A vs. Scenario B with $\alpha = 0.05$}
+\label{tab:ftest-Scenario A-vs-Scenario B}
+\begin{tabular}{lll}
+\hline
+ & Scenario A & Scenario B \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{0.4186666666666667} & \multicolumn{1}{l|}{0.213} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{0.006456850574712644} & \multicolumn{1}{l|}{0.003893793103448275} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{29} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{F}     & \multicolumn{1}{l|}{1.658241823119613} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(F$\leq$f) one-tail}     & \multicolumn{1}{l|}{0.910376488588699} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{F Critical one-tail}     & \multicolumn{1}{l|}{0.5373999648406917} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(mean 1) $>$ abs(mean 2) and F $>$ F Critical implies unequal variances.
+
+\begin{table}[H]
+\centering
+\caption{t-Test for Scenario A vs. Scenario B with 
+Unequal Variances}
+\label{tab:ttest-Scenario A-vs-Scenario B}
+\begin{tabular}{lll}
+\hline
+ & Scenario A & Scenario B \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{0.4186666666666667} & \multicolumn{1}{l|}{0.213} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{0.006456850574712644} & \multicolumn{1}{l|}{0.003893793103448275} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{58} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{t Stat}     & \multicolumn{1}{l|}{11.072376822554542} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(T$\leq$t) two-tail}     & \multicolumn{1}{l|}{1.3968511637502252e-15} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{t Critical two-tail}     & \multicolumn{1}{l|}{2.0017174830120923} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(t Stat) $>$ abs(t Critical two-tail) so we reject the null hypothesis -- the two samples are statistically different.
+The average improvement of Scenario A over Scenario B is 0.2056666666666667.
+
+\subsection{Defender: Scenario A vs Scenario C}
+
+\begin{table}[H]
+\centering
+\caption{F-Test for Scenario A vs. Scenario C with $\alpha = 0.05$}
+\label{tab:ftest-Scenario A-vs-Scenario C}
+\begin{tabular}{lll}
+\hline
+ & Scenario A & Scenario C \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{0.4186666666666667} & \multicolumn{1}{l|}{0.15233333333333332} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{0.006456850574712644} & \multicolumn{1}{l|}{0.002650574712643678} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{29} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{F}     & \multicolumn{1}{l|}{2.43601908065915} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(F$\leq$f) one-tail}     & \multicolumn{1}{l|}{0.990346266396518} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{F Critical one-tail}     & \multicolumn{1}{l|}{0.5373999648406917} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(mean 1) $>$ abs(mean 2) and F $>$ F Critical implies unequal variances.
+
+\begin{table}[H]
+\centering
+\caption{t-Test for Scenario A vs. Scenario C with 
+Unequal Variances}
+\label{tab:ttest-Scenario A-vs-Scenario C}
+\begin{tabular}{lll}
+\hline
+ & Scenario A & Scenario C \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{0.4186666666666667} & \multicolumn{1}{l|}{0.15233333333333332} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{0.006456850574712644} & \multicolumn{1}{l|}{0.002650574712643678} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{58} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{t Stat}     & \multicolumn{1}{l|}{15.285805997338688} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(T$\leq$t) two-tail}     & \multicolumn{1}{l|}{2.352394007080164e-20} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{t Critical two-tail}     & \multicolumn{1}{l|}{2.0017174830120923} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(t Stat) $>$ abs(t Critical two-tail) so we reject the null hypothesis -- the two samples are statistically different.
+The average improvement of Scenario A over Scenario C is 0.26633333333333337.
+
+\subsection{Defender: Scenario A vs Scenario D}
+
+\begin{table}[H]
+\centering
+\caption{F-Test for Scenario A vs. Scenario D with $\alpha = 0.05$}
+\label{tab:ftest-Scenario A-vs-Scenario D}
+\begin{tabular}{lll}
+\hline
+ & Scenario A & Scenario D \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{0.4186666666666667} & \multicolumn{1}{l|}{0.20433333333333337} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{0.006456850574712644} & \multicolumn{1}{l|}{0.0029498850574712645} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{29} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{F}     & \multicolumn{1}{l|}{2.1888481920199503} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(F$\leq$f) one-tail}     & \multicolumn{1}{l|}{0.9805657502174844} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{F Critical one-tail}     & \multicolumn{1}{l|}{0.5373999648406917} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(mean 1) $>$ abs(mean 2) and F $>$ F Critical implies unequal variances.
+
+\begin{table}[H]
+\centering
+\caption{t-Test for Scenario A vs. Scenario D with 
+Unequal Variances}
+\label{tab:ttest-Scenario A-vs-Scenario D}
+\begin{tabular}{lll}
+\hline
+ & Scenario A & Scenario D \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{0.4186666666666667} & \multicolumn{1}{l|}{0.20433333333333337} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{0.006456850574712644} & \multicolumn{1}{l|}{0.0029498850574712645} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{58} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{t Stat}     & \multicolumn{1}{l|}{12.104054659123193} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(T$\leq$t) two-tail}     & \multicolumn{1}{l|}{1.3313163045644447e-16} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{t Critical two-tail}     & \multicolumn{1}{l|}{2.0017174830120923} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(t Stat) $>$ abs(t Critical two-tail) so we reject the null hypothesis -- the two samples are statistically different.
+The average improvement of Scenario A over Scenario D is 0.21433333333333332.
+
+\subsection{Defender: Scenario A vs Scenario E}
+
+\begin{table}[H]
+\centering
+\caption{F-Test for Scenario A vs. Scenario E with $\alpha = 0.05$}
+\label{tab:ftest-Scenario A-vs-Scenario E}
+\begin{tabular}{lll}
+\hline
+ & Scenario A & Scenario E \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{0.4186666666666667} & \multicolumn{1}{l|}{0.499} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{0.006456850574712644} & \multicolumn{1}{l|}{0.01603448275862069} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{29} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{F}     & \multicolumn{1}{l|}{0.4026853046594982} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(F$\leq$f) one-tail}     & \multicolumn{1}{l|}{0.008458839173120632} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{F Critical one-tail}     & \multicolumn{1}{l|}{0.5373999648406917} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(mean 1) $<$ abs(mean 2) and F $<$ F Critical implies unequal variances.
+
+\begin{table}[H]
+\centering
+\caption{t-Test for Scenario A vs. Scenario E with 
+Unequal Variances}
+\label{tab:ttest-Scenario A-vs-Scenario E}
+\begin{tabular}{lll}
+\hline
+ & Scenario A & Scenario E \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{0.4186666666666667} & \multicolumn{1}{l|}{0.499} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{0.006456850574712644} & \multicolumn{1}{l|}{0.01603448275862069} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{58} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{t Stat}     & \multicolumn{1}{l|}{-2.9339236921431215} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(T$\leq$t) two-tail}     & \multicolumn{1}{l|}{0.005076256724785216} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{t Critical two-tail}     & \multicolumn{1}{l|}{2.0017174830120923} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(t Stat) $>$ abs(t Critical two-tail) so we reject the null hypothesis -- the two samples are statistically different.
+The average improvement of Scenario A over Scenario E is -0.08033333333333331.
+
+\subsection{Defender: Scenario A vs Scenario F}
+
+\begin{table}[H]
+\centering
+\caption{F-Test for Scenario A vs. Scenario F with $\alpha = 0.05$}
+\label{tab:ftest-Scenario A-vs-Scenario F}
+\begin{tabular}{lll}
+\hline
+ & Scenario A & Scenario F \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{0.4186666666666667} & \multicolumn{1}{l|}{0.27799999999999997} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{0.006456850574712644} & \multicolumn{1}{l|}{0.004092413793103449} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{29} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{F}     & \multicolumn{1}{l|}{1.5777609257386809} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(F$\leq$f) one-tail}     & \multicolumn{1}{l|}{0.8872689495372141} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{F Critical one-tail}     & \multicolumn{1}{l|}{0.5373999648406917} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(mean 1) $>$ abs(mean 2) and F $>$ F Critical implies unequal variances.
+
+\begin{table}[H]
+\centering
+\caption{t-Test for Scenario A vs. Scenario F with 
+Unequal Variances}
+\label{tab:ttest-Scenario A-vs-Scenario F}
+\begin{tabular}{lll}
+\hline
+ & Scenario A & Scenario F \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{0.4186666666666667} & \multicolumn{1}{l|}{0.27799999999999997} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{0.006456850574712644} & \multicolumn{1}{l|}{0.004092413793103449} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{58} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{t Stat}     & \multicolumn{1}{l|}{7.501372561865116} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(T$\leq$t) two-tail}     & \multicolumn{1}{l|}{5.559283187985959e-10} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{t Critical two-tail}     & \multicolumn{1}{l|}{2.0017174830120923} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(t Stat) $>$ abs(t Critical two-tail) so we reject the null hypothesis -- the two samples are statistically different.
+The average improvement of Scenario A over Scenario F is 0.14066666666666672.
+
+\subsection{Defender: Scenario B vs Scenario C}
+
+\begin{table}[H]
+\centering
+\caption{F-Test for Scenario B vs. Scenario C with $\alpha = 0.05$}
+\label{tab:ftest-Scenario B-vs-Scenario C}
+\begin{tabular}{lll}
+\hline
+ & Scenario B & Scenario C \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{0.213} & \multicolumn{1}{l|}{0.15233333333333332} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{0.003893793103448275} & \multicolumn{1}{l|}{0.002650574712643678} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{29} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{F}     & \multicolumn{1}{l|}{1.4690372940156111} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(F$\leq$f) one-tail}     & \multicolumn{1}{l|}{0.8469852760939056} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{F Critical one-tail}     & \multicolumn{1}{l|}{0.5373999648406917} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(mean 1) $>$ abs(mean 2) and F $>$ F Critical implies unequal variances.
+
+\begin{table}[H]
+\centering
+\caption{t-Test for Scenario B vs. Scenario C with 
+Unequal Variances}
+\label{tab:ttest-Scenario B-vs-Scenario C}
+\begin{tabular}{lll}
+\hline
+ & Scenario B & Scenario C \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{0.213} & \multicolumn{1}{l|}{0.15233333333333332} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{0.003893793103448275} & \multicolumn{1}{l|}{0.002650574712643678} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{58} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{t Stat}     & \multicolumn{1}{l|}{4.107493742849541} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(T$\leq$t) two-tail}     & \multicolumn{1}{l|}{0.00013161611306072355} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{t Critical two-tail}     & \multicolumn{1}{l|}{2.0017174830120923} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(t Stat) $>$ abs(t Critical two-tail) so we reject the null hypothesis -- the two samples are statistically different.
+The average improvement of Scenario B over Scenario C is 0.060666666666666674.
+
+\subsection{Defender: Scenario B vs Scenario D}
+
+\begin{table}[H]
+\centering
+\caption{F-Test for Scenario B vs. Scenario D with $\alpha = 0.05$}
+\label{tab:ftest-Scenario B-vs-Scenario D}
+\begin{tabular}{lll}
+\hline
+ & Scenario B & Scenario D \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{0.213} & \multicolumn{1}{l|}{0.20433333333333337} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{0.003893793103448275} & \multicolumn{1}{l|}{0.0029498850574712645} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{29} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{F}     & \multicolumn{1}{l|}{1.3199812967581044} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(F$\leq$f) one-tail}     & \multicolumn{1}{l|}{0.7703253281479048} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{F Critical one-tail}     & \multicolumn{1}{l|}{0.5373999648406917} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(mean 1) $>$ abs(mean 2) and F $>$ F Critical implies unequal variances.
+
+\begin{table}[H]
+\centering
+\caption{t-Test for Scenario B vs. Scenario D with 
+Unequal Variances}
+\label{tab:ttest-Scenario B-vs-Scenario D}
+\begin{tabular}{lll}
+\hline
+ & Scenario B & Scenario D \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{0.213} & \multicolumn{1}{l|}{0.20433333333333337} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{0.003893793103448275} & \multicolumn{1}{l|}{0.0029498850574712645} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{58} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{t Stat}     & \multicolumn{1}{l|}{0.5738097610893305} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(T$\leq$t) two-tail}     & \multicolumn{1}{l|}{0.5683571810678849} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{t Critical two-tail}     & \multicolumn{1}{l|}{2.0017174830120923} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(t Stat) $<$ abs(t Critical two-tail) so we accept the null hypothesis -- the two samples are NOT statistically different.
+
+\subsection{Defender: Scenario B vs Scenario E}
+
+\begin{table}[H]
+\centering
+\caption{F-Test for Scenario B vs. Scenario E with $\alpha = 0.05$}
+\label{tab:ftest-Scenario B-vs-Scenario E}
+\begin{tabular}{lll}
+\hline
+ & Scenario B & Scenario E \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{0.213} & \multicolumn{1}{l|}{0.499} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{0.003893793103448275} & \multicolumn{1}{l|}{0.01603448275862069} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{29} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{F}     & \multicolumn{1}{l|}{0.2428387096774193} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(F$\leq$f) one-tail}     & \multicolumn{1}{l|}{0.00013768095101500272} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{F Critical one-tail}     & \multicolumn{1}{l|}{0.5373999648406917} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(mean 1) $<$ abs(mean 2) and F $<$ F Critical implies unequal variances.
+
+\begin{table}[H]
+\centering
+\caption{t-Test for Scenario B vs. Scenario E with 
+Unequal Variances}
+\label{tab:ttest-Scenario B-vs-Scenario E}
+\begin{tabular}{lll}
+\hline
+ & Scenario B & Scenario E \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{0.213} & \multicolumn{1}{l|}{0.499} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{0.003893793103448275} & \multicolumn{1}{l|}{0.01603448275862069} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{58} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{t Stat}     & \multicolumn{1}{l|}{-11.096647678510692} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(T$\leq$t) two-tail}     & \multicolumn{1}{l|}{4.169374774380441e-14} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{t Critical two-tail}     & \multicolumn{1}{l|}{2.0017174830120923} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(t Stat) $>$ abs(t Critical two-tail) so we reject the null hypothesis -- the two samples are statistically different.
+The average improvement of Scenario B over Scenario E is -0.28600000000000003.
+
+\subsection{Defender: Scenario B vs Scenario F}
+
+\begin{table}[H]
+\centering
+\caption{F-Test for Scenario B vs. Scenario F with $\alpha = 0.05$}
+\label{tab:ftest-Scenario B-vs-Scenario F}
+\begin{tabular}{lll}
+\hline
+ & Scenario B & Scenario F \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{0.213} & \multicolumn{1}{l|}{0.27799999999999997} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{0.003893793103448275} & \multicolumn{1}{l|}{0.004092413793103449} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{29} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{F}     & \multicolumn{1}{l|}{0.9514661274014152} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(F$\leq$f) one-tail}     & \multicolumn{1}{l|}{0.44717468333818283} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{F Critical one-tail}     & \multicolumn{1}{l|}{0.5373999648406917} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(mean 1) $<$ abs(mean 2) and F $>$ F Critical implies equal variances.
+
+\begin{table}[H]
+\centering
+\caption{t-Test for Scenario B vs. Scenario F with 
+Equal Variances}
+\label{tab:ttest-Scenario B-vs-Scenario F}
+\begin{tabular}{lll}
+\hline
+ & Scenario B & Scenario F \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{0.213} & \multicolumn{1}{l|}{0.27799999999999997} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{0.003893793103448275} & \multicolumn{1}{l|}{0.004092413793103449} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{58} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{t Stat}     & \multicolumn{1}{l|}{-3.983856672828139} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(T$\leq$t) two-tail}     & \multicolumn{1}{l|}{0.00019167384573908072} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{t Critical two-tail}     & \multicolumn{1}{l|}{2.0017174830120923} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(t Stat) $>$ abs(t Critical two-tail) so we reject the null hypothesis -- the two samples are statistically different.
+The average improvement of Scenario B over Scenario F is -0.06499999999999997.
+
+\subsection{Defender: Scenario C vs Scenario D}
+
+\begin{table}[H]
+\centering
+\caption{F-Test for Scenario C vs. Scenario D with $\alpha = 0.05$}
+\label{tab:ftest-Scenario C-vs-Scenario D}
+\begin{tabular}{lll}
+\hline
+ & Scenario C & Scenario D \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{0.15233333333333332} & \multicolumn{1}{l|}{0.20433333333333337} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{0.002650574712643678} & \multicolumn{1}{l|}{0.0029498850574712645} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{29} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{F}     & \multicolumn{1}{l|}{0.8985349127182045} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(F$\leq$f) one-tail}     & \multicolumn{1}{l|}{0.3876156593328775} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{F Critical one-tail}     & \multicolumn{1}{l|}{0.5373999648406917} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(mean 1) $<$ abs(mean 2) and F $>$ F Critical implies equal variances.
+
+\begin{table}[H]
+\centering
+\caption{t-Test for Scenario C vs. Scenario D with 
+Equal Variances}
+\label{tab:ttest-Scenario C-vs-Scenario D}
+\begin{tabular}{lll}
+\hline
+ & Scenario C & Scenario D \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{0.15233333333333332} & \multicolumn{1}{l|}{0.20433333333333337} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{0.002650574712643678} & \multicolumn{1}{l|}{0.0029498850574712645} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{58} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{t Stat}     & \multicolumn{1}{l|}{-3.8058540539598615} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(T$\leq$t) two-tail}     & \multicolumn{1}{l|}{0.0003427443696590759} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{t Critical two-tail}     & \multicolumn{1}{l|}{2.0017174830120923} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(t Stat) $>$ abs(t Critical two-tail) so we reject the null hypothesis -- the two samples are statistically different.
+The average improvement of Scenario C over Scenario D is -0.052000000000000046.
+
+\subsection{Defender: Scenario C vs Scenario E}
+
+\begin{table}[H]
+\centering
+\caption{F-Test for Scenario C vs. Scenario E with $\alpha = 0.05$}
+\label{tab:ftest-Scenario C-vs-Scenario E}
+\begin{tabular}{lll}
+\hline
+ & Scenario C & Scenario E \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{0.15233333333333332} & \multicolumn{1}{l|}{0.499} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{0.002650574712643678} & \multicolumn{1}{l|}{0.01603448275862069} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{29} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{F}     & \multicolumn{1}{l|}{0.16530465949820788} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(F$\leq$f) one-tail}     & \multicolumn{1}{l|}{2.9287347981356378e-06} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{F Critical one-tail}     & \multicolumn{1}{l|}{0.5373999648406917} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(mean 1) $<$ abs(mean 2) and F $<$ F Critical implies unequal variances.
+
+\begin{table}[H]
+\centering
+\caption{t-Test for Scenario C vs. Scenario E with 
+Unequal Variances}
+\label{tab:ttest-Scenario C-vs-Scenario E}
+\begin{tabular}{lll}
+\hline
+ & Scenario C & Scenario E \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{0.15233333333333332} & \multicolumn{1}{l|}{0.499} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{0.002650574712643678} & \multicolumn{1}{l|}{0.01603448275862069} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{58} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{t Stat}     & \multicolumn{1}{l|}{-13.89074353321347} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(T$\leq$t) two-tail}     & \multicolumn{1}{l|}{1.5265786693912723e-16} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{t Critical two-tail}     & \multicolumn{1}{l|}{2.0017174830120923} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(t Stat) $>$ abs(t Critical two-tail) so we reject the null hypothesis -- the two samples are statistically different.
+The average improvement of Scenario C over Scenario E is -0.3466666666666667.
+
+\subsection{Defender: Scenario C vs Scenario F}
+
+\begin{table}[H]
+\centering
+\caption{F-Test for Scenario C vs. Scenario F with $\alpha = 0.05$}
+\label{tab:ftest-Scenario C-vs-Scenario F}
+\begin{tabular}{lll}
+\hline
+ & Scenario C & Scenario F \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{0.15233333333333332} & \multicolumn{1}{l|}{0.27799999999999997} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{0.002650574712643678} & \multicolumn{1}{l|}{0.004092413793103449} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{29} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{F}     & \multicolumn{1}{l|}{0.6476800359510166} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(F$\leq$f) one-tail}     & \multicolumn{1}{l|}{0.12403728834211539} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{F Critical one-tail}     & \multicolumn{1}{l|}{0.5373999648406917} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(mean 1) $<$ abs(mean 2) and F $>$ F Critical implies equal variances.
+
+\begin{table}[H]
+\centering
+\caption{t-Test for Scenario C vs. Scenario F with 
+Equal Variances}
+\label{tab:ttest-Scenario C-vs-Scenario F}
+\begin{tabular}{lll}
+\hline
+ & Scenario C & Scenario F \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{0.15233333333333332} & \multicolumn{1}{l|}{0.27799999999999997} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{0.002650574712643678} & \multicolumn{1}{l|}{0.004092413793103449} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{58} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{t Stat}     & \multicolumn{1}{l|}{-8.382132336492758} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(T$\leq$t) two-tail}     & \multicolumn{1}{l|}{1.4060747871908714e-11} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{t Critical two-tail}     & \multicolumn{1}{l|}{2.0017174830120923} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(t Stat) $>$ abs(t Critical two-tail) so we reject the null hypothesis -- the two samples are statistically different.
+The average improvement of Scenario C over Scenario F is -0.12566666666666665.
+
+\subsection{Defender: Scenario D vs Scenario E}
+
+\begin{table}[H]
+\centering
+\caption{F-Test for Scenario D vs. Scenario E with $\alpha = 0.05$}
+\label{tab:ftest-Scenario D-vs-Scenario E}
+\begin{tabular}{lll}
+\hline
+ & Scenario D & Scenario E \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{0.20433333333333337} & \multicolumn{1}{l|}{0.499} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{0.0029498850574712645} & \multicolumn{1}{l|}{0.01603448275862069} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{29} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{F}     & \multicolumn{1}{l|}{0.18397132616487455} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(F$\leq$f) one-tail}     & \multicolumn{1}{l|}{9.017587225723197e-06} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{F Critical one-tail}     & \multicolumn{1}{l|}{0.5373999648406917} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(mean 1) $<$ abs(mean 2) and F $<$ F Critical implies unequal variances.
+
+\begin{table}[H]
+\centering
+\caption{t-Test for Scenario D vs. Scenario E with 
+Unequal Variances}
+\label{tab:ttest-Scenario D-vs-Scenario E}
+\begin{tabular}{lll}
+\hline
+ & Scenario D & Scenario E \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{0.20433333333333337} & \multicolumn{1}{l|}{0.499} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{0.0029498850574712645} & \multicolumn{1}{l|}{0.01603448275862069} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{58} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{t Stat}     & \multicolumn{1}{l|}{-11.713685725096486} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(T$\leq$t) two-tail}     & \multicolumn{1}{l|}{2.1433277611192866e-14} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{t Critical two-tail}     & \multicolumn{1}{l|}{2.0017174830120923} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(t Stat) $>$ abs(t Critical two-tail) so we reject the null hypothesis -- the two samples are statistically different.
+The average improvement of Scenario D over Scenario E is -0.29466666666666663.
+
+\subsection{Defender: Scenario D vs Scenario f}
+
+\begin{table}[H]
+\centering
+\caption{F-Test for Scenario D vs. Scenario F with $\alpha = 0.05$}
+\label{tab:ftest-Scenario D-vs-Scenario F}
+\begin{tabular}{lll}
+\hline
+ & Scenario D & Scenario F \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{0.20433333333333337} & \multicolumn{1}{l|}{0.27799999999999997} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{0.0029498850574712645} & \multicolumn{1}{l|}{0.004092413793103449} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{29} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{F}     & \multicolumn{1}{l|}{0.7208178856308279} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(F$\leq$f) one-tail}     & \multicolumn{1}{l|}{0.19160960472635813} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{F Critical one-tail}     & \multicolumn{1}{l|}{0.5373999648406917} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(mean 1) $<$ abs(mean 2) and F $>$ F Critical implies equal variances.
+
+\begin{table}[H]
+\centering
+\caption{t-Test for Scenario D vs. Scenario F with 
+Equal Variances}
+\label{tab:ttest-Scenario D-vs-Scenario F}
+\begin{tabular}{lll}
+\hline
+ & Scenario D & Scenario F \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{0.20433333333333337} & \multicolumn{1}{l|}{0.27799999999999997} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{0.0029498850574712645} & \multicolumn{1}{l|}{0.004092413793103449} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{58} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{t Stat}     & \multicolumn{1}{l|}{-4.8081102866200816} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(T$\leq$t) two-tail}     & \multicolumn{1}{l|}{1.1203353527856365e-05} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{t Critical two-tail}     & \multicolumn{1}{l|}{2.0017174830120923} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(t Stat) $>$ abs(t Critical two-tail) so we reject the null hypothesis -- the two samples are statistically different.
+The average improvement of Scenario D over Scenario F is -0.0736666666666666.
+
+\subsection{Defender: Scenario E vs Scenario F}
+
+\begin{table}[H]
+\centering
+\caption{F-Test for Scenario E vs. Scenario F with $\alpha = 0.05$}
+\label{tab:ftest-Scenario E-vs-Scenario F}
+\begin{tabular}{lll}
+\hline
+ & Scenario E & Scenario F \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{0.499} & \multicolumn{1}{l|}{0.27799999999999997} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{0.01603448275862069} & \multicolumn{1}{l|}{0.004092413793103449} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{29} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{F}     & \multicolumn{1}{l|}{3.918099089989888} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(F$\leq$f) one-tail}     & \multicolumn{1}{l|}{0.9997826848845267} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{F Critical one-tail}     & \multicolumn{1}{l|}{0.5373999648406917} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(mean 1) $>$ abs(mean 2) and F $>$ F Critical implies unequal variances.
+
+\begin{table}[H]
+\centering
+\caption{t-Test for Scenario E vs. Scenario F with 
+Unequal Variances}
+\label{tab:ttest-Scenario E-vs-Scenario F}
+\begin{tabular}{lll}
+\hline
+ & Scenario E & Scenario F \\ \hline
+\multicolumn{1}{|l|}{Mean}     & \multicolumn{1}{l|}{0.499} & \multicolumn{1}{l|}{0.27799999999999997} \\ \hline
+\multicolumn{1}{|l|}{Variance}     & \multicolumn{1}{l|}{0.01603448275862069} & \multicolumn{1}{l|}{0.004092413793103449} \\ \hline
+\multicolumn{1}{|l|}{Observations}     & \multicolumn{1}{l|}{30} & \multicolumn{1}{l|}{30} \\ \hline
+\multicolumn{1}{|l|}{df}     & \multicolumn{1}{l|}{58} & \multicolumn{1}{l|}{29} \\ \hline
+\multicolumn{1}{|l|}{t Stat}     & \multicolumn{1}{l|}{8.532268109676039} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{P(T$\leq$t) two-tail}     & \multicolumn{1}{l|}{8.633198159839931e-11} & \multicolumn{1}{l|}{} \\ \hline
+\multicolumn{1}{|l|}{t Critical two-tail}     & \multicolumn{1}{l|}{2.0017174830120923} & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\noindent abs(t Stat) $>$ abs(t Critical two-tail) so we reject the null hypothesis -- the two samples are statistically different.
+The average improvement of Scenario E over Scenario F is 0.22100000000000003.
+
+
