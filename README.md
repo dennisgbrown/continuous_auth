@@ -7,9 +7,13 @@ Project team:
 - Dongji Feng, dzf0023@auburn.edu
 - Tripp Isbell, cai0004@auburn.edu
 
-## Overview & Usage
+## Overview 
 
-This file is a quick guide to the code and other contents of this repository. Please see the accompanying final report for better context as to the actual purpose of this code.
+Basic Architecture for Genetic Programming and Competitive Coevolution (BAGPACC) to implement an simulated environment to support experiments in Continuous Authentication.
+
+This file is a quick guide to the code and other contents of this repository. Please see the [accompanying final report](https://github.com/dennisgbrown/continuous_auth/blob/main/Continuous%20Auth%20Project%20Final%20Report.pdf) for better context as to the actual purpose of this code.
+
+## Usage
 
 Code was written in Python 3 and is all in the "code" folder.
 
